@@ -3,15 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Project {
   id           String   @id @default(uuid())
   title        String
   slug         String   @unique
-  thumbnail    String?  @db.LongText
+  thumbnail    String?  @db.Text
   description  String   @db.Text
   technologies String   @db.Text
   githubUrl    String?
@@ -83,9 +84,10 @@ model Certificate {
 
 model Blog {
   id          String   @id @default(uuid())
+  nameTitle   String?  // Optional placeholder
   title       String
   slug        String   @unique
-  content     String   @db.LongText
+  content     String   @db.Text
   thumbnail   String?
   tags        String?  @db.Text
   category    String
@@ -111,7 +113,7 @@ model ProfileView {
 model Setting {
   id          String   @id @default("singleton")
   siteTitle   String   @default("Portfolio.")
-  faviconUrl  String?  @db.LongText
+  faviconUrl  String?  @db.Text
   name        String   @default("")
   role        String   @default("")
   description String   @db.Text
@@ -123,7 +125,7 @@ model Setting {
   linkedin    String   @default("")
   instagram   String   @default("")
   twitter     String   @default("")
-  cvUrl       String   @db.LongText
+  cvUrl       String   @db.Text
   cvFileName  String   @default("")
   updatedAt   DateTime @updatedAt
 }

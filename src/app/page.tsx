@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, Briefcase } from "lucide-react";
+import { ArrowRight, Download, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, Briefcase, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -48,6 +48,7 @@ export default function Home() {
   const [socialLinks, setSocialLinks] = useState({ github: "", linkedin: "", twitter: "", instagram: "" });
   const [siteTitle, setSiteTitle] = useState("Portfolio.");
   const [faviconUrl, setFaviconUrl] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Contact Form State
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
@@ -167,10 +168,12 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white selection:bg-purple-500/30">
       
-      {/* NAVBAR (Sederhana) */}
-      <nav className="fixed top-0 w-full z-50 glass border-b border-gray-800">
+      {/* NAVBAR */}
+      <nav className="fixed top-0 w-full z-50 glass border-b border-gray-800 bg-[#050505]/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <span className="font-bold text-xl tracking-tight">{siteTitle}</span>
+          
+          {/* Desktop Menu */}
           <div className="hidden md:flex gap-6 text-sm font-medium text-gray-300">
             <a href="#about" className="hover:text-white transition">About</a>
             <a href="#skills" className="hover:text-white transition">Skills</a>
@@ -178,7 +181,28 @@ export default function Home() {
             <a href="#projects" className="hover:text-white transition">Projects</a>
             <a href="#contact" className="hover:text-white transition">Contact</a>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="md:hidden text-gray-300 hover:text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-800 bg-[#050505]/95 backdrop-blur-xl absolute w-full left-0 top-16 shadow-2xl">
+            <div className="flex flex-col px-6 py-4 space-y-4 text-sm font-medium text-gray-300">
+              <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-gray-800/50">About</a>
+              <a href="#skills" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-gray-800/50">Skills</a>
+              <a href="#experience" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-gray-800/50">Experience</a>
+              <a href="#projects" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-gray-800/50">Projects</a>
+              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2">Contact</a>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* HERO SECTION */}
