@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id           String   @id @default(uuid())
+  title        String
+  slug         String   @unique
+  thumbnail    String?  @db.LongText
+  description  String   @db.Text
+  technologies String   @db.Text
+  githubUrl    String?
+  demoUrl      String?
+  category     String
+  isFeatured   Boolean  @default(false)
+  status       String   @default("Completed")
+  date         DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Skill {
+  id        String   @id @default(uuid())
+  name      String
+  icon      String?
+  level     Int      @default(0)
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Experience {
+  id          String    @id @default(uuid())
+  position    String
+  company     String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  description String    @db.Text
+  companyLogo String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Education {
+  id           String    @id @default(uuid())
+  institution  String
+  degree       String
+  fieldOfStudy String?
+  startDate    DateTime
+  endDate      DateTime?
+  description  String?   @db.Text
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Organization {
+  id          String    @id @default(uuid())
+  name        String
+  role        String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?   @db.Text
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Certificate {
+  id        String   @id @default(uuid())
+  name      String
+  issuer    String
+  pdfUrl    String?
+  thumbnail String?
+  issueDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String   @db.LongText
+  thumbnail   String?
+  tags        String?  @db.Text
+  category    String
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ProfileView {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id          String   @id @default("singleton")
+  siteTitle   String   @default("Portfolio.")
+  faviconUrl  String?  @db.LongText
+  name        String   @default("")
+  role        String   @default("")
+  description String   @db.Text
+  about       String   @db.Text
+  email       String   @default("")
+  phone       String   @default("")
+  location    String   @default("")
+  github      String   @default("")
+  linkedin    String   @default("")
+  instagram   String   @default("")
+  twitter     String   @default("")
+  cvUrl       String   @db.LongText
+  cvFileName  String   @default("")
+  updatedAt   DateTime @updatedAt
+}

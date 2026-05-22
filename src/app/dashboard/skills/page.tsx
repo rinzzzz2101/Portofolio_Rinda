@@ -1,0 +1,308 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Plus, Code2, Trash2, Edit2, Brain, Cpu } from "lucide-react";
+import { createSkill, getSkills, deleteSkill, updateSkill } from "@/actions/skills";
+import { useToast } from "@/components/ui/toast-provider";
+import { useConfirm } from "@/components/ui/confirm-provider";
+import { PanelLoading, LoadingSpinner } from "@/components/ui/loading";
+
+const SKILL_TYPES = ["Hard Skill", "Soft Skill"] as const;
+type SkillType = typeof SKILL_TYPES[number];
+
+export default function AdminSkillsPage() {
+  const { toast } = useToast();
+  const { confirm } = useConfirm();
+  const [mounted, setMounted] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [skills, setSkills] = useState<any[]>([]);
+  const [fetching, setFetching] = useState(true);
+  const [activeFilter, setActiveFilter] = useState<SkillType | "Semua">("Semua");
+  
+  const [form, setForm] = useState({
+    name: "",
+    level: "80",
+    category: "Hard Skill",
+  });
+
+  const loadSkills = async () => {
+    setFetching(true);
+    const res = await getSkills();
+    if (res.success) setSkills(res.data);
+    setFetching(false);
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    loadSkills();
+  }, []);
+
+  const handleOpenCreate = () => {
+    setEditingId(null);
+    setForm({ name: "", level: "80", category: "Hard Skill" });
+    setErrorMsg("");
+    setOpen(true);
+  };
+
+  const handleOpenEdit = (skill: any) => {
+    setEditingId(skill.id);
+    setForm({
+      name: skill.name,
+      level: skill.level.toString(),
+      category: skill.category,
+    });
+    setErrorMsg("");
+    setOpen(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent, addMore = false) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+    
+    const payload = {
+      name: form.name,
+      level: parseInt(form.level),
+      category: form.category,
+    };
+
+    const res = editingId 
+      ? await updateSkill(editingId, payload)
+      : await createSkill(payload);
+
+    setLoading(false);
+    if (res.success) {
+      toast(editingId ? "Skill berhasil diubah!" : "Skill berhasil disimpan!", "success");
+      setForm({ name: "", level: "80", category: "Hard Skill" });
+      
+      if (!addMore) {
+        setOpen(false);
+        setEditingId(null);
+      } else {
+        toast("Silakan tambahkan skill berikutnya.", "info");
+      }
+      loadSkills();
+    } else {
+      setErrorMsg("Gagal menyimpan ke database.");
+      toast("Gagal menyimpan skill.", "error");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const isConfirmed = await confirm({
+      title: "Hapus Keahlian?",
+      message: "Apakah Anda yakin ingin menghapus keahlian ini?",
+      confirmText: "Ya, Hapus",
+      cancelText: "Batal",
+      variant: "danger"
+    });
+    if (!isConfirmed) return;
+    const res = await deleteSkill(id);
+    if (res.success) {
+      toast("Skill berhasil dihapus.", "success");
+      loadSkills();
+    } else {
+      toast("Gagal menghapus skill.", "error");
+    }
+  };
+
+  const filteredSkills = activeFilter === "Semua"
+    ? skills
+    : skills.filter((s) => s.category === activeFilter);
+
+  const hardCount = skills.filter((s) => s.category === "Hard Skill").length;
+  const softCount = skills.filter((s) => s.category === "Soft Skill").length;
+
+  if (!mounted) return <PanelLoading />;
+
+  return (
+    <div className="p-8 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Manajemen Skills</h1>
+          <p className="text-gray-400 mt-2">Atur Hard Skill dan Soft Skill Anda di sini.</p>
+        </div>
+        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Plus className="w-4 h-4 mr-2" /> Tambah Skill
+        </Button>
+      </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[480px] bg-[#0a0a0a] border-gray-800 text-white">
+          <form onSubmit={(e) => handleSubmit(e, false)}>
+            <DialogHeader>
+              <DialogTitle>{editingId ? "Edit Skill" : "Tambah Skill Baru"}</DialogTitle>
+              <DialogDescription className="text-gray-400">
+                {editingId ? "Ubah nama atau level keahlian Anda." : "Pilih tipe skill dan tambahkan nama beserta tingkat keahlian Anda."}
+              </DialogDescription>
+            </DialogHeader>
+            {errorMsg && (
+              <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm">{errorMsg}</div>
+            )}
+            <div className="grid gap-4 py-4">
+              {/* Tipe Skill Toggle */}
+              <div className="grid gap-2">
+                <Label>Tipe Skill</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {SKILL_TYPES.map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setForm({ ...form, category: type })}
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all text-sm font-medium ${
+                        form.category === type
+                          ? type === "Hard Skill"
+                            ? "bg-purple-600/20 border-purple-500 text-purple-300"
+                            : "bg-blue-600/20 border-blue-500 text-blue-300"
+                          : "border-gray-800 text-gray-400 hover:bg-gray-900"
+                      }`}
+                    >
+                      {type === "Hard Skill" ? <Cpu className="w-4 h-4" /> : <Brain className="w-4 h-4" />}
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-2">
+                <Label>Nama Skill</Label>
+                <Input
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder={form.category === "Hard Skill" ? "React.js, Python, Figma..." : "Komunikasi, Kepemimpinan..."}
+                  className="bg-gray-900 border-gray-800"
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label>
+                  Level Keahlian{" "}
+                  <span className={form.category === "Hard Skill" ? "text-purple-400" : "text-blue-400"}>
+                    {form.level}%
+                  </span>
+                </Label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={form.level}
+                  onChange={(e) => setForm({ ...form, level: e.target.value })}
+                  className={`w-full ${form.category === "Hard Skill" ? "accent-purple-500" : "accent-blue-500"}`}
+                />
+                <div className="flex justify-between text-xs text-gray-600">
+                  <span>Pemula</span><span>Menengah</span><span>Mahir</span>
+                </div>
+              </div>
+            </div>
+            <DialogFooter className="flex flex-col sm:flex-row gap-2">
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">
+                Batal
+              </Button>
+              {!editingId && (
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                  {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
+                </Button>
+              )}
+              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
+                {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan Skill")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Filter Tabs */}
+      <div className="flex items-center gap-2">
+        {(["Semua", "Hard Skill", "Soft Skill"] as const).map((filter) => {
+          const count = filter === "Semua" ? skills.length : filter === "Hard Skill" ? hardCount : softCount;
+          const isActive = activeFilter === filter;
+          return (
+            <button
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
+                isActive
+                  ? filter === "Soft Skill"
+                    ? "bg-blue-600/20 border-blue-500/50 text-blue-300"
+                    : "bg-purple-600/20 border-purple-500/50 text-purple-300"
+                  : "border-gray-800 text-gray-400 hover:bg-gray-900 hover:text-white"
+              }`}
+            >
+              {filter === "Hard Skill" && <Cpu className="w-4 h-4" />}
+              {filter === "Soft Skill" && <Brain className="w-4 h-4" />}
+              {filter}
+              <span className={`text-xs px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/10" : "bg-gray-800"}`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Skills List */}
+      {fetching ? (
+        <LoadingSpinner message="Mengambil data keahlian..." />
+      ) : filteredSkills.length === 0 ? (
+        <Card className="glass-card border-gray-800 text-white">
+          <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+            <Code2 className="w-16 h-16 text-gray-500 mb-4" />
+            <h3 className="text-xl font-bold mb-2">Belum ada Skill</h3>
+            <p className="text-gray-400">Klik tombol "+ Tambah Skill" untuk mulai menambahkan.</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredSkills.map((skill) => (
+            <Card key={skill.id} className={`glass-card border-gray-800 text-white hover:border-purple-500/20 transition-all`}>
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${skill.category === "Hard Skill" ? "bg-purple-500/10 border border-purple-500/20" : "bg-blue-500/10 border border-blue-500/20"}`}>
+                      {skill.category === "Hard Skill"
+                        ? <Cpu className="w-4 h-4 text-purple-400" />
+                        : <Brain className="w-4 h-4 text-blue-400" />
+                      }
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white">{skill.name}</p>
+                      <span className={`text-xs font-medium ${skill.category === "Hard Skill" ? "text-purple-400" : "text-blue-400"}`}>
+                        {skill.category}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className={`text-sm font-bold mr-2 ${skill.category === "Hard Skill" ? "text-purple-400" : "text-blue-400"}`}>
+                      {skill.level}%
+                    </span>
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(skill)} className="hover:bg-gray-800 text-gray-300 h-8 w-8 p-0">
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(skill.id)} className="hover:bg-red-500/10 text-red-400 h-8 w-8 p-0">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all ${skill.category === "Hard Skill" ? "bg-gradient-to-r from-purple-500 to-purple-400" : "bg-gradient-to-r from-blue-500 to-blue-400"}`}
+                    style={{ width: `${skill.level}%` }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

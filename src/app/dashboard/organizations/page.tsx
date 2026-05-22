@@ -1,0 +1,225 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Plus, Users, Trash2, Edit2 } from "lucide-react";
+import { createOrganization, getOrganizations, deleteOrganization, updateOrganization } from "@/actions/organizations";
+import { useToast } from "@/components/ui/toast-provider";
+import { useConfirm } from "@/components/ui/confirm-provider";
+import { PanelLoading, LoadingSpinner } from "@/components/ui/loading";
+
+export default function AdminOrganizationsPage() {
+  const { toast } = useToast();
+  const { confirm } = useConfirm();
+  const [mounted, setMounted] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [organizations, setOrganizations] = useState<any[]>([]);
+  const [fetching, setFetching] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+  
+  const [form, setForm] = useState({
+    name: "", role: "", startDate: "", endDate: "", description: ""
+  });
+
+  const loadOrganizations = async () => {
+    setFetching(true);
+    const res = await getOrganizations();
+    if (res.success) setOrganizations(res.data);
+    setFetching(false);
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    loadOrganizations();
+  }, []);
+
+  const handleOpenCreate = () => {
+    setEditingId(null);
+    setForm({ name: "", role: "", startDate: "", endDate: "", description: "" });
+    setErrorMsg("");
+    setOpen(true);
+  };
+
+  const handleOpenEdit = (org: any) => {
+    setEditingId(org.id);
+    const startFormatted = org.startDate ? new Date(org.startDate).toISOString().split("T")[0] : "";
+    const endFormatted = org.endDate ? new Date(org.endDate).toISOString().split("T")[0] : "";
+    setForm({
+      name: org.name,
+      role: org.role,
+      startDate: startFormatted,
+      endDate: endFormatted,
+      description: org.description || ""
+    });
+    setErrorMsg("");
+    setOpen(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent, addMore = false) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+
+    const payload = {
+      name: form.name,
+      role: form.role,
+      startDate: form.startDate,
+      endDate: form.endDate || undefined,
+      description: form.description || undefined
+    };
+
+    const res = editingId 
+      ? await updateOrganization(editingId, payload)
+      : await createOrganization(payload);
+
+    setLoading(false);
+    if (res.success) {
+      toast(editingId ? "Organisasi berhasil diubah!" : "Organisasi berhasil disimpan!", "success");
+      setForm({ name: "", role: "", startDate: "", endDate: "", description: "" });
+      
+      if (!addMore) {
+        setOpen(false);
+        setEditingId(null);
+      } else {
+        toast("Silakan tambahkan data organisasi berikutnya.", "info");
+      }
+      loadOrganizations();
+    } else {
+      setErrorMsg("Gagal menyimpan. Pastikan database sudah terkoneksi.");
+      toast("Gagal menyimpan data organisasi.", "error");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const isConfirmed = await confirm({
+      title: "Hapus Riwayat Organisasi?",
+      message: "Apakah Anda yakin ingin menghapus data organisasi ini?",
+      confirmText: "Ya, Hapus",
+      cancelText: "Batal",
+      variant: "danger"
+    });
+    if (!isConfirmed) return;
+    const res = await deleteOrganization(id);
+    if (res.success) {
+      toast("Organisasi berhasil dihapus.", "success");
+      loadOrganizations();
+    } else {
+      toast("Gagal menghapus data organisasi.", "error");
+    }
+  };
+
+  if (!mounted) return <PanelLoading />;
+
+  return (
+    <div className="p-8 space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Manajemen Organisasi</h1>
+          <p className="text-gray-400 mt-2">Atur riwayat pengalaman berorganisasi Anda.</p>
+        </div>
+        
+        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Plus className="w-4 h-4 mr-2" /> Tambah Organisasi
+        </Button>
+      </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[500px] bg-[#0a0a0a] border-gray-800 text-white">
+          <form onSubmit={(e) => handleSubmit(e, false)}>
+            <DialogHeader>
+              <DialogTitle>{editingId ? "Edit Riwayat Organisasi" : "Tambah Riwayat Organisasi"}</DialogTitle>
+              <DialogDescription className="text-gray-400">Masukkan detail organisasi Anda.</DialogDescription>
+            </DialogHeader>
+            {errorMsg && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm">{errorMsg}</div>}
+            
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label>Nama Organisasi</Label>
+                <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Senat Mahasiswa, Komunitas Dev..." className="bg-gray-900 border-gray-800" />
+              </div>
+              <div className="grid gap-2">
+                <Label>Jabatan / Peran</Label>
+                <Input required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Ketua, Hubungan Masyarakat, Anggota..." className="bg-gray-900 border-gray-800" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label>Tanggal Mulai</Label>
+                  <Input type="date" required value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Tanggal Selesai (Selesai Menjabat)</Label>
+                  <Input type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <Label>Keterangan / Deskripsi (Opsional)</Label>
+                <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  className="flex min-h-[80px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  placeholder="Deskripsi tugas, pencapaian program kerja..." />
+              </div>
+            </div>
+            
+            <DialogFooter className="flex flex-col sm:flex-row gap-2">
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
+              {!editingId && (
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                  {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
+                </Button>
+              )}
+              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
+                {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {fetching ? (
+        <LoadingSpinner message="Mengambil data organisasi..." />
+      ) : organizations.length === 0 ? (
+        <Card className="glass-card border-gray-800 text-white">
+          <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+            <Users className="w-16 h-16 text-gray-500 mb-4" />
+            <h3 className="text-xl font-bold mb-2">Belum ada Riwayat Organisasi</h3>
+            <p className="text-gray-400">Klik tombol "+ Tambah Organisasi" untuk mulai menambahkan.</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {organizations.map((org) => (
+            <Card key={org.id} className="glass-card border-gray-800 text-white hover:border-purple-500/20 transition-all">
+              <CardContent className="p-6 space-y-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">{org.name}</h3>
+                    <p className="text-purple-400 text-sm font-medium mt-1">
+                      {org.role}
+                    </p>
+                    <p className="text-gray-500 text-xs mt-1">
+                      {new Date(org.startDate).getFullYear()} - {org.endDate ? new Date(org.endDate).getFullYear() : "Sekarang"}
+                    </p>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(org)} className="hover:bg-gray-800 text-gray-300">
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(org.id)} className="hover:bg-red-500/10 text-red-400">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                {org.description && <p className="text-gray-400 text-sm leading-relaxed">{org.description}</p>}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
