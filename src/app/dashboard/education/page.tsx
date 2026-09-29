@@ -185,7 +185,7 @@ export default function AdminEducationPage() {
               <div className="grid gap-2">
                 <Label style={{ color: "var(--text-primary)" }}>Keterangan / Deskripsi (Opsional)</Label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="flex min-h-[80px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
+                  className="flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
                   placeholder="Nilai IPK, pencapaian, dll..." />
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function AdminEducationPage() {
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <GraduationCap className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Riwayat Pendidikan</h3>
-            <p className="text-gray-400">Klik tombol "+ Tambah Pendidikan" untuk mulai menambahkan.</p>
+            <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tambah Pendidikan" untuk mulai menambahkan.</p>
           </CardContent>
         </Card>
       ) : (
@@ -222,8 +222,8 @@ export default function AdminEducationPage() {
               <CardContent className="p-6 space-y-4">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-xl font-bold text-white">{edu.institution}</h3>
-                    <p className="text-zinc-300 text-sm font-medium mt-1">
+                    <h3 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{edu.institution}</h3>
+                    <p className="text-sm font-medium mt-1" style={{ color: "var(--text-secondary)" }}>
                       {edu.degree} {edu.fieldOfStudy ? `• ${edu.fieldOfStudy}` : ""}
                     </p>
                     <p className="text-gray-500 text-xs mt-1">
@@ -231,15 +231,15 @@ export default function AdminEducationPage() {
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(edu)} className="hover:bg-gray-800 text-gray-300">
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(edu)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(edu.id)} className="hover:bg-red-500/10 text-red-400">
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(edu.id)} className="hover:bg-red-500/10 text-red-500">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
-                {edu.description && <p className="text-gray-400 text-sm leading-relaxed">{edu.description}</p>}
+                {edu.description && <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{edu.description}</p>}
               </CardContent>
             </Card>
           ))}

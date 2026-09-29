@@ -161,9 +161,9 @@ export default function AdminSkillsPage() {
                       className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all text-sm font-medium ${
                         form.category === type
                           ? type === "Hard Skill"
-                            ? "bg-zinc-800 border-zinc-700 text-zinc-100"
-                            : "bg-zinc-900/60 border-zinc-800 text-zinc-300"
-                          : "border-gray-800 text-gray-450 hover:bg-gray-900 hover:text-white"
+                            ? "bg-primary text-primary-foreground border-transparent shadow-sm"
+                            : "bg-zinc-900/60 border-zinc-800 text-foreground"
+                          : "border-gray-800 text-gray-450 hover:bg-gray-900 hover:text-foreground"
                       }`}
                     >
                       {type === "Hard Skill" ? <Cpu className="w-4 h-4" /> : <Brain className="w-4 h-4" />}
@@ -187,7 +187,7 @@ export default function AdminSkillsPage() {
               <div className="grid gap-2">
                 <Label style={{ color: "var(--text-primary)" }}>
                   Level Keahlian{" "}
-                  <span className={form.category === "Hard Skill" ? "text-zinc-200" : "text-zinc-400"}>
+                  <span className={form.category === "Hard Skill" ? "text-zinc-200" : "text-muted-foreground"}>
                     {form.level}%
                   </span>
                 </Label>
@@ -232,8 +232,8 @@ export default function AdminSkillsPage() {
               onClick={() => setActiveFilter(filter)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
                 isActive
-                  ? "bg-zinc-800 border-zinc-700 text-zinc-100"
-                  : "border-gray-800 text-gray-400 hover:bg-gray-900 hover:text-white"
+                  ? "bg-primary text-primary-foreground border-transparent shadow-sm"
+                  : "border-gray-800 text-gray-400 hover:bg-gray-900 hover:text-foreground"
               }`}
             >
               {filter === "Hard Skill" && <Cpu className="w-4 h-4" />}
@@ -265,24 +265,24 @@ export default function AdminSkillsPage() {
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${skill.category === "Hard Skill" ? "bg-zinc-800 border border-zinc-700" : "bg-zinc-900 border border-zinc-800"}`}>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center border" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
                       {skill.category === "Hard Skill"
-                        ? <Cpu className="w-4 h-4 text-zinc-300" />
-                        : <Brain className="w-4 h-4 text-zinc-400" />
+                        ? <Cpu className="w-4 h-4 text-foreground" />
+                        : <Brain className="w-4 h-4 text-muted-foreground" />
                       }
                     </div>
                     <div>
-                      <p className="font-semibold text-white">{skill.name}</p>
-                      <span className={`text-xs font-medium ${skill.category === "Hard Skill" ? "text-zinc-350" : "text-zinc-400"}`}>
+                      <p className="font-semibold" style={{ color: "var(--text-primary)" }}>{skill.name}</p>
+                      <span className={`text-xs font-medium ${skill.category === "Hard Skill" ? "text-muted-foreground" : "text-muted-foreground"}`}>
                         {skill.category}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className={`text-sm font-bold mr-2 ${skill.category === "Hard Skill" ? "text-zinc-300" : "text-zinc-450"}`}>
+                    <span className={`text-sm font-bold mr-2 ${skill.category === "Hard Skill" ? "text-foreground" : "text-muted-foreground"}`}>
                       {skill.level}%
                     </span>
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(skill)} className="hover:bg-gray-800 text-gray-300 h-8 w-8 p-0">
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(skill)} className="h-8 w-8 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(skill.id)} className="hover:bg-red-500/10 text-red-400 h-8 w-8 p-0">

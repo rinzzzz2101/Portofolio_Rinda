@@ -204,7 +204,7 @@ export default function AdminBlogsPage() {
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <FileText className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Artikel</h3>
-            <p className="text-gray-400">Klik tombol "+ Tulis Artikel" untuk mulai menulis.</p>
+            <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tulis Artikel" untuk mulai menulis.</p>
           </CardContent>
         </Card>
       ) : (
@@ -222,21 +222,21 @@ export default function AdminBlogsPage() {
                         {blog.category}
                       </span>
                     </div>
-                    <h3 className="font-bold text-white leading-snug line-clamp-2">{blog.title}</h3>
+                    <h3 className="font-bold leading-snug line-clamp-2" style={{ color: "var(--text-primary)" }}>{blog.title}</h3>
                   </div>
                   <div className="flex gap-1 shrink-0">
                     <Button size="sm" variant="ghost" onClick={() => togglePublishStatus(blog)} className={`hover:bg-gray-800 ${blog.isPublished ? "text-green-400" : "text-gray-400"}`} title={blog.isPublished ? "Kembalikan ke Draft" : "Publikasikan"}>
                       {blog.isPublished ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(blog)} className="hover:bg-gray-800 text-gray-300">
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(blog)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(blog.id)} className="hover:bg-red-500/10 text-red-400">
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(blog.id)} className="hover:bg-red-500/10 text-red-500">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
-                <p className="text-gray-400 text-sm line-clamp-2">{blog.content}</p>
+                <p className="text-sm line-clamp-2" style={{ color: "var(--text-muted)" }}>{blog.content}</p>
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />

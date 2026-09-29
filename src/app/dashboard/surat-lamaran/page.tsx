@@ -918,7 +918,7 @@ ${data.nama}`;
               className="h-14 w-auto object-contain"
             />
           ) : (
-            <div className="h-14 w-36 border border-dashed border-zinc-300 flex items-center justify-center text-[10px] text-zinc-400 no-print rounded">
+            <div className="h-14 w-36 border border-dashed border-zinc-300 flex items-center justify-center text-[10px] text-muted-foreground no-print rounded">
               (Tanda Tangan Basah)
             </div>
           )}
@@ -974,12 +974,12 @@ ${data.nama}`;
             onClick={() => setIsMiniPreviewVisible(!isMiniPreviewVisible)}
             className={`text-xs h-9 transition-all font-medium ${
               isMiniPreviewVisible 
-                ? "border-zinc-500/60 bg-zinc-700/20 text-zinc-300 hover:bg-zinc-700/30 hover:text-white shadow-md shadow-emerald-950/40" 
-                : "border-zinc-700 bg-zinc-900/90 text-zinc-300 hover:bg-zinc-700 hover:text-white hover:border-zinc-500 shadow-md"
+                ? "border-zinc-500/60 bg-zinc-700/20 text-foreground hover:bg-zinc-700/30 hover:text-foreground shadow-md shadow-emerald-950/40" 
+                : "border-zinc-700 bg-card text-foreground hover:bg-zinc-700 hover:text-foreground hover:border-zinc-500 shadow-md"
             }`}
             title={isMiniPreviewVisible ? "Sembunyikan pratinjau surat" : "Tampilkan pratinjau surat mengambang"}
           >
-            <Eye className="w-3.5 h-3.5 mr-1.5 text-zinc-300" />
+            <Eye className="w-3.5 h-3.5 mr-1.5 text-foreground" />
             <span>Lihat Hasil</span>
             {isMiniPreviewVisible ? (
               <span className="w-1.5 h-1.5 ml-1.5 rounded-full bg-zinc-400 animate-pulse" />
@@ -989,13 +989,13 @@ ${data.nama}`;
           </Button>
 
           {/* Download Dropdown / Buttons */}
-          <div className="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-0.5">
+          <div className="flex items-center bg-muted border border-border rounded-lg p-0.5">
             <Button
               type="button"
               variant="ghost"
               size="sm"
               onClick={handleDownloadDoc}
-              className="text-zinc-300 hover:text-white hover:bg-zinc-800 text-xs h-8 px-2.5"
+              className="text-foreground hover:text-foreground hover:bg-zinc-800 text-xs h-8 px-2.5"
               title="Download File Microsoft Word (.doc)"
             >
               <FileDown className="w-3.5 h-3.5 mr-1 text-blue-400" />
@@ -1006,10 +1006,10 @@ ${data.nama}`;
               variant="ghost"
               size="sm"
               onClick={handleDownloadTxt}
-              className="text-zinc-300 hover:text-white hover:bg-zinc-800 text-xs h-8 px-2.5 border-l border-zinc-800"
+              className="text-foreground hover:text-foreground hover:bg-zinc-800 text-xs h-8 px-2.5 border-l border-border"
               title="Download File Teks (.txt)"
             >
-              <Download className="w-3.5 h-3.5 mr-1 text-zinc-400" />
+              <Download className="w-3.5 h-3.5 mr-1 text-muted-foreground" />
               Txt
             </Button>
           </div>
@@ -1019,9 +1019,9 @@ ${data.nama}`;
             variant="outline"
             size="sm"
             onClick={handleCopyText}
-            className="border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:text-white hover:bg-zinc-800 text-xs h-9"
+            className="border-border bg-muted text-foreground hover:text-foreground hover:bg-zinc-800 text-xs h-9"
           >
-            {copied ? <Check className="w-3.5 h-3.5 mr-1.5 text-zinc-300" /> : <Copy className="w-3.5 h-3.5 mr-1.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 mr-1.5 text-foreground" /> : <Copy className="w-3.5 h-3.5 mr-1.5" />}
             {copied ? "Tersalin!" : "Salin Teks"}
           </Button>
 
@@ -1048,7 +1048,7 @@ ${data.nama}`;
           }
         >
           <div 
-            className="flex flex-col rounded-xl overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.7)] border-2 border-zinc-700/90 bg-zinc-900/95 backdrop-blur-md transition-shadow hover:border-zinc-500/80 ring-1 ring-white/10"
+            className="flex flex-col rounded-xl overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.7)] border-2 border-zinc-700/90 bg-card backdrop-blur-md transition-shadow hover:border-zinc-500/80 ring-1 ring-white/10"
             style={{ width: `${miniSize.width}px` }}
           >
             {/* Header Drag Bar (Bisa di-drag untuk memindahkan posisi) */}
@@ -1057,13 +1057,13 @@ ${data.nama}`;
               onPointerMove={handleDragMove}
               onPointerUp={handleDragEnd}
               onPointerCancel={handleDragEnd}
-              className="flex items-center justify-between px-2.5 py-1.5 bg-zinc-900/95 border-b border-zinc-800 cursor-grab active:cursor-grabbing select-none touch-none hover:bg-zinc-800/60 transition-colors"
+              className="flex items-center justify-between px-2.5 py-1.5 bg-card border-b border-border cursor-grab active:cursor-grabbing select-none touch-none hover:bg-zinc-800/60 transition-colors"
               title="Tahan dan geser untuk memindahkan pratinjau"
             >
-              <div className="flex items-center gap-1.5 text-zinc-300 pointer-events-none">
-                <Move className="w-3.5 h-3.5 text-zinc-300" />
-                <span className="text-[10px] font-semibold tracking-wide text-zinc-200">Pratinjau</span>
-                <span className="text-[9px] text-zinc-500 font-mono">({Math.round(miniSize.width)}px)</span>
+              <div className="flex items-center gap-1.5 text-foreground pointer-events-none">
+                <Move className="w-3.5 h-3.5 text-foreground" />
+                <span className="text-[10px] font-semibold tracking-wide text-foreground">Pratinjau</span>
+                <span className="text-[9px] text-muted-foreground font-mono">({Math.round(miniSize.width)}px)</span>
               </div>
 
               {/* Action buttons */}
@@ -1072,7 +1072,7 @@ ${data.nama}`;
                 <button
                   type="button"
                   onClick={() => setIsEnlargedOpen(true)}
-                  className="p-1 text-zinc-400 hover:text-zinc-200 rounded hover:bg-zinc-800 transition"
+                  className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-zinc-800 transition"
                   title="Perbesar penuh"
                 >
                   <ZoomIn className="w-3.5 h-3.5" />
@@ -1082,7 +1082,7 @@ ${data.nama}`;
                 <button
                   type="button"
                   onClick={() => setIsMiniPreviewVisible(false)}
-                  className="p-1 text-zinc-400 hover:text-red-400 rounded hover:bg-zinc-800 transition"
+                  className="p-1 text-muted-foreground hover:text-red-400 rounded hover:bg-zinc-800 transition"
                   title="Tutup pratinjau"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -1116,18 +1116,18 @@ ${data.nama}`;
               </div>
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-200 flex flex-col items-center justify-center gap-1.5 p-2 text-white pointer-events-none">
-                <div className="w-9 h-9 rounded-full bg-zinc-700/20 border border-zinc-400/50 flex items-center justify-center text-zinc-300 shadow-xl transform group-hover:scale-110 transition-transform">
+              <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-200 flex flex-col items-center justify-center gap-1.5 p-2 text-foreground pointer-events-none">
+                <div className="w-9 h-9 rounded-full bg-zinc-700/20 border border-zinc-400/50 flex items-center justify-center text-foreground shadow-xl transform group-hover:scale-110 transition-transform">
                   <Eye className="w-4 h-4" />
                 </div>
-                <span className="text-[10px] font-bold text-zinc-300 bg-zinc-950/90 px-2.5 py-0.5 rounded-full border border-zinc-500/40 text-center shadow-lg">
+                <span className="text-[10px] font-bold text-foreground bg-muted/90 px-2.5 py-0.5 rounded-full border border-zinc-500/40 text-center shadow-lg">
                   Buka Penuh
                 </span>
               </div>
             </div>
 
             {/* Footer Bottom Bar with Corner Resizers */}
-            <div className="relative h-5 bg-zinc-900/95 border-t border-zinc-800 flex items-center justify-between px-2 select-none touch-none">
+            <div className="relative h-5 bg-card border-t border-border flex items-center justify-between px-2 select-none touch-none">
               
               {/* Pojok Bawah Kiri (Resize Handle) */}
               <div
@@ -1135,14 +1135,14 @@ ${data.nama}`;
                 onPointerMove={handleResizeMove}
                 onPointerUp={handleResizeEnd}
                 onPointerCancel={handleResizeEnd}
-                className="cursor-nesw-resize p-1 -ml-2 text-zinc-500 hover:text-zinc-200 active:text-zinc-300 group flex items-center justify-center transition-colors"
+                className="cursor-nesw-resize p-1 -ml-2 text-muted-foreground hover:text-foreground active:text-foreground group flex items-center justify-center transition-colors"
                 title="Tarik pojok kiri bawah untuk mengubah ukuran"
               >
                 <div className="w-2.5 h-2.5 border-b-2 border-l-2 border-current rounded-bl-sm group-hover:scale-125 transition-transform" />
               </div>
 
               {/* Petunjuk tengah */}
-              <span className="text-[8px] text-zinc-500 tracking-wider uppercase font-semibold">Tarik pojok untuk resize</span>
+              <span className="text-[8px] text-muted-foreground tracking-wider uppercase font-semibold">Tarik pojok untuk resize</span>
 
               {/* Pojok Bawah Kanan (Resize Handle) */}
               <div
@@ -1150,7 +1150,7 @@ ${data.nama}`;
                 onPointerMove={handleResizeMove}
                 onPointerUp={handleResizeEnd}
                 onPointerCancel={handleResizeEnd}
-                className="cursor-nwse-resize p-1 -mr-2 text-zinc-500 hover:text-zinc-200 active:text-zinc-300 group flex items-center justify-center transition-colors"
+                className="cursor-nwse-resize p-1 -mr-2 text-muted-foreground hover:text-foreground active:text-foreground group flex items-center justify-center transition-colors"
                 title="Tarik pojok kanan bawah untuk mengubah ukuran"
               >
                 <div className="w-2.5 h-2.5 border-b-2 border-r-2 border-current rounded-br-sm group-hover:scale-125 transition-transform" />
@@ -1164,16 +1164,16 @@ ${data.nama}`;
       <main className="no-print flex-1 max-w-3xl w-full mx-auto p-4 sm:p-8 space-y-6">
         
         {/* Card 1: Input Data Perusahaan & Posisi (Fokus Utama) */}
-        <Card className="bg-[#121215]/90 border-zinc-800 text-white shadow-xl backdrop-blur-sm">
-          <CardHeader className="pb-3 border-b border-zinc-800/80">
+        <Card className="panel shadow-lg">
+          <CardHeader className="pb-3 border-b border-border">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-zinc-300">
+                <div className="w-8 h-8 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-foreground">
                   <Building2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <CardTitle className="text-base font-bold text-zinc-100">Data Perusahaan & Posisi yang Dilamar</CardTitle>
-                  <CardDescription className="text-xs text-zinc-400">
+                  <CardTitle className="text-base font-bold " style={{ color: "var(--text-primary)" }}>Data Perusahaan & Posisi yang Dilamar</CardTitle>
+                  <CardDescription className="text-xs" style={{ color: "var(--text-muted)" }}>
                     Input data tujuan surat, nama instansi, tanggal, dan posisi.
                   </CardDescription>
                 </div>
@@ -1184,7 +1184,7 @@ ${data.nama}`;
                 variant="outline"
                 size="sm"
                 onClick={handleReset}
-                className="h-7 text-xs border-zinc-800 text-zinc-400 hover:text-white"
+                className="h-7 text-xs border-border text-muted-foreground hover:text-foreground"
               >
                 <RotateCcw className="w-3 h-3 mr-1" /> Reset
               </Button>
@@ -1197,13 +1197,13 @@ ${data.nama}`;
               {/* Tanggal Surat */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="tempatTanggal" className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-zinc-300" /> Tanggal & Kota Surat
+                  <Label htmlFor="tempatTanggal" className="text-xs font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+                    <Calendar className="w-3.5 h-3.5 text-foreground" /> Tanggal & Kota Surat
                   </Label>
                   <button
                     type="button"
                     onClick={() => updateData("tempatTanggal", `Ciamis, ${getIndonesianDateString()}`)}
-                    className="text-[11px] text-zinc-300 hover:text-zinc-300 transition"
+                    className="text-[11px] text-foreground hover:text-foreground transition"
                   >
                     Hari Ini
                   </button>
@@ -1213,28 +1213,28 @@ ${data.nama}`;
                   value={data.tempatTanggal}
                   onChange={(e) => updateData("tempatTanggal", e.target.value)}
                   placeholder="Contoh: Ciamis, 28 September 2026"
-                  className="bg-zinc-950/70 border-zinc-800 text-white text-sm h-10 focus:border-zinc-500"
+                  className="text-sm h-10"
                 />
               </div>
 
               {/* Posisi yang Dilamar */}
               <div className="space-y-1.5">
-                <Label htmlFor="posisi" className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                  <Briefcase className="w-3.5 h-3.5 text-zinc-300" /> Posisi yang Dilamar
+                <Label htmlFor="posisi" className="text-xs font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+                  <Briefcase className="w-3.5 h-3.5 text-foreground" /> Posisi yang Dilamar
                 </Label>
                 <Input
                   id="posisi"
                   value={data.posisi}
                   onChange={(e) => updateData("posisi", e.target.value)}
                   placeholder="Contoh: Waiters, Web Developer..."
-                  className="bg-zinc-950/70 border-zinc-800 text-zinc-300 font-semibold text-sm h-10 focus:border-zinc-500"
+                  className="font-semibold text-sm h-10"
                 />
               </div>
             </div>
 
             {/* Pilihan Cepat Posisi 1-Klik */}
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              <span className="text-[11px] text-zinc-400 mr-1">Preset Cepat:</span>
+              <span className="text-[11px] text-muted-foreground mr-1">Preset Cepat:</span>
               {PRESET_POSISI.map((p) => (
                 <button
                   key={p.value}
@@ -1242,8 +1242,8 @@ ${data.nama}`;
                   onClick={() => updateData("posisi", p.value)}
                   className={`text-xs px-2.5 py-1 rounded-md border transition-all ${
                     data.posisi === p.value
-                      ? "bg-zinc-700/20 text-zinc-300 border-zinc-500/40 font-semibold"
-                      : "bg-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+                      ? "bg-zinc-700/20 text-foreground border-zinc-500/40 font-semibold"
+                      : "bg-muted border-border text-muted-foreground hover:text-foreground hover:border-zinc-700"
                   }`}
                 >
                   {p.label}
@@ -1253,22 +1253,22 @@ ${data.nama}`;
 
             {/* Row 2: Nama Perusahaan */}
             <div className="space-y-1.5 pt-1">
-              <Label htmlFor="namaPerusahaan" className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5 text-zinc-300" /> Nama Perusahaan / Instansi
+              <Label htmlFor="namaPerusahaan" className="text-xs font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+                <Building2 className="w-3.5 h-3.5 text-foreground" /> Nama Perusahaan / Instansi
               </Label>
               <Input
                 id="namaPerusahaan"
                 value={data.namaPerusahaan}
                 onChange={(e) => updateData("namaPerusahaan", e.target.value)}
                 placeholder="Contoh: PT. MACAKAL PANGAN SEJAHTERA"
-                className="bg-zinc-950/70 border-zinc-800 text-white font-semibold text-sm h-10 focus:border-zinc-500 uppercase tracking-wide"
+                className="font-semibold text-sm h-10 uppercase tracking-wide"
               />
             </div>
 
             {/* Row 3: Alamat Perusahaan */}
             <div className="space-y-1.5">
-              <Label htmlFor="alamatPerusahaan" className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-zinc-300" /> Alamat Lengkap Perusahaan
+              <Label htmlFor="alamatPerusahaan" className="text-xs font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+                <MapPin className="w-3.5 h-3.5 text-foreground" /> Alamat Lengkap Perusahaan
               </Label>
               <textarea
                 id="alamatPerusahaan"
@@ -1276,32 +1276,32 @@ ${data.nama}`;
                 value={data.alamatPerusahaan}
                 onChange={(e) => updateData("alamatPerusahaan", e.target.value)}
                 placeholder="Jl. Raya Cipaku No.8, Muktisari, Kec. Cipaku, Kabupaten Ciamis, Jawa Barat 46252"
-                className="w-full rounded-md bg-zinc-950/70 border border-zinc-800 p-3 text-sm text-zinc-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-zinc-500 leading-relaxed resize-none"
+                className="w-full rounded-lg border p-3 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 leading-relaxed resize-none" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
               />
             </div>
 
             {/* Row 4: Penerima & Sumber Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
               <div className="space-y-1.5">
-                <Label htmlFor="penerima" className="text-xs font-medium text-zinc-400">
+                <Label htmlFor="penerima" className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
                   Ditujukan Kepada
                 </Label>
                 <Input
                   id="penerima"
                   value={data.penerima}
                   onChange={(e) => updateData("penerima", e.target.value)}
-                  className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                  className="text-xs h-9"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="sumber" className="text-xs font-medium text-zinc-400">
+                <Label htmlFor="sumber" className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
                   Sumber Lowongan Pekerjaan
                 </Label>
                 <Input
                   id="sumber"
                   value={data.sumberLowongan}
                   onChange={(e) => updateData("sumberLowongan", e.target.value)}
-                  className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                  className="text-xs h-9"
                 />
               </div>
             </div>
@@ -1310,16 +1310,16 @@ ${data.nama}`;
         </Card>
 
         {/* Card 2: Pengaturan Tanda Tangan */}
-        <Card className="bg-[#121215]/90 border-zinc-800 text-white shadow-xl backdrop-blur-sm">
-          <CardHeader className="pb-3 border-b border-zinc-800/80">
+        <Card className="panel shadow-lg">
+          <CardHeader className="pb-3 border-b border-border">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-zinc-300">
+                <div className="w-8 h-8 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-foreground">
                   <PenTool className="w-4 h-4" />
                 </div>
                 <div>
-                  <CardTitle className="text-base font-bold text-zinc-100">Tanda Tangan Pelamar</CardTitle>
-                  <CardDescription className="text-xs text-zinc-400">
+                  <CardTitle className="text-base font-bold " style={{ color: "var(--text-primary)" }}>Tanda Tangan Pelamar</CardTitle>
+                  <CardDescription className="text-xs" style={{ color: "var(--text-muted)" }}>
                     Pilih tanda tangan asli dari foto, gambar ulang pakai pen digital, atau tanda tangan basah manual.
                   </CardDescription>
                 </div>
@@ -1342,13 +1342,13 @@ ${data.nama}`;
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                   data.signatureMode === "gambar"
                     ? "bg-zinc-700/10 border-zinc-500/60 shadow-md shadow-zinc-950/20 ring-1 ring-zinc-500/30"
-                    : "bg-zinc-950/60 border-zinc-800 hover:border-zinc-700"
+                    : "bg-muted border-border hover:border-zinc-700"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <PenTool className="w-3.5 h-3.5 text-zinc-300" /> Gambar Pen
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <PenTool className="w-3.5 h-3.5 text-foreground" /> Gambar Pen
                     </span>
                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
                       data.signatureMode === "gambar" ? "border-zinc-500 bg-zinc-500" : "border-zinc-700"
@@ -1356,21 +1356,21 @@ ${data.nama}`;
                       {data.signatureMode === "gambar" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
                     </div>
                   </div>
-                  <p className="text-[11px] text-zinc-400">Goreskan tanda tangan pakai mouse atau stylus.</p>
+                  <p className="text-[11px] text-muted-foreground">Goreskan tanda tangan pakai mouse atau stylus.</p>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between gap-1.5">
+                <div className="mt-3 pt-2.5 border-t border-border flex items-center justify-between gap-1.5">
                   {data.drawnSignatureUrl ? (
                     <div className="flex items-center gap-2">
                       <div className="h-8 bg-white/95 rounded px-2 flex items-center shadow-inner">
                         <img src={data.drawnSignatureUrl} alt="TTD Pen" className="h-6 object-contain" />
                       </div>
-                      <span className="text-[10px] text-zinc-300 font-semibold flex items-center gap-0.5">
+                      <span className="text-[10px] text-foreground font-semibold flex items-center gap-0.5">
                         <Check className="w-3 h-3" /> Tersimpan
                       </span>
                     </div>
                   ) : (
-                    <span className="text-[10px] text-zinc-500 italic">Belum digambar</span>
+                    <span className="text-[10px] text-muted-foreground italic">Belum digambar</span>
                   )}
 
                   <div className="flex items-center gap-1">
@@ -1381,7 +1381,7 @@ ${data.nama}`;
                           e.stopPropagation();
                           handleDeleteDrawnSignature();
                         }}
-                        className="p-1.5 text-zinc-500 hover:text-red-400 rounded hover:bg-zinc-900 transition"
+                        className="p-1.5 text-muted-foreground hover:text-red-400 rounded hover:bg-muted transition"
                         title="Hapus tanda tangan gambar ini"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -1408,13 +1408,13 @@ ${data.nama}`;
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                   data.signatureMode === "asli"
                     ? "bg-zinc-700/10 border-zinc-500/60 shadow-md shadow-zinc-950/20 ring-1 ring-zinc-500/30"
-                    : "bg-zinc-950/60 border-zinc-800 hover:border-zinc-700"
+                    : "bg-muted border-border hover:border-zinc-700"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-zinc-300" /> TTD Asli Rinda
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-foreground" /> TTD Asli Rinda
                     </span>
                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
                       data.signatureMode === "asli" ? "border-zinc-500 bg-zinc-500" : "border-zinc-700"
@@ -1422,14 +1422,14 @@ ${data.nama}`;
                       {data.signatureMode === "asli" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
                     </div>
                   </div>
-                  <p className="text-[11px] text-zinc-400">Tanda tangan dari foto surat lamaran asli.</p>
+                  <p className="text-[11px] text-muted-foreground">Tanda tangan dari foto surat lamaran asli.</p>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between">
+                <div className="mt-3 pt-2.5 border-t border-border flex items-center justify-between">
                   <div className="h-8 bg-white/95 rounded px-2.5 flex items-center shadow-inner">
                     <img src="/images/rinda-signature.png" alt="TTD Rinda" className="h-6 object-contain" />
                   </div>
-                  <span className="text-[10px] text-zinc-300 font-medium">Bawaan Asli</span>
+                  <span className="text-[10px] text-foreground font-medium">Bawaan Asli</span>
                 </div>
               </div>
 
@@ -1439,13 +1439,13 @@ ${data.nama}`;
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                   data.signatureMode === "manual"
                     ? "bg-zinc-700/10 border-zinc-500/60 shadow-md shadow-zinc-950/20 ring-1 ring-zinc-500/30"
-                    : "bg-zinc-950/60 border-zinc-800 hover:border-zinc-700"
+                    : "bg-muted border-border hover:border-zinc-700"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" /> TTD Basah (Manual)
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-muted-foreground" /> TTD Basah (Manual)
                     </span>
                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
                       data.signatureMode === "manual" ? "border-zinc-500 bg-zinc-500" : "border-zinc-700"
@@ -1453,10 +1453,10 @@ ${data.nama}`;
                       {data.signatureMode === "manual" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
                     </div>
                   </div>
-                  <p className="text-[11px] text-zinc-400">Area tanda tangan dikosongkan untuk tanda tangan pulpen fisik.</p>
+                  <p className="text-[11px] text-muted-foreground">Area tanda tangan dikosongkan untuk tanda tangan pulpen fisik.</p>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center text-[10px] text-zinc-500 italic">
+                <div className="mt-3 pt-2.5 border-t border-border flex items-center text-[10px] text-muted-foreground italic">
                   Kosong saat dicetak
                 </div>
               </div>
@@ -1466,25 +1466,25 @@ ${data.nama}`;
         </Card>
 
         {/* Card 3: Biodata Pelamar & Paragraf (Collapsible / Buka-Tutup) */}
-        <Card className="bg-[#121215]/90 border-zinc-800 text-white shadow-xl backdrop-blur-sm">
+        <Card className="panel shadow-lg">
           <CardHeader 
             onClick={() => setShowBiodataAccordion(!showBiodataAccordion)}
-            className="pb-3 border-b border-zinc-800/80 cursor-pointer hover:bg-zinc-900/30 transition flex flex-row items-center justify-between"
+            className="pb-3 border-b border-border cursor-pointer hover:bg-muted/30 transition flex flex-row items-center justify-between"
           >
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-300">
+              <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-foreground">
                 <User className="w-4 h-4" />
               </div>
               <div>
-                <CardTitle className="text-sm font-semibold text-zinc-200">
+                <CardTitle className="text-sm font-semibold text-foreground">
                   Data Diri Pelamar & Paragraf (Opsional)
                 </CardTitle>
-                <CardDescription className="text-xs text-zinc-400">
+                <CardDescription className="text-xs" style={{ color: "var(--text-muted)" }}>
                   Nama, TTL, Pendidikan SMK, Alamat, dan Paragraf PKL (Sudah terisi default).
                 </CardDescription>
               </div>
             </div>
-            <button type="button" className="text-zinc-400 p-1">
+            <button type="button" className="text-muted-foreground p-1">
               {showBiodataAccordion ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
           </CardHeader>
@@ -1493,62 +1493,62 @@ ${data.nama}`;
             <CardContent className="pt-4 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label className="text-xs text-zinc-300">Nama Lengkap</Label>
+                  <Label className="text-xs text-foreground">Nama Lengkap</Label>
                   <Input
                     value={data.nama}
                     onChange={(e) => updateData("nama", e.target.value)}
-                    className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                    className="text-xs h-9"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-zinc-300">Tempat, Tanggal Lahir</Label>
+                  <Label className="text-xs text-foreground">Tempat, Tanggal Lahir</Label>
                   <Input
                     value={data.tempatTanggalLahir}
                     onChange={(e) => updateData("tempatTanggalLahir", e.target.value)}
-                    className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                    className="text-xs h-9"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-zinc-300">Pendidikan Terakhir</Label>
+                  <Label className="text-xs text-foreground">Pendidikan Terakhir</Label>
                   <Input
                     value={data.pendidikan}
                     onChange={(e) => updateData("pendidikan", e.target.value)}
-                    className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                    className="text-xs h-9"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-zinc-300">Status Pernikahan</Label>
+                  <Label className="text-xs text-foreground">Status Pernikahan</Label>
                   <Input
                     value={data.statusNikah}
                     onChange={(e) => updateData("statusNikah", e.target.value)}
-                    className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                    className="text-xs h-9"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-zinc-300">Alamat Tempat Tinggal</Label>
+                  <Label className="text-xs text-foreground">Alamat Tempat Tinggal</Label>
                   <Input
                     value={data.alamatPelamar}
                     onChange={(e) => updateData("alamatPelamar", e.target.value)}
-                    className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                    className="text-xs h-9"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-zinc-300">No. WhatsApp / HP</Label>
+                  <Label className="text-xs text-foreground">No. WhatsApp / HP</Label>
                   <Input
                     value={data.noTelp}
                     onChange={(e) => updateData("noTelp", e.target.value)}
-                    className="bg-zinc-950/70 border-zinc-800 text-white text-xs h-9"
+                    className="text-xs h-9"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1 pt-2 border-t border-zinc-800/80">
-                <Label className="text-xs text-zinc-300">Paragraf Pengalaman Kerja / PKL</Label>
+              <div className="space-y-1 pt-2 border-t border-border">
+                <Label className="text-xs text-foreground">Paragraf Pengalaman Kerja / PKL</Label>
                 <textarea
                   rows={4}
                   value={data.paragrafPengalaman}
                   onChange={(e) => updateData("paragrafPengalaman", e.target.value)}
-                  className="w-full rounded-md bg-zinc-950/70 border border-zinc-800 p-2.5 text-xs text-zinc-200 leading-relaxed resize-none focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full rounded-md bg-muted/70 border border-border p-2.5 text-xs text-foreground leading-relaxed resize-none focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
             </CardContent>
@@ -1556,7 +1556,7 @@ ${data.nama}`;
         </Card>
 
         {/* Footer Action Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-zinc-950/60 border border-zinc-800/80 rounded-xl text-xs text-zinc-400">
+        <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-muted border border-border rounded-xl text-xs text-muted-foreground">
           <span>âœ¨ Perubahan otomatis disimpan ke browser Anda.</span>
           <div className="flex gap-2">
             <Button
@@ -1564,7 +1564,7 @@ ${data.nama}`;
               variant="outline"
               size="sm"
               onClick={handleReset}
-              className="border-zinc-800 text-zinc-400 hover:text-white"
+              className="border-border text-muted-foreground hover:text-foreground"
             >
               <RotateCcw className="w-3.5 h-3.5 mr-1" />
               Reset Form
@@ -1588,16 +1588,16 @@ ${data.nama}`;
         <div className="no-print fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-start p-3 sm:p-6 overflow-y-auto overscroll-contain animate-in fade-in duration-200">
           
           {/* Top Bar Modal Pembesar */}
-          <div className="w-full max-w-4xl bg-zinc-900/95 border border-zinc-800 rounded-xl p-3 sm:px-5 sm:py-3.5 mb-6 flex flex-wrap items-center justify-between gap-3 shadow-2xl sticky top-2 z-20 backdrop-blur-md">
+          <div className="w-full max-w-4xl bg-card border border-border rounded-xl p-3 sm:px-5 sm:py-3.5 mb-6 flex flex-wrap items-center justify-between gap-3 shadow-2xl sticky top-2 z-20 backdrop-blur-md">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-zinc-300">
+              <div className="w-7 h-7 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-foreground">
                 <FileText className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   Pratinjau Lembar Surat Lamaran (A4)
                 </h3>
-                <span className="text-[11px] text-zinc-400">
+                <span className="text-[11px] text-muted-foreground">
                   Siap cetak atau diunduh ke berbagai format.
                 </span>
               </div>
@@ -1606,10 +1606,10 @@ ${data.nama}`;
             {/* Tombol Aksi di Modal: Download, Salin, Cetak, dan CLOSE */}
             <div className="flex items-center gap-2">
               {/* Zoom Controls */}
-              <div className="hidden sm:flex items-center bg-zinc-950 border border-zinc-800 rounded-lg p-0.5 text-xs text-zinc-300">
+              <div className="hidden sm:flex items-center bg-muted border border-border rounded-lg p-0.5 text-xs text-foreground">
                 <button
                   onClick={() => setZoomScale(Math.max(0.7, zoomScale - 0.1))}
-                  className="p-1 hover:text-white rounded"
+                  className="p-1 hover:text-foreground rounded"
                   title="Zoom Out"
                 >
                   <ZoomOut className="w-3.5 h-3.5" />
@@ -1617,7 +1617,7 @@ ${data.nama}`;
                 <span className="px-2 text-[11px] font-mono">{Math.round(zoomScale * 100)}%</span>
                 <button
                   onClick={() => setZoomScale(Math.min(1.2, zoomScale + 0.1))}
-                  className="p-1 hover:text-white rounded"
+                  className="p-1 hover:text-foreground rounded"
                   title="Zoom In"
                 >
                   <ZoomIn className="w-3.5 h-3.5" />
@@ -1630,7 +1630,7 @@ ${data.nama}`;
                 variant="outline"
                 size="sm"
                 onClick={handleDownloadDoc}
-                className="h-8 text-xs border-zinc-700 bg-zinc-800 text-zinc-200 hover:text-white"
+                className="h-8 text-xs border-zinc-700 bg-zinc-800 text-foreground hover:text-foreground"
                 title="Download file Microsoft Word (.doc)"
               >
                 <FileDown className="w-3.5 h-3.5 mr-1 text-blue-400" />
@@ -1652,7 +1652,7 @@ ${data.nama}`;
               <button
                 type="button"
                 onClick={() => setIsEnlargedOpen(false)}
-                className="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-red-500/20 hover:text-red-400 border border-zinc-700 hover:border-red-500/30 flex items-center justify-center text-zinc-300 transition"
+                className="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-red-500/20 hover:text-red-400 border border-zinc-700 hover:border-red-500/30 flex items-center justify-center text-foreground transition"
                 title="Tutup Pratinjau (ESC)"
               >
                 <X className="w-4 h-4" />
@@ -1678,40 +1678,40 @@ ${data.nama}`;
       {/* ===================== MODAL KANVAS GAMBAR PEN ===================== */}
       {isCanvasModalOpen && (
         <div className="no-print fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="bg-[#121215] border border-zinc-800 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-white flex flex-col">
+          <div className="bg-[#121215] border border-border rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-foreground flex flex-col">
             
             {/* Modal Header */}
-            <div className="p-4 sm:p-5 border-b border-zinc-800 flex items-center justify-between">
+            <div className="p-4 sm:p-5 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-zinc-300">
+                <div className="w-8 h-8 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-foreground">
                   <PenTool className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-white">Goreskan Tanda Tangan Anda</h3>
-                  <p className="text-[11px] text-zinc-400">Gunakan mouse, stylus pen, atau layar sentuh.</p>
+                  <h3 className="text-sm sm:text-base font-bold text-foreground">Goreskan Tanda Tangan Anda</h3>
+                  <p className="text-[11px] text-muted-foreground">Gunakan mouse, stylus pen, atau layar sentuh.</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsCanvasModalOpen(false)}
-                className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition"
+                className="text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-zinc-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Toolbar */}
-            <div className="px-5 py-3 bg-zinc-950/80 border-b border-zinc-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="px-5 py-3 bg-muted/80 border-b border-border flex flex-wrap items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-3">
                 {/* Warna Tinta */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] text-zinc-400">Tinta:</span>
-                  <div className="flex gap-1 bg-zinc-900 p-0.5 rounded-md border border-zinc-800">
+                  <span className="text-[11px] text-muted-foreground">Tinta:</span>
+                  <div className="flex gap-1 bg-muted p-0.5 rounded-md border border-border">
                     <button
                       type="button"
                       onClick={() => setPenColor("#111827")}
                       title="Hitam Formal"
                       className={`w-5 h-5 rounded-full border ${
-                        penColor === "#111827" ? "ring-2 ring-zinc-400 border-white bg-black" : "border-zinc-700 bg-zinc-900"
+                        penColor === "#111827" ? "ring-2 ring-zinc-400 border-white bg-black" : "border-zinc-700 bg-muted"
                       }`}
                     />
                     <button
@@ -1727,26 +1727,26 @@ ${data.nama}`;
 
                 {/* Ketebalan */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] text-zinc-400">Tebal:</span>
-                  <div className="flex gap-1 bg-zinc-900 p-0.5 rounded-md border border-zinc-800 text-[11px]">
+                  <span className="text-[11px] text-muted-foreground">Tebal:</span>
+                  <div className="flex gap-1 bg-muted p-0.5 rounded-md border border-border text-[11px]">
                     <button
                       type="button"
                       onClick={() => setPenWidth(1.5)}
-                      className={`px-2 py-0.5 rounded ${penWidth === 1.5 ? "bg-zinc-800 text-white font-bold" : "text-zinc-400"}`}
+                      className={`px-2 py-0.5 rounded ${penWidth === 1.5 ? "bg-zinc-800 text-foreground font-bold" : "text-muted-foreground"}`}
                     >
                       Tipis
                     </button>
                     <button
                       type="button"
                       onClick={() => setPenWidth(2.5)}
-                      className={`px-2 py-0.5 rounded ${penWidth === 2.5 ? "bg-zinc-800 text-white font-bold" : "text-zinc-400"}`}
+                      className={`px-2 py-0.5 rounded ${penWidth === 2.5 ? "bg-zinc-800 text-foreground font-bold" : "text-muted-foreground"}`}
                     >
                       Sedang
                     </button>
                     <button
                       type="button"
                       onClick={() => setPenWidth(4)}
-                      className={`px-2 py-0.5 rounded ${penWidth === 4 ? "bg-zinc-800 text-white font-bold" : "text-zinc-400"}`}
+                      className={`px-2 py-0.5 rounded ${penWidth === 4 ? "bg-zinc-800 text-foreground font-bold" : "text-muted-foreground"}`}
                     >
                       Tebal
                     </button>
@@ -1762,7 +1762,7 @@ ${data.nama}`;
                   size="sm"
                   onClick={handleUndo}
                   disabled={strokes.length === 0}
-                  className="h-7 text-xs border-zinc-800 text-zinc-300 hover:text-white"
+                  className="h-7 text-xs border-border text-foreground hover:text-foreground"
                 >
                   <Undo2 className="w-3.5 h-3.5 mr-1" /> Undo
                 </Button>
@@ -1772,7 +1772,7 @@ ${data.nama}`;
                   size="sm"
                   onClick={handleClear}
                   disabled={strokes.length === 0}
-                  className="h-7 text-xs border-zinc-800 text-zinc-400 hover:text-red-400"
+                  className="h-7 text-xs border-border text-muted-foreground hover:text-red-400"
                 >
                   <Trash2 className="w-3.5 h-3.5 mr-1" /> Bersihkan
                 </Button>
@@ -1780,7 +1780,7 @@ ${data.nama}`;
             </div>
 
             {/* Canvas Area */}
-            <div className="p-5 bg-zinc-950 flex flex-col items-center">
+            <div className="p-5 bg-muted flex flex-col items-center">
               <div className="relative w-full bg-white rounded-xl overflow-hidden shadow-inner border border-zinc-300">
                 <canvas
                   ref={canvasRef}
@@ -1795,23 +1795,23 @@ ${data.nama}`;
                 />
 
                 {/* Garis Dasar TTD */}
-                <div className="absolute bottom-6 left-8 right-8 border-b border-dashed border-zinc-300 pointer-events-none flex justify-between text-[11px] text-zinc-400">
+                <div className="absolute bottom-6 left-8 right-8 border-b border-dashed border-zinc-300 pointer-events-none flex justify-between text-[11px] text-muted-foreground">
                   <span>Garis Tanda Tangan</span>
                   <span>âœï¸ Ruang Goresan</span>
                 </div>
 
                 {strokes.length === 0 && !data.drawnSignatureUrl && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-zinc-400">
-                    <PenTool className="w-7 h-7 mb-1 text-zinc-300 animate-pulse" />
-                    <span className="text-xs font-medium text-zinc-400">Silakan goreskan tanda tangan di sini</span>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-muted-foreground">
+                    <PenTool className="w-7 h-7 mb-1 text-foreground animate-pulse" />
+                    <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>Silakan goreskan tanda tangan di sini</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 sm:p-5 border-t border-zinc-800 bg-zinc-950/80 flex items-center justify-between">
-              <span className="text-[11px] text-zinc-400">
+            <div className="p-4 sm:p-5 border-t border-border bg-muted/80 flex items-center justify-between">
+              <span className="text-[11px] text-muted-foreground">
                 {strokes.length > 0 ? `${strokes.length} goresan aktif` : data.drawnSignatureUrl ? "Tanda tangan sebelumnya termuat" : "Belum ada goresan"}
               </span>
 
@@ -1821,7 +1821,7 @@ ${data.nama}`;
                   variant="outline"
                   size="sm"
                   onClick={() => setIsCanvasModalOpen(false)}
-                  className="border-zinc-800 text-zinc-300 hover:text-white"
+                  className="border-border text-foreground hover:text-foreground"
                 >
                   Batal
                 </Button>

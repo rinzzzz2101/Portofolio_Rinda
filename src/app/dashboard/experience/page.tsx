@@ -194,7 +194,7 @@ export default function AdminExperiencePage() {
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <Briefcase className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Pengalaman Kerja</h3>
-            <p className="text-gray-400">Klik tombol "+ Tambah Pengalaman" untuk mulai menambahkan.</p>
+            <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tambah Pengalaman" untuk mulai menambahkan.</p>
           </CardContent>
         </Card>
       ) : (
@@ -204,14 +204,14 @@ export default function AdminExperiencePage() {
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white">{exp.position}</h3>
-                    <p className="text-zinc-300 text-sm font-medium mt-1">{exp.company}</p>
+                    <h3 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{exp.position}</h3>
+                    <p className="text-sm font-medium mt-1" style={{ color: "var(--text-secondary)" }}>{exp.company}</p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(exp)} className="hover:bg-gray-800 text-gray-300">
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(exp)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(exp.id)} className="hover:bg-red-500/10 text-red-400 ml-2 shrink-0">
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(exp.id)} className="hover:bg-red-500/10 text-red-500 ml-2 shrink-0">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
@@ -227,7 +227,7 @@ export default function AdminExperiencePage() {
                     {exp.endDate ? new Date(exp.endDate).toLocaleDateString("id-ID", { year: "numeric", month: "short" }) : "Sekarang"}
                   </span>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">{exp.description}</p>
+                <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "var(--text-muted)" }}>{exp.description}</p>
               </CardContent>
             </Card>
           ))}

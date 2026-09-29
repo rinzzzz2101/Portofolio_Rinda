@@ -240,7 +240,7 @@ export default function AdminCertificatesPage() {
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <GraduationCap className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Sertifikat</h3>
-            <p className="text-gray-400">Klik tombol "+ Tambah Sertifikat" untuk mulai menambahkan.</p>
+            <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tambah Sertifikat" untuk mulai menambahkan.</p>
           </CardContent>
         </Card>
       ) : (
@@ -253,17 +253,17 @@ export default function AdminCertificatesPage() {
                     <GraduationCap className="w-5 h-5 text-zinc-300" />
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(cert)} className="hover:bg-gray-800 text-gray-300">
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(cert)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(cert.id)} className="hover:bg-red-500/10 text-red-400">
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(cert.id)} className="hover:bg-red-500/10 text-red-500">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-white leading-tight">{cert.name}</h3>
-                  <p className="text-zinc-400 text-sm mt-1">{cert.issuer}</p>
+                  <h3 className="font-bold leading-tight" style={{ color: "var(--text-primary)" }}>{cert.name}</h3>
+                  <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>{cert.issuer}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1 text-xs text-gray-500">
