@@ -933,32 +933,32 @@ ${data.nama}`;
 
   if (!isMounted) {
     return (
-      <div className="bg-[#09090b] text-zinc-100 flex-1 flex items-center justify-center min-h-[60vh]">
-        <div className="flex flex-col items-center gap-3 text-zinc-400">
+      <div className="flex-1 flex items-center justify-center min-h-[60vh]" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+        <div className="flex flex-col items-center gap-3" style={{ color: 'var(--text-muted)' }}>
           <div className="w-7 h-7 border-2 border-zinc-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-zinc-400">Memuat formulir surat lamaran...</span>
+          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Memuat formulir surat lamaran...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#09090b] text-zinc-100 flex flex-col relative pb-20">
+    <div className="flex flex-col relative pb-20 transition-colors" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
       
       {/* ===================== TOP HEADER / ACTION BAR ===================== */}
-      <header className="no-print bg-[#0e0e11] border-b border-zinc-800/80 px-4 sm:px-8 py-3.5 sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 shadow-md backdrop-blur-md">
+      <header className="no-print border-b px-4 sm:px-8 py-3.5 sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 shadow-md backdrop-blur-md transition-colors" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-default)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-zinc-700/10 border border-zinc-600/20 flex items-center justify-center text-zinc-300">
+          <div className="w-9 h-9 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}>
             <FileText className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base sm:text-lg font-bold text-white tracking-tight">Formulir Surat Lamaran</h1>
-              <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full bg-zinc-700/10 text-zinc-300 border border-zinc-600/20">
+              <h1 className="text-base sm:text-lg font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>Formulir Surat Lamaran</h1>
+              <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)', color: 'var(--text-secondary)' }}>
                 Live Generator
               </span>
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
               Input data di bawah ini. Hasil surat mengambang di pojok kanan atas.
             </p>
           </div>
