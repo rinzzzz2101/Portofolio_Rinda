@@ -1,27 +1,32 @@
 "use server";
 
 import nodemailer from "nodemailer";
+import { PrismaClient } from "@prisma/client";
 
-// In-memory OTP storage (bisa juga diakses lintas request dalam single server runtime)
-// Menyimpan { code, expiresAt } keyed by email
-const otpStore = new Map<string, { code: string; expiresAt: number }>();
+const prisma = new PrismaClient();
 
 export async function sendPasswordOtp(targetEmail: string) {
   try {
-    const email = (targetEmail || "rinda.dev@portfolio.com").trim().toLowerCase();
-    
-    // Generate 6 digit angka acak
+    const email = (targetEmail || "").trim().toLowerCase();
+    if (!email) return { success: false, error: "Email tidak valid." };
+
+    // Generate 6 digit OTP
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 menit
-    
-    otpStore.set(email, { code, expiresAt });
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 menit
+
+    // Simpan OTP ke database (upsert agar email unik)
+    await prisma.otpToken.upsert({
+      where: { email },
+      update: { code, expiresAt },
+      create: { email, code, expiresAt },
+    });
+
     console.log(`[OTP] Generated OTP for ${email}: ${code}`);
 
     let sentViaSmtp = false;
 
-    // Cek apakah ada konfigurasi SMTP di environment
     const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 587;
+    const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 465;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
 
@@ -38,7 +43,7 @@ export async function sendPasswordOtp(targetEmail: string) {
         });
 
         await transporter.sendMail({
-          from: `"Portfolio Admin Security" <${smtpUser}>`,
+          from: `"Portfolio Admin" <${smtpUser}>`,
           to: email,
           subject: "Kode Verifikasi Ganti Sandi - Portfolio",
           html: `
@@ -60,17 +65,18 @@ export async function sendPasswordOtp(targetEmail: string) {
         });
         sentViaSmtp = true;
       } catch (mailError) {
-        console.warn("[OTP] Gagal mengirim via SMTP, fallback ke notifikasi langsung:", mailError);
+        console.warn("[OTP] Gagal mengirim via SMTP:", mailError);
       }
     }
 
     return {
       success: true,
       sentViaSmtp,
-      code, // Disediakan agar admin bisa langsung melihat kode di notifikasi popup/toast jika SMTP belum diatur
-      message: sentViaSmtp 
-        ? `Kode verifikasi telah dikirim ke email: ${email}` 
-        : `Kode verifikasi telah dikirim ke email ${email}. (Kode simulasi: ${code})`,
+      // Hanya kembalikan code jika SMTP belum dikonfigurasi (mode dev)
+      code: sentViaSmtp ? undefined : code,
+      message: sentViaSmtp
+        ? `Kode verifikasi telah dikirim ke email: ${email}`
+        : `Kode verifikasi (simulasi): ${code}`,
     };
   } catch (error) {
     console.error("[OTP Error]:", error);
@@ -80,15 +86,16 @@ export async function sendPasswordOtp(targetEmail: string) {
 
 export async function verifyPasswordOtp(targetEmail: string, inputCode: string) {
   try {
-    const email = (targetEmail || "rinda.dev@portfolio.com").trim().toLowerCase();
-    const stored = otpStore.get(email);
+    const email = (targetEmail || "").trim().toLowerCase();
+
+    const stored = await prisma.otpToken.findUnique({ where: { email } });
 
     if (!stored) {
       return { success: false, error: "Kode verifikasi belum dikirim atau sudah kadaluarsa. Silakan kirim ulang kode!" };
     }
 
-    if (Date.now() > stored.expiresAt) {
-      otpStore.delete(email);
+    if (new Date() > stored.expiresAt) {
+      await prisma.otpToken.delete({ where: { email } });
       return { success: false, error: "Kode verifikasi sudah kadaluarsa. Silakan minta kode baru!" };
     }
 
@@ -96,10 +103,11 @@ export async function verifyPasswordOtp(targetEmail: string, inputCode: string) 
       return { success: false, error: "Kode verifikasi salah! Periksa kembali kode yang dikirimkan." };
     }
 
-    // Kode cocok, hapus agar tidak bisa dipakai ulang
-    otpStore.delete(email);
+    // Hapus setelah berhasil diverifikasi
+    await prisma.otpToken.delete({ where: { email } });
     return { success: true };
   } catch (error) {
+    console.error("[OTP Verify Error]:", error);
     return { success: false, error: "Terjadi kesalahan saat memverifikasi kode." };
   }
 }
