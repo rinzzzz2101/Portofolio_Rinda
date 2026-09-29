@@ -313,7 +313,7 @@ export default function AdminSettingsPage() {
         </div>
         <Button onClick={handleSave} disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium flex items-center gap-2">
           {saved ? (
-            <><CheckCircle2 className="w-4 h-4 text-green-400" /> Tersimpan!</>
+            <><CheckCircle2 className="w-4 h-4 text-zinc-300" /> Tersimpan!</>
           ) : (
             <><Save className="w-4 h-4" /> {loading ? "Menyimpan..." : "Simpan Pengaturan"}</>
           )}
@@ -450,7 +450,7 @@ export default function AdminSettingsPage() {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-emerald-400" />
+                  <FileText className="w-5 h-5 text-zinc-300" />
                   CV / Resume
                 </CardTitle>
                 <CardDescription className="text-gray-400">
@@ -500,7 +500,7 @@ export default function AdminSettingsPage() {
                       />
                     </div>
                   ) : (
-                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-zinc-700/20 border border-zinc-700/30 flex items-center justify-center text-zinc-300 shrink-0">
                       <FileText className="w-5 h-5" />
                     </div>
                   )}
@@ -518,7 +518,7 @@ export default function AdminSettingsPage() {
                           : "LINK"}
                       </span>
                     </div>
-                    <p className="text-[11px] text-emerald-400 font-medium mt-0.5">
+                    <p className="text-[11px] text-zinc-400 font-medium mt-0.5">
                       ✓ Siap didownload oleh pengunjung
                     </p>
                   </div>
@@ -672,7 +672,7 @@ export default function AdminSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <ShieldCheck className="w-4 h-4 text-zinc-300" />
                   Keamanan Akun
                 </CardTitle>
                 <CardDescription className="text-gray-400 mt-1">Kelola kata sandi untuk masuk ke dashboard admin.</CardDescription>
@@ -686,15 +686,15 @@ export default function AdminSettingsPage() {
                 }}
                 className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white flex items-center gap-2 text-sm"
               >
-                <KeyRound className="w-4 h-4 text-emerald-400" />
+                <KeyRound className="w-4 h-4 text-zinc-300" />
                 Ganti Sandi
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-950/60 border border-zinc-800">
-              <div className="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                <KeyRound className="w-4 h-4 text-emerald-400" />
+              <div className="w-9 h-9 rounded-full bg-zinc-700/20 border border-zinc-700/30 flex items-center justify-center shrink-0">
+                <KeyRound className="w-4 h-4 text-zinc-300" />
               </div>
               <div>
                 <p className="text-sm font-medium text-zinc-200">Kata Sandi Admin</p>
@@ -716,8 +716,8 @@ export default function AdminSettingsPage() {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <KeyRound className="w-4 h-4 text-emerald-400" />
+                <div className="w-8 h-8 rounded-lg bg-zinc-700/20 border border-zinc-700/30 flex items-center justify-center">
+                  <KeyRound className="w-4 h-4 text-zinc-300" />
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-white">Ganti Kata Sandi</h2>
@@ -746,7 +746,7 @@ export default function AdminSettingsPage() {
                   <p className="text-sm text-zinc-300">
                     Untuk mengganti sandi, kami perlu mengirimkan kode verifikasi (OTP) ke email Anda:
                   </p>
-                  <p className="text-sm font-bold text-emerald-400">
+                  <p className="text-sm font-bold text-zinc-200">
                     {form.email || "rinda.dev21@gmail.com"}
                   </p>
                 </div>
@@ -820,7 +820,7 @@ export default function AdminSettingsPage() {
                       <p className="text-xs text-red-400">Konfirmasi sandi tidak cocok</p>
                     )}
                     {passwordForm.confirm.length > 0 && passwordForm.newPass === passwordForm.confirm && passwordForm.newPass.length >= 6 && (
-                      <p className="text-xs text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Sandi cocok</p>
+                      <p className="text-xs text-zinc-300 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Sandi cocok</p>
                     )}
                   </div>
                 </>
@@ -847,7 +847,7 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleSendOtp}
                   disabled={passwordLoading}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
                 >
                   {passwordLoading ? "Mengirim..." : "Kirim Kode OTP"}
                 </Button>
@@ -858,7 +858,7 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleVerifyOtp}
                   disabled={passwordLoading}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
                 >
                   {passwordLoading ? "Memeriksa..." : "Verifikasi OTP"}
                 </Button>
@@ -869,7 +869,7 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleChangePassword}
                   disabled={passwordLoading || passwordSaved}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
                 >
                   {passwordSaved ? (
                     <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Tersimpan!</>

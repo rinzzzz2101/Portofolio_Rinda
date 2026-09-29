@@ -129,7 +129,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md bg-zinc-900/60 border-zinc-800/80 backdrop-blur-md z-10 text-white shadow-2xl">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto w-12 h-12 bg-zinc-800/60 rounded-full flex items-center justify-center mb-2 border border-zinc-700/50">
-            <Lock className="w-5 h-5 text-emerald-400" />
+            <Lock className="w-5 h-5 text-zinc-300" />
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">Admin Login</CardTitle>
           <CardDescription className="text-zinc-400 text-sm">
@@ -154,7 +154,7 @@ export default function LoginPage() {
                   setResetEmail(e.target.value);
                 }}
                 placeholder="rinda.dev21@gmail.com" 
-                className="bg-zinc-950/60 border-zinc-800 focus-visible:ring-emerald-500" 
+                className="bg-zinc-950/60 border-zinc-800 focus-visible:ring-zinc-500" 
               />
             </div>
             <div className="space-y-2">
@@ -166,7 +166,7 @@ export default function LoginPage() {
                     setResetEmail(email || "rinda.dev21@gmail.com");
                     setShowResetModal(true);
                   }}
-                  className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline transition"
+                  className="text-xs text-zinc-400 hover:text-white hover:underline transition"
                 >
                   Lupa sandi?
                 </button>
@@ -178,7 +178,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••" 
-                  className="bg-zinc-950/60 border-zinc-800 pr-10 focus-visible:ring-emerald-500" 
+                  className="bg-zinc-950/60 border-zinc-800 pr-10 focus-visible:ring-zinc-500" 
                 />
                 <button
                   type="button"
@@ -194,7 +194,7 @@ export default function LoginPage() {
             <Button 
               disabled={loading} 
               type="submit" 
-              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors h-10 shadow-lg shadow-emerald-950/20"
+              className="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-medium transition-colors h-10 shadow-lg"
             >
               {loading ? "Memverifikasi..." : "Masuk ke Dashboard"}
             </Button>
@@ -217,8 +217,8 @@ export default function LoginPage() {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <KeyRound className="w-4 h-4 text-emerald-400" />
+                <div className="w-8 h-8 rounded-lg bg-zinc-700/30 border border-zinc-600/30 flex items-center justify-center">
+                  <KeyRound className="w-4 h-4 text-zinc-300" />
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-white">Reset Kata Sandi</h2>
@@ -243,7 +243,7 @@ export default function LoginPage() {
               {resetStep === "request" && (
                 <div className="space-y-4 text-center">
                   <div className="w-14 h-14 rounded-full bg-zinc-800/80 border border-zinc-700 flex items-center justify-center mx-auto text-zinc-300">
-                    <ShieldCheck className="w-7 h-7 text-emerald-400" />
+                    <ShieldCheck className="w-7 h-7 text-zinc-300" />
                   </div>
                   <p className="text-sm text-zinc-300">
                     Kami akan mengirimkan kode verifikasi 6-digit (OTP) ke email terdaftar:
@@ -255,7 +255,7 @@ export default function LoginPage() {
                       value={resetEmail}
                       onChange={(e) => setResetEmail(e.target.value)}
                       placeholder="rinda.dev21@gmail.com"
-                      className="bg-zinc-800 border-zinc-700 focus-visible:ring-emerald-500"
+                      className="bg-zinc-800 border-zinc-700 focus-visible:ring-zinc-500"
                     />
                   </div>
                 </div>
@@ -274,7 +274,7 @@ export default function LoginPage() {
                       className="bg-zinc-800 border-zinc-700 text-center tracking-widest text-lg font-bold h-11"
                     />
                     <p className="text-xs text-zinc-400 text-center">
-                      Periksa kotak masuk/spam email <span className="text-emerald-400 font-medium">{resetEmail}</span>
+                      Periksa kotak masuk/spam email <span className="text-zinc-200 font-medium">{resetEmail}</span>
                     </p>
                   </div>
 
@@ -313,7 +313,7 @@ export default function LoginPage() {
                       <p className="text-xs text-red-400">Konfirmasi sandi belum sesuai</p>
                     )}
                     {confirmPassword && newPassword === confirmPassword && (
-                      <p className="text-xs text-emerald-400 flex items-center gap-1">
+                      <p className="text-xs text-zinc-300 flex items-center gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" /> Sandi cocok
                       </p>
                     )}
@@ -342,7 +342,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={handleSendResetOtp}
                   disabled={resetLoading}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
                 >
                   {resetLoading ? "Mengirim..." : "Kirim Kode OTP"}
                 </Button>
@@ -353,7 +353,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={handleConfirmReset}
                   disabled={resetLoading}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
                 >
                   {resetLoading ? "Menyimpan..." : "Simpan & Reset"}
                 </Button>

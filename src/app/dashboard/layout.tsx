@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X, ScrollText } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X, ScrollText, Sun, Moon } from "lucide-react";
 import { ConfirmProvider } from "@/components/ui/confirm-provider";
 import { logoutAdmin } from "@/actions/auth";
+import { useTheme } from "@/components/ui/theme-provider";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     // Hapus cookie auth dari sisi browser
@@ -33,13 +35,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 glass border-b border-zinc-800 z-50 flex items-center justify-between px-6 bg-[#09090b]/90 backdrop-blur-md no-print">
         <h2 className="text-xl font-bold text-zinc-100">Admin Panel</h2>
-        <button 
-          suppressHydrationWarning 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className="text-white p-2"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            suppressHydrationWarning
+            onClick={toggleTheme}
+            className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
+            title={theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button 
+            suppressHydrationWarning 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+            className="text-white p-2"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Sidebar Overlay (Mobile) */}
@@ -71,6 +83,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <div className="p-4 border-t border-zinc-800 space-y-2">
           <NavItem onClick={closeMenu} href="/dashboard/settings" icon={<Settings size={20} />} label="Settings" active={pathname === "/dashboard/settings"} />
+          {/* Theme Toggle Button */}
+          <button
+            suppressHydrationWarning
+            onClick={toggleTheme}
+            className="flex items-center gap-3 w-full p-3 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            <span className="font-medium">{theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}</span>
+          </button>
           <button 
             suppressHydrationWarning
             onClick={handleLogout} 
