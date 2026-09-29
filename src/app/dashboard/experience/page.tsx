@@ -125,7 +125,7 @@ export default function AdminExperiencePage() {
           <h1 className="text-3xl font-bold tracking-tight">Manajemen Pengalaman Kerja</h1>
           <p className="text-gray-400 mt-2">Atur riwayat pengalaman profesional Anda.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
           <Plus className="w-4 h-4 mr-2" /> Tambah Pengalaman
         </Button>
       </div>
@@ -167,7 +167,7 @@ export default function AdminExperiencePage() {
               <div className="grid gap-2">
                 <Label>Deskripsi Pekerjaan</Label>
                 <textarea required value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="flex min-h-[100px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  className="flex min-h-[100px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                   placeholder="Jelaskan tanggung jawab dan pencapaian Anda..." />
               </div>
             </div>
@@ -175,11 +175,11 @@ export default function AdminExperiencePage() {
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
               <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
+              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan")}
               </Button>
             </DialogFooter>
@@ -200,12 +200,12 @@ export default function AdminExperiencePage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {experiences.map((exp) => (
-            <Card key={exp.id} className="glass-card border-gray-800 text-white hover:border-purple-500/20 transition-all">
+            <Card key={exp.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-white">{exp.position}</h3>
-                    <p className="text-purple-400 text-sm font-medium mt-1">{exp.company}</p>
+                    <p className="text-zinc-300 text-sm font-medium mt-1">{exp.company}</p>
                   </div>
                   <div className="flex gap-1">
                     <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(exp)} className="hover:bg-gray-800 text-gray-300">

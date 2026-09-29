@@ -111,21 +111,41 @@ model ProfileView {
 }
 
 model Setting {
-  id          String   @id @default("singleton")
-  siteTitle   String   @default("Portfolio.")
-  faviconUrl  String?  @db.Text
-  name        String   @default("")
-  role        String   @default("")
-  description String   @db.Text
-  about       String   @db.Text
-  email       String   @default("")
-  phone       String   @default("")
-  location    String   @default("")
-  github      String   @default("")
-  linkedin    String   @default("")
-  instagram   String   @default("")
-  twitter     String   @default("")
-  cvUrl       String   @db.Text
-  cvFileName  String   @default("")
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default("singleton")
+  siteTitle    String   @default("Portfolio.")
+  faviconUrl   String?  @db.Text
+  name         String   @default("")
+  role         String   @default("")
+  hireStatus   String   @default("")
+  description  String   @db.Text
+  about        String   @db.Text
+  email        String   @default("")
+  phone        String   @default("")
+  location     String   @default("")
+  github       String   @default("")
+  linkedin     String   @default("")
+  instagram    String   @default("")
+  twitter      String   @default("")
+  cvUrl        String   @db.Text
+  cvFileName   String   @default("")
+  cvActive            Boolean  @default(true)
+  socialActive        Boolean  @default(true)
+  overviewActive      Boolean  @default(true)
+  projectsActive      Boolean  @default(true)
+  skillsActive        Boolean  @default(true)
+  experienceActive    Boolean  @default(true)
+  educationActive     Boolean  @default(true)
+  organizationsActive Boolean  @default(true)
+  certificatesActive  Boolean  @default(true)
+  blogsActive         Boolean  @default(true)
+  messagesActive      Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+}
+
+model SocialLink {
+  id        String   @id @default(uuid())
+  platform  String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X, ScrollText } from "lucide-react";
 import { ConfirmProvider } from "@/components/ui/confirm-provider";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -23,11 +23,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <ConfirmProvider>
-    <div className="h-screen bg-black text-white flex overflow-hidden">
+    <div className="h-screen bg-[#09090b] text-white flex overflow-hidden print:h-auto print:overflow-visible print:bg-white print:text-black">
       
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 glass border-b border-gray-800 z-50 flex items-center justify-between px-6 bg-[#050505]/90 backdrop-blur-md">
-        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-500">Admin Panel</h2>
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 glass border-b border-zinc-800 z-50 flex items-center justify-between px-6 bg-[#09090b]/90 backdrop-blur-md no-print">
+        <h2 className="text-xl font-bold text-zinc-100">Admin Panel</h2>
         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white p-2">
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -36,15 +36,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar Overlay (Mobile) */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm no-print"
           onClick={closeMenu}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`w-64 shrink-0 glass border-r border-gray-800 flex flex-col h-full fixed md:relative z-40 transition-transform duration-300 bg-[#050505] md:bg-transparent ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
-        <div className="p-6 border-b border-gray-800 hidden md:block">
-          <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-500">Admin Panel</h2>
+      <aside className={`w-64 shrink-0 glass border-r border-zinc-800 flex flex-col h-full fixed md:relative z-40 transition-transform duration-300 bg-[#09090b] md:bg-transparent no-print ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
+        <div className="p-6 border-b border-zinc-800 hidden md:block">
+          <h2 className="text-xl font-bold text-zinc-100">Admin Panel</h2>
         </div>
         
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto mt-16 md:mt-0">
@@ -57,13 +57,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <NavItem onClick={closeMenu} href="/dashboard/certificates" icon={<GraduationCap size={20} />} label="Sertifikat" active={pathname === "/dashboard/certificates"} />
           <NavItem onClick={closeMenu} href="/dashboard/blogs" icon={<FileText size={20} />} label="Blogs" active={pathname === "/dashboard/blogs"} />
           <NavItem onClick={closeMenu} href="/dashboard/messages" icon={<Mail size={20} />} label="Messages" active={pathname === "/dashboard/messages"} />
+          <NavItem onClick={closeMenu} href="/dashboard/surat-lamaran" icon={<ScrollText size={20} />} label="Surat Lamaran" active={pathname === "/dashboard/surat-lamaran"} />
         </nav>
 
-        <div className="p-4 border-t border-gray-800 space-y-2">
+        <div className="p-4 border-t border-zinc-800 space-y-2">
           <NavItem onClick={closeMenu} href="/dashboard/settings" icon={<Settings size={20} />} label="Settings" active={pathname === "/dashboard/settings"} />
           <button 
             onClick={handleLogout} 
-            className="flex items-center gap-3 w-full p-3 rounded-lg text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+            className="flex items-center gap-3 w-full p-3 rounded-lg text-zinc-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
           >
             <LogOut size={20} />
             <span className="font-medium">Logout</span>
@@ -72,7 +73,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-[#050505] h-full pt-16 md:pt-0">
+      <main className="flex-1 overflow-y-auto bg-[#09090b] h-full pt-16 md:pt-0 print:p-0 print:m-0 print:bg-white print:overflow-visible print:h-auto">
         {children}
       </main>
     </div>
@@ -85,8 +86,8 @@ function NavItem({ href, icon, label, active = false, onClick }: { href: string;
     <Link href={href} onClick={onClick}>
       <div className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
         active 
-          ? "bg-purple-600/20 text-purple-400 border border-purple-500/30" 
-          : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
+          ? "bg-zinc-800 text-white border border-zinc-700/50" 
+          : "text-zinc-400 hover:bg-zinc-900/60 hover:text-white"
       }`}>
         {icon}
         <span className="font-medium">{label}</span>

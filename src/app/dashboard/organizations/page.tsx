@@ -48,13 +48,13 @@ export default function AdminOrganizationsPage() {
 
   const handleOpenEdit = (org: any) => {
     setEditingId(org.id);
-    const startFormatted = org.startDate ? new Date(org.startDate).toISOString().split("T")[0] : "";
-    const endFormatted = org.endDate ? new Date(org.endDate).toISOString().split("T")[0] : "";
+    const startYear = org.startDate ? new Date(org.startDate).getFullYear().toString() : "";
+    const endYear = org.endDate ? new Date(org.endDate).getFullYear().toString() : "";
     setForm({
       name: org.name,
       role: org.role,
-      startDate: startFormatted,
-      endDate: endFormatted,
+      startDate: startYear,
+      endDate: endYear,
       description: org.description || ""
     });
     setErrorMsg("");
@@ -69,8 +69,8 @@ export default function AdminOrganizationsPage() {
     const payload = {
       name: form.name,
       role: form.role,
-      startDate: form.startDate,
-      endDate: form.endDate || undefined,
+      startDate: form.startDate ? `${form.startDate}-01-01` : "",
+      endDate: form.endDate ? `${form.endDate}-12-31` : undefined,
       description: form.description || undefined
     };
 
@@ -124,7 +124,7 @@ export default function AdminOrganizationsPage() {
           <p className="text-gray-400 mt-2">Atur riwayat pengalaman berorganisasi Anda.</p>
         </div>
         
-        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
           <Plus className="w-4 h-4 mr-2" /> Tambah Organisasi
         </Button>
       </div>
@@ -149,18 +149,35 @@ export default function AdminOrganizationsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label>Tanggal Mulai</Label>
-                  <Input type="date" required value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                  <Label>Tahun Masuk</Label>
+                  <Input
+                    type="number"
+                    required
+                    min="1900"
+                    max={new Date().getFullYear()}
+                    value={form.startDate}
+                    onChange={(e) => setForm({ ...form, startDate: e.target.value })}
+                    placeholder={new Date().getFullYear().toString()}
+                    className="bg-gray-900 border-gray-800"
+                  />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Tanggal Selesai (Selesai Menjabat)</Label>
-                  <Input type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                  <Label>Tahun Selesai (Opsional)</Label>
+                  <Input
+                    type="number"
+                    min="1900"
+                    max={new Date().getFullYear() + 10}
+                    value={form.endDate}
+                    onChange={(e) => setForm({ ...form, endDate: e.target.value })}
+                    placeholder="Kosongkan jika masih aktif"
+                    className="bg-gray-900 border-gray-800"
+                  />
                 </div>
               </div>
               <div className="grid gap-2">
                 <Label>Keterangan / Deskripsi (Opsional)</Label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="flex min-h-[80px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  className="flex min-h-[80px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                   placeholder="Deskripsi tugas, pencapaian program kerja..." />
               </div>
             </div>
@@ -168,11 +185,11 @@ export default function AdminOrganizationsPage() {
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
               <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
+              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan")}
               </Button>
             </DialogFooter>
@@ -193,16 +210,16 @@ export default function AdminOrganizationsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {organizations.map((org) => (
-            <Card key={org.id} className="glass-card border-gray-800 text-white hover:border-purple-500/20 transition-all">
+            <Card key={org.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-4">
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="text-xl font-bold text-white">{org.name}</h3>
-                    <p className="text-purple-400 text-sm font-medium mt-1">
+                    <p className="text-zinc-300 text-sm font-medium mt-1">
                       {org.role}
                     </p>
                     <p className="text-gray-500 text-xs mt-1">
-                      {new Date(org.startDate).getFullYear()} - {org.endDate ? new Date(org.endDate).getFullYear() : "Sekarang"}
+                      {new Date(org.startDate).getFullYear()} — {org.endDate ? new Date(org.endDate).getFullYear() : "Sekarang"}
                     </p>
                   </div>
                   <div className="flex gap-1">

@@ -42,7 +42,7 @@ export default async function ProjectsPage() {
     <div className="min-h-screen bg-black text-white p-8 md:p-16">
       <div className="max-w-6xl mx-auto space-y-12">
         <div className="space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">My <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Projects</span></h1>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">My <span className="text-zinc-100">Projects</span></h1>
           <p className="text-gray-400 text-lg max-w-2xl">
             Berikut adalah beberapa proyek yang telah saya kerjakan. Dari aplikasi web berskala enterprise hingga bereksperimen dengan desain UI/UX. Semua data di bawah ini dapat dikelola via Admin Dashboard.
           </p>
@@ -50,7 +50,7 @@ export default async function ProjectsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <Card key={project.id} className="glass-card text-white border-gray-800 hover:border-purple-500/50 transition-all duration-300">
+            <Card key={project.id} className="glass-card text-white border-gray-800 hover:border-zinc-700 transition-all duration-300">
               <div className="h-48 bg-gray-900 rounded-t-lg flex items-center justify-center border-b border-gray-800">
                 <span className="text-gray-600 font-medium">Image Placeholder</span>
               </div>
@@ -61,7 +61,7 @@ export default async function ProjectsPage() {
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech) => (
-                    <span key={tech} className="px-2 py-1 text-xs font-medium bg-purple-500/10 text-purple-400 rounded-md">
+                    <span key={tech} className="px-2 py-1 text-xs font-medium bg-zinc-850 text-zinc-300 border border-zinc-800 rounded-md">
                       {tech}
                     </span>
                   ))}

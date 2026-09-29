@@ -21,7 +21,7 @@ export async function createSkill(data: {
   try {
     const skill = await prisma.skill.create({ data });
     revalidatePath("/");
-    revalidatePath("/dashboard/skills");
+    revalidatePath("/dashboard", "layout");
     return { success: true, data: skill };
   } catch (error) {
     console.error(error);
@@ -41,7 +41,7 @@ export async function updateSkill(id: string, data: {
       data,
     });
     revalidatePath("/");
-    revalidatePath("/dashboard/skills");
+    revalidatePath("/dashboard", "layout");
     return { success: true };
   } catch (error) {
     return { success: false, error: "Gagal mengupdate skill" };
@@ -52,7 +52,7 @@ export async function deleteSkill(id: string) {
   try {
     await prisma.skill.delete({ where: { id } });
     revalidatePath("/");
-    revalidatePath("/dashboard/skills");
+    revalidatePath("/dashboard", "layout");
     return { success: true };
   } catch (error) {
     return { success: false, error: "Gagal menghapus skill" };

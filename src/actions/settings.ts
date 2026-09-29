@@ -15,10 +15,21 @@ export async function getSettings() {
           id: SINGLETON_ID,
           siteTitle: "Portfolio.",
           faviconUrl: null,
-          name: "", role: "", description: "", about: "",
+          name: "", role: "", hireStatus: "", description: "", about: "",
           email: "", phone: "", location: "",
           github: "", linkedin: "", instagram: "", twitter: "",
           cvUrl: "", cvFileName: "",
+          cvActive: true,
+          socialActive: true,
+          overviewActive: true,
+          projectsActive: true,
+          skillsActive: true,
+          experienceActive: true,
+          educationActive: true,
+          organizationsActive: true,
+          certificatesActive: true,
+          blogsActive: true,
+          messagesActive: true,
         }
       };
     }
@@ -33,6 +44,7 @@ export async function saveSettings(data: {
   faviconUrl?: string;
   name: string;
   role: string;
+  hireStatus: string;
   description: string;
   about: string;
   email: string;
@@ -44,6 +56,17 @@ export async function saveSettings(data: {
   twitter: string;
   cvUrl: string;
   cvFileName: string;
+  cvActive?: boolean;
+  socialActive?: boolean;
+  overviewActive?: boolean;
+  projectsActive?: boolean;
+  skillsActive?: boolean;
+  experienceActive?: boolean;
+  educationActive?: boolean;
+  organizationsActive?: boolean;
+  certificatesActive?: boolean;
+  blogsActive?: boolean;
+  messagesActive?: boolean;
 }) {
   try {
     await prisma.setting.upsert({

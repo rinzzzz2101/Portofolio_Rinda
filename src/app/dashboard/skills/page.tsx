@@ -131,7 +131,7 @@ export default function AdminSkillsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Manajemen Skills</h1>
           <p className="text-gray-400 mt-2">Atur Hard Skill dan Soft Skill Anda di sini.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
           <Plus className="w-4 h-4 mr-2" /> Tambah Skill
         </Button>
       </div>
@@ -161,9 +161,9 @@ export default function AdminSkillsPage() {
                       className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all text-sm font-medium ${
                         form.category === type
                           ? type === "Hard Skill"
-                            ? "bg-purple-600/20 border-purple-500 text-purple-300"
-                            : "bg-blue-600/20 border-blue-500 text-blue-300"
-                          : "border-gray-800 text-gray-400 hover:bg-gray-900"
+                            ? "bg-zinc-800 border-zinc-700 text-zinc-100"
+                            : "bg-zinc-900/60 border-zinc-800 text-zinc-300"
+                          : "border-gray-800 text-gray-450 hover:bg-gray-900 hover:text-white"
                       }`}
                     >
                       {type === "Hard Skill" ? <Cpu className="w-4 h-4" /> : <Brain className="w-4 h-4" />}
@@ -187,7 +187,7 @@ export default function AdminSkillsPage() {
               <div className="grid gap-2">
                 <Label>
                   Level Keahlian{" "}
-                  <span className={form.category === "Hard Skill" ? "text-purple-400" : "text-blue-400"}>
+                  <span className={form.category === "Hard Skill" ? "text-zinc-200" : "text-zinc-400"}>
                     {form.level}%
                   </span>
                 </Label>
@@ -197,7 +197,7 @@ export default function AdminSkillsPage() {
                   max="100"
                   value={form.level}
                   onChange={(e) => setForm({ ...form, level: e.target.value })}
-                  className={`w-full ${form.category === "Hard Skill" ? "accent-purple-500" : "accent-blue-500"}`}
+                  className={`w-full accent-zinc-100`}
                 />
                 <div className="flex justify-between text-xs text-gray-600">
                   <span>Pemula</span><span>Menengah</span><span>Mahir</span>
@@ -209,11 +209,11 @@ export default function AdminSkillsPage() {
                 Batal
               </Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
+              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan Skill")}
               </Button>
             </DialogFooter>
@@ -232,9 +232,7 @@ export default function AdminSkillsPage() {
               onClick={() => setActiveFilter(filter)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
                 isActive
-                  ? filter === "Soft Skill"
-                    ? "bg-blue-600/20 border-blue-500/50 text-blue-300"
-                    : "bg-purple-600/20 border-purple-500/50 text-purple-300"
+                  ? "bg-zinc-800 border-zinc-700 text-zinc-100"
                   : "border-gray-800 text-gray-400 hover:bg-gray-900 hover:text-white"
               }`}
             >
@@ -263,25 +261,25 @@ export default function AdminSkillsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredSkills.map((skill) => (
-            <Card key={skill.id} className={`glass-card border-gray-800 text-white hover:border-purple-500/20 transition-all`}>
+            <Card key={skill.id} className={`glass-card border-zinc-850 text-white hover:border-zinc-700 transition-all`}>
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${skill.category === "Hard Skill" ? "bg-purple-500/10 border border-purple-500/20" : "bg-blue-500/10 border border-blue-500/20"}`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${skill.category === "Hard Skill" ? "bg-zinc-800 border border-zinc-700" : "bg-zinc-900 border border-zinc-800"}`}>
                       {skill.category === "Hard Skill"
-                        ? <Cpu className="w-4 h-4 text-purple-400" />
-                        : <Brain className="w-4 h-4 text-blue-400" />
+                        ? <Cpu className="w-4 h-4 text-zinc-300" />
+                        : <Brain className="w-4 h-4 text-zinc-400" />
                       }
                     </div>
                     <div>
                       <p className="font-semibold text-white">{skill.name}</p>
-                      <span className={`text-xs font-medium ${skill.category === "Hard Skill" ? "text-purple-400" : "text-blue-400"}`}>
+                      <span className={`text-xs font-medium ${skill.category === "Hard Skill" ? "text-zinc-350" : "text-zinc-400"}`}>
                         {skill.category}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className={`text-sm font-bold mr-2 ${skill.category === "Hard Skill" ? "text-purple-400" : "text-blue-400"}`}>
+                    <span className={`text-sm font-bold mr-2 ${skill.category === "Hard Skill" ? "text-zinc-300" : "text-zinc-450"}`}>
                       {skill.level}%
                     </span>
                     <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(skill)} className="hover:bg-gray-800 text-gray-300 h-8 w-8 p-0">
@@ -294,7 +292,7 @@ export default function AdminSkillsPage() {
                 </div>
                 <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all ${skill.category === "Hard Skill" ? "bg-gradient-to-r from-purple-500 to-purple-400" : "bg-gradient-to-r from-blue-500 to-blue-400"}`}
+                    className={`h-full rounded-full transition-all ${skill.category === "Hard Skill" ? "bg-zinc-300" : "bg-zinc-650"}`}
                     style={{ width: `${skill.level}%` }}
                   />
                 </div>

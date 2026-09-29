@@ -135,7 +135,7 @@ export default function AdminBlogsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Manajemen Blog</h1>
           <p className="text-gray-400 mt-2">Tulis artikel dan bagikan pengetahuan Anda.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
           <Plus className="w-4 h-4 mr-2" /> Tulis Artikel
         </Button>
       </div>
@@ -167,7 +167,7 @@ export default function AdminBlogsPage() {
               <div className="grid gap-2">
                 <Label>Konten (Markdown)</Label>
                 <textarea required value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })}
-                  className="flex min-h-[200px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  className="flex min-h-[200px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                   placeholder={"# Judul\n\nTulis konten artikel Anda di sini menggunakan format Markdown..."} />
               </div>
               <div className="flex items-center gap-2 mt-2">
@@ -176,7 +176,7 @@ export default function AdminBlogsPage() {
                   id="isPublished"
                   checked={form.isPublished}
                   onChange={(e) => setForm({ ...form, isPublished: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-800 bg-gray-900 text-purple-600 focus:ring-purple-500"
+                  className="w-4 h-4 rounded border-gray-800 bg-gray-900 accent-zinc-100 focus:ring-zinc-500"
                 />
                 <Label htmlFor="isPublished" className="cursor-pointer">Publikasikan Langsung (Published)</Label>
               </div>
@@ -185,11 +185,11 @@ export default function AdminBlogsPage() {
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
               <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
+              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan Artikel")}
               </Button>
             </DialogFooter>
@@ -210,7 +210,7 @@ export default function AdminBlogsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {blogs.map((blog) => (
-            <Card key={blog.id} className="glass-card border-gray-800 text-white hover:border-purple-500/20 transition-all">
+            <Card key={blog.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start gap-3">
                   <div className="flex-1">
@@ -218,7 +218,7 @@ export default function AdminBlogsPage() {
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${blog.isPublished ? "bg-green-500/10 text-green-400 border border-green-500/30" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30"}`}>
                         {blog.isPublished ? "Published" : "Draft"}
                       </span>
-                      <span className="text-xs text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-zinc-300 bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded-full">
                         {blog.category}
                       </span>
                     </div>

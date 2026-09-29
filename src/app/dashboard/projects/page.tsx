@@ -117,7 +117,7 @@ export default function AdminProjectsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Manajemen Projects</h1>
           <p className="text-gray-400 mt-2">Atur dan tambahkan portfolio project Anda di sini.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
           <Plus className="w-4 h-4 mr-2" /> Tambah Project
         </Button>
       </div>
@@ -140,7 +140,7 @@ export default function AdminProjectsPage() {
                 <div className="grid gap-2">
                   <Label>Deskripsi</Label>
                   <textarea required value={formData.desc} onChange={(e) => setFormData({...formData, desc: e.target.value})}
-                    className="flex min-h-[100px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                    className="flex min-h-[100px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                     placeholder="Ceritakan tentang project ini..." />
                 </div>
                 <div className="grid gap-2">
@@ -176,11 +176,11 @@ export default function AdminProjectsPage() {
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
               <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-purple-900/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700 text-white">
+              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan Project")}
               </Button>
             </DialogFooter>
@@ -201,7 +201,7 @@ export default function AdminProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           {projects.map((project) => (
-            <Card key={project.id} className="glass-card text-white border-gray-800 hover:border-purple-500/30 transition-all flex flex-col justify-between overflow-hidden">
+            <Card key={project.id} className="glass-card text-white border-gray-800 hover:border-zinc-700 transition-all flex flex-col justify-between overflow-hidden">
               <div>
                 <div className="h-48 bg-gray-900 flex items-center justify-center border-b border-gray-800 overflow-hidden">
                   {project.thumbnail ? (
@@ -213,7 +213,7 @@ export default function AdminProjectsPage() {
                 <CardContent className="p-6 space-y-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 font-medium">{project.category}</span>
+                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700 font-medium">{project.category}</span>
                       <h3 className="text-xl font-bold mt-2">{project.title}</h3>
                     </div>
                     <div className="flex gap-2">

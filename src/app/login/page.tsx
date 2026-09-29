@@ -43,55 +43,52 @@ export default function LoginPage() {
   if (!mounted) return <PanelLoading />;
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-900/20 blur-[120px] rounded-full z-0 pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-900/20 blur-[120px] rounded-full z-0 pointer-events-none" />
-
-      <Card className="w-full max-w-md glass-card border-gray-800 z-10 text-white">
+    <div className="min-h-screen bg-[#09090b] text-white flex items-center justify-center p-4 relative overflow-hidden">
+      <Card className="w-full max-w-md bg-zinc-900/40 border-zinc-800/80 backdrop-blur-md z-10 text-white">
         <CardHeader className="space-y-1 text-center">
-          <div className="mx-auto w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center mb-2 border border-purple-500/30">
-            <Lock className="w-5 h-5 text-purple-400" />
+          <div className="mx-auto w-12 h-12 bg-zinc-800/50 rounded-full flex items-center justify-center mb-2 border border-zinc-700/50">
+            <Lock className="w-5 h-5 text-zinc-300" />
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">Admin Login</CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-zinc-400">
             Masukkan kredensial Anda untuk mengakses Dashboard.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm font-medium">
+              <div className="p-3 bg-red-950/20 border border-red-900/50 rounded-md text-red-400 text-sm font-medium">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Email</label>
+              <label className="text-sm font-medium text-zinc-300">Email</label>
               <Input 
                 type="email" 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="rinda.dev21@gmail.com" 
-                className="bg-gray-900/50 border-gray-800 focus-visible:ring-purple-500" 
+                className="bg-zinc-900/50 border-zinc-800 focus-visible:ring-zinc-400" 
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Password</label>
+              <label className="text-sm font-medium text-zinc-300">Password</label>
               <Input 
                 type="password" 
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••" 
-                className="bg-gray-900/50 border-gray-800 focus-visible:ring-purple-500" 
+                className="bg-zinc-900/50 border-zinc-800 focus-visible:ring-zinc-400" 
               />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+            <Button disabled={loading} type="submit" className="w-full bg-zinc-100 text-zinc-950 hover:bg-zinc-200 transition-colors font-medium">
               {loading ? "Memverifikasi..." : "Masuk ke Dashboard"}
             </Button>
-            <Button asChild variant="ghost" className="w-full border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-900/50">
+            <Button asChild variant="ghost" className="w-full border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-850">
               <Link href="/">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Landing Page
               </Link>

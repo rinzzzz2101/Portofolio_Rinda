@@ -65,12 +65,12 @@ export default function AdminMessagesPage() {
       ) : (
         <div className="space-y-4">
           {messages.map((msg) => (
-            <Card key={msg.id} className={`glass-card border-gray-800 text-white ${!msg.isRead ? "border-l-4 border-l-purple-500" : ""}`}>
+            <Card key={msg.id} className={`glass-card border-gray-800 text-white ${!msg.isRead ? "border-l-4 border-l-zinc-300" : ""}`}>
               <CardContent className="p-6">
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <h4 className="font-bold text-lg">{msg.name}</h4>
-                    <p className="text-purple-400 text-sm">{msg.email}</p>
+                    <p className="text-zinc-400 text-sm">{msg.email}</p>
                     <p className="text-gray-300 mt-3">{msg.message}</p>
                     <p className="text-gray-500 text-xs mt-2">{new Date(msg.createdAt).toLocaleDateString("id-ID", { dateStyle: "long" })}</p>
                   </div>
