@@ -285,17 +285,17 @@ export default function Home() {
             className="z-10 max-w-3xl text-center space-y-6"
           >
             {hero.hireStatus && (
-              <div className="inline-block px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-300 text-sm font-medium mb-4">
+              <div className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4" style={{ border: '1px solid var(--border-default)', background: 'var(--card-bg)', color: 'var(--text-secondary)' }}>
                 {hero.hireStatus}
               </div>
             )}
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter" style={{ color: 'var(--text-primary)' }}>
               Hi, I'm {hero.name}.<br/>
-              <span className="text-zinc-400">
+              <span style={{ color: 'var(--text-secondary)' }}>
                 {hero.role}
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-zinc-450 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
               {hero.description}
             </p>
 
