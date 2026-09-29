@@ -302,32 +302,32 @@ export default function Home() {
             {cvActive && (
               <div className="flex items-center justify-center gap-4 pt-6">
                 {activeSections.projects && (
-                  <Button size="lg" className="bg-white text-black hover:bg-gray-200 rounded-full px-8" asChild>
-                    <a href="#projects" className="flex items-center">View Work <ArrowRight className="ml-2 w-4 h-4" /></a>
-                  </Button>
+                  <a href="#projects" className="btn-primary inline-flex items-center px-8 py-3 text-base">
+                    View Work <ArrowRight className="ml-2 w-4 h-4" />
+                  </a>
                 )}
                 {cvUrl ? (
-                  <Button size="lg" variant="outline" className="border-zinc-800 hover:bg-zinc-900 rounded-full px-8 bg-transparent text-zinc-300 hover:text-white" asChild>
-                    <a href={cvUrl} download={cvFileName || "CV_Resume"} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                      <Download className="mr-2 w-4 h-4" /> Download CV / Resume
-                    </a>
-                  </Button>
+                  <a href={cvUrl} download={cvFileName || "CV_Resume"} target="_blank" rel="noopener noreferrer"
+                    className="btn-outline inline-flex items-center px-8 py-3 text-base">
+                    <Download className="mr-2 w-4 h-4" /> Download CV / Resume
+                  </a>
                 ) : null}
               </div>
             )}
 
             {!cvActive && activeSections.projects && (
               <div className="flex items-center justify-center gap-4 pt-6">
-                <Button size="lg" className="bg-white text-black hover:bg-gray-200 rounded-full px-8" asChild>
-                  <a href="#projects" className="flex items-center">View Work <ArrowRight className="ml-2 w-4 h-4" /></a>
-                </Button>
+                <a href="#projects" className="btn-primary inline-flex items-center px-8 py-3 text-base">
+                  View Work <ArrowRight className="ml-2 w-4 h-4" />
+                </a>
               </div>
             )}
 
             {socialActive && socialLinks.length > 0 && (
-              <div className="flex justify-center gap-6 pt-12 text-zinc-500">
+              <div className="flex justify-center gap-6 pt-12 t-muted">
                 {socialLinks.map((link) => (
-                  <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" title={link.platform}>
+                  <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" title={link.platform}
+                    className="t-muted hover:opacity-70 transition">
                     {getSocialIcon(link.platform)}
                   </a>
                 ))}
@@ -344,13 +344,11 @@ export default function Home() {
           <section id="about" className={`grid ${activeSections.overview && activeSections.skills ? "md:grid-cols-2" : "grid-cols-1 max-w-3xl mx-auto"} gap-12 items-center`}>
             {activeSections.overview && (
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp} className="space-y-6">
-                <h2 className="text-3xl md:text-4xl font-bold">Tentang Saya</h2>
-                <p className="text-gray-400 leading-relaxed text-lg">
-                  {about}
-                </p>
-                <div className="flex items-center gap-4 text-zinc-400">
-                  {settingLocation && <div className="flex items-center gap-2"><MapPin size={18} className="text-zinc-400"/>{settingLocation}</div>}
-                  {settingEmail && <div className="flex items-center gap-2"><Mail size={18} className="text-zinc-400"/>{settingEmail}</div>}
+                <h2 className="text-3xl md:text-4xl font-bold t-primary">Tentang Saya</h2>
+                <p className="t-secondary leading-relaxed text-lg">{about}</p>
+                <div className="flex items-center gap-4 t-muted">
+                  {settingLocation && <div className="flex items-center gap-2"><MapPin size={18} className="t-muted"/>{settingLocation}</div>}
+                  {settingEmail && <div className="flex items-center gap-2"><Mail size={18} className="t-muted"/>{settingEmail}</div>}
                 </div>
               </motion.div>
             )}
@@ -358,15 +356,20 @@ export default function Home() {
             {activeSections.skills && (
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp} id="skills" className="space-y-6 glass p-8 rounded-2xl">
                 <div className="flex items-center justify-between flex-wrap gap-3">
-                  <h3 className="text-2xl font-bold text-white">Keahlian</h3>
+                  <h3 className="text-2xl font-bold t-primary">Keahlian</h3>
                   <div className="flex gap-2">
                     {(["Semua", "Hard Skill", "Soft Skill"] as const).map((f) => (
                       <button key={f} onClick={() => setSkillFilter(f)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
-                          skillFilter === f
-                            ? "bg-zinc-100 border-zinc-100 text-zinc-950"
-                            : "border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-white"
-                        }`}>
+                        style={skillFilter === f ? {
+                          backgroundColor: 'var(--btn-primary-bg)',
+                          color: 'var(--btn-primary-fg)',
+                          borderColor: 'var(--btn-primary-bg)',
+                        } : {
+                          backgroundColor: 'transparent',
+                          color: 'var(--text-muted)',
+                          borderColor: 'var(--border-default)',
+                        }}
+                        className="px-3 py-1 rounded-full text-xs font-medium border transition-all hover:opacity-80">
                         {f}
                       </button>
                     ))}
@@ -374,7 +377,7 @@ export default function Home() {
                 </div>
                 <div className="space-y-4">
                   {skills.length === 0 ? (
-                    <div className="text-zinc-500 text-sm italic">Belum ada skill yang ditambahkan.</div>
+                    <div className="t-muted text-sm italic">Belum ada skill yang ditambahkan.</div>
                   ) : (
                     skills
                       .filter((s: any) => skillFilter === "Semua" || s.category === skillFilter)
@@ -382,16 +385,16 @@ export default function Home() {
                         <div key={skill.id}>
                           <div className="flex justify-between mb-2 text-sm font-medium">
                             <div className="flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full inline-block bg-zinc-400" />
-                              <span className="text-zinc-200">{skill.name}</span>
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400">{skill.category}</span>
+                              <span className="w-2 h-2 rounded-full inline-block skill-fill" />
+                              <span className="t-primary">{skill.name}</span>
+                              <span className="tag">{skill.category}</span>
                             </div>
-                            <span className="text-zinc-400">{skill.level}%</span>
+                            <span className="t-muted">{skill.level}%</span>
                           </div>
-                          <div className="h-1.5 w-full bg-zinc-800/80 rounded-full overflow-hidden">
+                          <div className="h-1.5 w-full skill-track rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }} whileInView={{ width: `${skill.level}%` }} transition={{ duration: 1, delay: 0.2 }}
-                              className="h-full rounded-full bg-zinc-350"
+                              className="h-full rounded-full skill-fill"
                             />
                           </div>
                         </div>
@@ -407,28 +410,25 @@ export default function Home() {
         {(activeSections.education || activeSections.organizations) && (
           <section id="education" className="space-y-12">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Pendidikan & Organisasi</h2>
-              <p className="text-zinc-400">Latar belakang akademis dan pengalaman berorganisasi.</p>
+              <h2 className="text-3xl md:text-4xl font-bold t-primary">Pendidikan & Organisasi</h2>
+              <p className="t-muted">Latar belakang akademis dan pengalaman berorganisasi.</p>
             </motion.div>
 
             <div className={`grid ${activeSections.education && activeSections.organizations ? "md:grid-cols-2" : "grid-cols-1 max-w-3xl mx-auto"} gap-12`}>
-              {/* Pendidikan */}
               {activeSections.education && (
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold flex items-center gap-2 text-zinc-200"><span className="w-2 h-2 bg-zinc-350 rounded-full inline-block"></span> Pendidikan</h3>
+                  <h3 className="text-xl font-bold flex items-center gap-2 t-primary"><span className="w-2 h-2 skill-fill rounded-full inline-block"></span> Pendidikan</h3>
                   {educations.length === 0 ? (
-                    <p className="text-zinc-500 italic text-sm">Belum ada data pendidikan.</p>
+                    <p className="t-muted italic text-sm">Belum ada data pendidikan.</p>
                   ) : (
                     <div className="space-y-4">
                       {educations.map((edu: any) => (
                         <motion.div key={edu.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
-                          className="p-5 glass rounded-xl border border-zinc-800/80 hover:border-zinc-700/50 transition-all">
-                          <div className="font-bold text-lg text-white">{edu.institution}</div>
-                          <div className="text-zinc-300 text-sm font-medium mt-1">{edu.degree}{edu.fieldOfStudy ? ` • ${edu.fieldOfStudy}` : ""}</div>
-                          <div className="text-zinc-500 text-xs mt-1">
-                            Angkatan {new Date(edu.startDate).getFullYear()}
-                          </div>
-                          {edu.description && <p className="text-zinc-400 text-sm mt-2 leading-relaxed">{edu.description}</p>}
+                          className="p-5 panel hover:shadow-sm transition-all">
+                          <div className="font-bold text-lg t-primary">{edu.institution}</div>
+                          <div className="t-secondary text-sm font-medium mt-1">{edu.degree}{edu.fieldOfStudy ? ` • ${edu.fieldOfStudy}` : ""}</div>
+                          <div className="t-muted text-xs mt-1">Angkatan {new Date(edu.startDate).getFullYear()}</div>
+                          {edu.description && <p className="t-secondary text-sm mt-2 leading-relaxed">{edu.description}</p>}
                         </motion.div>
                       ))}
                     </div>
@@ -436,23 +436,22 @@ export default function Home() {
                 </div>
               )}
 
-              {/* Organisasi */}
               {activeSections.organizations && (
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold flex items-center gap-2 text-zinc-200"><span className="w-2 h-2 bg-zinc-350 rounded-full inline-block"></span> Organisasi</h3>
+                  <h3 className="text-xl font-bold flex items-center gap-2 t-primary"><span className="w-2 h-2 skill-fill rounded-full inline-block"></span> Organisasi</h3>
                   {organizations.length === 0 ? (
-                    <p className="text-zinc-500 italic text-sm">Belum ada data organisasi.</p>
+                    <p className="t-muted italic text-sm">Belum ada data organisasi.</p>
                   ) : (
                     <div className="space-y-4">
                       {organizations.map((org: any) => (
                         <motion.div key={org.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
-                          className="p-5 glass rounded-xl border border-zinc-800/80 hover:border-zinc-700/50 transition-all">
-                          <div className="font-bold text-lg text-white">{org.name}</div>
-                          <div className="text-zinc-300 text-sm font-medium mt-1">{org.role}</div>
-                          <div className="text-zinc-500 text-xs mt-1">
+                          className="p-5 panel hover:shadow-sm transition-all">
+                          <div className="font-bold text-lg t-primary">{org.name}</div>
+                          <div className="t-secondary text-sm font-medium mt-1">{org.role}</div>
+                          <div className="t-muted text-xs mt-1">
                             {new Date(org.startDate).getFullYear()} — {org.endDate ? new Date(org.endDate).getFullYear() : "Sekarang"}
                           </div>
-                          {org.description && <p className="text-zinc-400 text-sm mt-2 leading-relaxed">{org.description}</p>}
+                          {org.description && <p className="t-secondary text-sm mt-2 leading-relaxed">{org.description}</p>}
                         </motion.div>
                       ))}
                     </div>
@@ -467,28 +466,26 @@ export default function Home() {
         {activeSections.experience && (
           <section id="experience" className="space-y-12">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Pengalaman Kerja</h2>
-              <p className="text-zinc-400">Perjalanan karir profesional saya sejauh ini.</p>
+              <h2 className="text-3xl md:text-4xl font-bold t-primary">Pengalaman Kerja</h2>
+              <p className="t-muted">Perjalanan karir profesional saya sejauh ini.</p>
             </motion.div>
 
-            <div className="max-w-3xl mx-auto space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-zinc-800">
+            <div className="max-w-3xl mx-auto space-y-8 relative timeline-line before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5">
               {experiences.length === 0 ? (
-                <div className="text-center text-zinc-550 italic py-8">Belum ada data pengalaman kerja.</div>
+                <div className="text-center t-muted italic py-8">Belum ada data pengalaman kerja.</div>
               ) : (
                 experiences.map((exp: any) => (
                   <motion.div key={exp.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} 
                     className={`relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active`}
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full border border-zinc-800 bg-[#09090b] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_0_4px_#09090b] z-10">
-                      <Briefcase className="w-4 h-4 text-zinc-400" />
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 timeline-dot">
+                      <Briefcase className="w-4 h-4" />
                     </div>
-                    <Card className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-zinc-900/40 border-zinc-850 p-5">
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="font-bold text-lg text-white">{exp.position}</div>
-                      </div>
-                      <div className="text-zinc-350 text-sm font-medium mb-3">{exp.company} • {new Date(exp.startDate).toLocaleDateString("id-ID", { year: "numeric", month: "short" })}</div>
-                      <p className="text-zinc-400 text-sm leading-relaxed">{exp.description}</p>
-                    </Card>
+                    <div className="panel w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-5 hover:shadow-md">
+                      <div className="font-bold text-lg t-primary mb-1">{exp.position}</div>
+                      <div className="t-secondary text-sm font-medium mb-3">{exp.company} • {new Date(exp.startDate).toLocaleDateString("id-ID", { year: "numeric", month: "short" })}</div>
+                      <p className="t-secondary text-sm leading-relaxed">{exp.description}</p>
+                    </div>
                   </motion.div>
                 ))
               )}
@@ -500,58 +497,50 @@ export default function Home() {
         {activeSections.projects && (
           <section id="projects" className="space-y-12">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Featured Projects</h2>
-              <p className="text-zinc-400">Karya terbaik yang pernah saya buat.</p>
+              <h2 className="text-3xl md:text-4xl font-bold t-primary">Featured Projects</h2>
+              <p className="t-muted">Karya terbaik yang pernah saya buat.</p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.length === 0 ? (
-                <div className="col-span-full text-center text-zinc-550 italic py-12 border border-dashed border-zinc-800 rounded-xl">
-                  Belum ada project yang dipublikasikan.
-                </div>
+                <div className="col-span-full empty-state">Belum ada project yang dipublikasikan.</div>
               ) : (
                 projects.map((project: any) => (
                   <motion.div key={project.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-                    <Card className="bg-zinc-900/30 text-white border-zinc-850 hover:border-zinc-700 transition-all duration-300 h-full flex flex-col justify-between">
+                    <div className="panel h-full flex flex-col justify-between hover:shadow-md">
                       <div>
-                        <div className="h-48 bg-zinc-950 rounded-t-lg flex items-center justify-center border-b border-zinc-850 overflow-hidden relative">
+                        <div className="h-48 rounded-t-xl flex items-center justify-center border-b overflow-hidden" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-subtle)' }}>
                           {project.thumbnail ? (
                             <img src={project.thumbnail} alt={project.title} className="w-full h-full object-contain" />
                           ) : (
-                            <span className="text-zinc-600 font-medium">No Image</span>
+                            <span className="t-dim font-medium">No Image</span>
                           )}
                         </div>
-                        <CardHeader>
-                          <CardTitle className="text-white">{project.title}</CardTitle>
-                          <CardDescription className="text-zinc-400">{project.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
+                        <div className="p-5 space-y-3">
+                          <h3 className="font-bold text-lg t-primary">{project.title}</h3>
+                          <p className="t-secondary text-sm leading-relaxed">{project.description}</p>
                           <div className="flex flex-wrap gap-2">
                             {project.technologies.map((t: string) => (
-                              <span key={t} className="px-2 py-1 text-xs font-medium bg-zinc-800/80 text-zinc-350 border border-zinc-750/30 rounded-md">
-                                {t}
-                              </span>
+                              <span key={t} className="tag">{t}</span>
                             ))}
                           </div>
-                        </CardContent>
+                        </div>
                       </div>
-                      <CardFooter className="flex justify-between border-t border-zinc-850/50 pt-4 mt-4">
+                      <div className="flex justify-between border-t px-5 py-3" style={{ borderColor: 'var(--border-subtle)' }}>
                         {project.githubUrl ? (
-                          <Button variant="ghost" size="sm" asChild className="hover:bg-zinc-800/50 hover:text-white">
-                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                              <Github className="w-4 h-4 mr-2" /> Code
-                            </a>
-                          </Button>
+                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-sm t-muted hover:opacity-70 transition">
+                            <Github className="w-4 h-4" /> Code
+                          </a>
                         ) : <div />}
                         {project.demoUrl ? (
-                          <Button variant="ghost" size="sm" asChild className="hover:bg-zinc-800/50 hover:text-white">
-                            <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="w-4 h-4 mr-2" /> Demo
-                            </a>
-                          </Button>
+                          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-sm t-muted hover:opacity-70 transition">
+                            <ExternalLink className="w-4 h-4" /> Demo
+                          </a>
                         ) : <div />}
-                      </CardFooter>
-                    </Card>
+                      </div>
+                    </div>
                   </motion.div>
                 ))
               )}
@@ -563,25 +552,25 @@ export default function Home() {
         {activeSections.certificates && certificates.length > 0 && (
           <section id="certificates" className="space-y-12">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Sertifikat & Penghargaan</h2>
-              <p className="text-zinc-400">Pengakuan resmi atas keahlian dan kompetensi yang dimiliki.</p>
+              <h2 className="text-3xl md:text-4xl font-bold t-primary">Sertifikat & Penghargaan</h2>
+              <p className="t-muted">Pengakuan resmi atas keahlian dan kompetensi yang dimiliki.</p>
             </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {certificates.map((cert: any) => (
                 <motion.div key={cert.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-                  <div className="glass p-6 rounded-2xl border border-zinc-850 hover:border-zinc-700 transition-all space-y-3 h-full">
-                    <div className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-xl flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-zinc-350" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <div className="panel p-6 space-y-3 h-full hover:shadow-md">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'var(--bg-muted)', border: '1px solid var(--border-default)' }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 t-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                      <h3 className="font-bold text-white leading-snug">{cert.name}</h3>
-                      <p className="text-zinc-350 text-sm mt-1">{cert.issuer}</p>
-                      <p className="text-zinc-550 text-xs mt-1">{new Date(cert.issueDate).toLocaleDateString("id-ID", { year: "numeric", month: "long" })}</p>
+                      <h3 className="font-bold t-primary leading-snug">{cert.name}</h3>
+                      <p className="t-secondary text-sm mt-1">{cert.issuer}</p>
+                      <p className="t-muted text-xs mt-1">{new Date(cert.issueDate).toLocaleDateString("id-ID", { year: "numeric", month: "long" })}</p>
                     </div>
                     {cert.pdfUrl && (
                       <button 
                         onClick={() => setSelectedCert(cert)}
-                        className="inline-flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white transition-colors font-medium cursor-pointer hover:underline"
+                        className="inline-flex items-center gap-1.5 text-xs t-secondary hover:opacity-70 transition font-medium cursor-pointer hover:underline"
                       >
                         <ExternalLink className="w-3 h-3" /> Lihat Sertifikat
                       </button>
@@ -597,28 +586,63 @@ export default function Home() {
         {activeSections.blogs && blogs.length > 0 && (
           <section id="blog" className="space-y-12">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Tulisan Terbaru</h2>
-              <p className="text-zinc-400">Insight dan pengalaman yang saya bagikan secara terbuka.</p>
+              <h2 className="text-3xl md:text-4xl font-bold t-primary">Tulisan Terbaru</h2>
+              <p className="t-muted">Insight dan pengalaman yang saya bagikan secara terbuka.</p>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {blogs.map((blog: any) => (
                 <motion.div key={blog.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-                  <div className="bg-zinc-900/30 p-6 rounded-2xl border border-zinc-850 hover:border-zinc-700 transition-all space-y-3 h-full flex flex-col">
+                  <div className="panel p-6 space-y-3 h-full flex flex-col hover:shadow-md">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700 font-medium">
-                        {blog.category}
-                      </span>
+                      <span className="badge-muted">{blog.category}</span>
                     </div>
-                    <h3 className="font-bold text-white text-lg leading-snug flex-1">{blog.title}</h3>
-                    <p className="text-zinc-400 text-sm line-clamp-3">{blog.content}</p>
-                    <div className="flex items-center justify-between pt-2 border-t border-zinc-850 text-xs text-zinc-550">
+                    <h3 className="font-bold t-primary text-lg leading-snug flex-1">{blog.title}</h3>
+                    <p className="t-secondary text-sm line-clamp-3">{blog.content}</p>
+                    <div className="flex items-center justify-between pt-2 border-t text-xs t-muted" style={{ borderColor: 'var(--border-subtle)' }}>
                       <span>{new Date(blog.createdAt).toLocaleDateString("id-ID", { dateStyle: "medium" })}</span>
-                      {blog.tags && <span className="text-zinc-500">{blog.tags}</span>}
+                      {blog.tags && <span className="t-dim">{blog.tags}</span>}
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
+          </section>
+        )}
+
+        {activeSections.messages && (
+          <section id="contact" className="max-w-2xl mx-auto space-y-10">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center space-y-4">
+              <h2 className="text-3xl md:text-4xl font-bold t-primary">Hubungi Saya</h2>
+              <p className="t-muted">Ada proyek menarik? Mari berdiskusi.</p>
+            </motion.div>
+            <motion.form onSubmit={handleContactSubmit} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+              className="panel p-8 space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium t-secondary">Nama Lengkap</label>
+                  <input required value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} placeholder="John Doe"
+                    className="input-t flex w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium t-secondary">Email</label>
+                  <input type="email" required value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} placeholder="john@example.com"
+                    className="input-t flex w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium t-secondary">Pesan</label>
+                <textarea 
+                  required
+                  value={contactForm.message}
+                  onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                  className="input-t flex min-h-[120px] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none resize-none"
+                  placeholder="Ceritakan tentang proyek Anda..."
+                />
+              </div>
+              <button disabled={sending} type="submit" className="btn-primary w-full py-3 text-sm inline-flex items-center justify-center gap-2">
+                {sending ? "Mengirim..." : "Kirim Pesan"} <ArrowRight className="w-4 h-4" />
+              </button>
+            </motion.form>
           </section>
         )}
 
@@ -666,19 +690,19 @@ export default function Home() {
       </footer>
       {/* Certificate Modal Overlay */}
       {selectedCert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4" onClick={() => setSelectedCert(null)}>
-          <div className="relative max-w-2xl w-full bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden p-6 shadow-2xl space-y-4" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4" onClick={() => setSelectedCert(null)}>
+          <div className="relative max-w-2xl w-full rounded-2xl overflow-hidden p-6 shadow-2xl space-y-4 panel" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-bold text-xl text-white">{selectedCert.name}</h3>
-                <p className="text-zinc-350 text-sm mt-1">{selectedCert.issuer}</p>
+                <h3 className="font-bold text-xl t-primary">{selectedCert.name}</h3>
+                <p className="t-secondary text-sm mt-1">{selectedCert.issuer}</p>
               </div>
-              <button className="text-zinc-400 hover:text-white p-1" onClick={() => setSelectedCert(null)}>
+              <button className="t-muted hover:opacity-70 p-1 transition" onClick={() => setSelectedCert(null)}>
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            <div className="w-full min-h-[300px] h-[450px] flex items-center justify-center bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden relative p-1">
+            <div className="w-full min-h-[300px] h-[450px] flex items-center justify-center rounded-xl overflow-hidden relative p-1" style={{ backgroundColor: 'var(--bg-muted)', border: '1px solid var(--border-default)' }}>
               {selectedCert.pdfUrl.startsWith("data:application/pdf") || selectedCert.pdfUrl.endsWith(".pdf") ? (
                 <iframe src={selectedCert.pdfUrl} className="w-full h-full rounded-lg border-0 bg-white" title={selectedCert.name} />
               ) : (
@@ -690,13 +714,13 @@ export default function Home() {
               <a 
                 href={selectedCert.pdfUrl} 
                 download={`sertifikat-${selectedCert.name.toLowerCase().replace(/\s+/g, '-')}${selectedCert.pdfUrl.startsWith("data:application/pdf") || selectedCert.pdfUrl.endsWith(".pdf") ? ".pdf" : ".jpg"}`}
-                className="inline-flex items-center justify-center px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium rounded-lg text-sm transition"
+                className="btn-primary inline-flex items-center justify-center px-4 py-2 text-sm rounded-lg"
               >
                 Download Dokumen
               </a>
               <button 
                 onClick={() => setSelectedCert(null)}
-                className="px-4 py-2 border border-zinc-800 hover:bg-zinc-900 text-zinc-350 rounded-lg text-sm transition"
+                className="btn-outline px-4 py-2 rounded-lg text-sm"
               >
                 Tutup
               </button>
