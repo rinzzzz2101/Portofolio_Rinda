@@ -72,7 +72,7 @@ export default function AdminSettingsPage() {
     try {
       const res = await sendPasswordOtp(targetEmail);
       if (res.success) {
-        toast(res.message, "success");
+        toast(res.message || "Kode OTP berhasil dikirim!", "success");
         setPasswordStep("verify");
       } else {
         toast(res.error || "Gagal mengirim OTP", "error");
