@@ -646,42 +646,6 @@ export default function Home() {
           </section>
         )}
 
-        {/* CONTACT SECTION */}
-        {activeSections.messages && (
-          <section id="contact" className="max-w-2xl mx-auto text-center space-y-8">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Mari Berdiskusi</h2>
-              <p className="text-zinc-400">Punya ide proyek atau lowongan pekerjaan? Jangan ragu untuk menghubungi saya melalui form di bawah ini.</p>
-            </motion.div>
-
-            <motion.form onSubmit={handleContactSubmit} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="glass p-8 rounded-2xl space-y-4 text-left">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-zinc-300">Nama Lengkap</label>
-                  <Input required value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} placeholder="John Doe" className="bg-zinc-900/50 border-zinc-800 focus-visible:ring-zinc-400" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-zinc-300">Email</label>
-                  <Input type="email" required value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} placeholder="john@example.com" className="bg-zinc-900/50 border-zinc-800 focus-visible:ring-zinc-400" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-300">Pesan</label>
-                <textarea 
-                  required
-                  value={contactForm.message}
-                  onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
-                  className="flex min-h-[120px] w-full rounded-md border border-zinc-800 bg-zinc-900/50 px-3 py-2 text-sm ring-offset-background placeholder:text-zinc-550 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="Ceritakan tentang proyek Anda..."
-                />
-              </div>
-              <Button disabled={sending} className="w-full bg-zinc-100 text-zinc-950 hover:bg-zinc-200 transition-colors font-medium">
-                {sending ? "Mengirim..." : "Kirim Pesan"} <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </motion.form>
-          </section>
-        )}
-
       </div>
       
       {/* FOOTER */}
