@@ -272,8 +272,8 @@ export default function Home() {
                 )}
                 {cvUrl ? (
                   <Button size="lg" variant="outline" className="border-zinc-800 hover:bg-zinc-900 rounded-full px-8 bg-transparent text-zinc-300 hover:text-white" asChild>
-                    <a href={cvUrl} download={cvFileName} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                      <Download className="mr-2 w-4 h-4" /> Download CV
+                    <a href={cvUrl} download={cvFileName || "CV_Resume"} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                      <Download className="mr-2 w-4 h-4" /> Download CV / Resume
                     </a>
                   </Button>
                 ) : null}

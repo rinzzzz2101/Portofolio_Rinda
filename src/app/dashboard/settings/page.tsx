@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Settings, Save, CheckCircle2, Trash2, KeyRound, Eye, EyeOff, ShieldCheck, X } from "lucide-react";
+import { Settings, Save, CheckCircle2, Trash2, KeyRound, Eye, EyeOff, ShieldCheck, X, FileText, Image as ImageIcon, UploadCloud, ExternalLink } from "lucide-react";
 import { getSettings, saveSettings } from "@/actions/settings";
 import { getSocialLinks, createSocialLink, deleteSocialLink } from "@/actions/socials";
 import { useToast } from "@/components/ui/toast-provider";
@@ -93,6 +93,76 @@ export default function AdminSettingsPage() {
         setShowPasswordModal(false);
       }, 1500);
     }, 800);
+  };
+
+  // Handler Upload Berkas CV / Resume (Mendukung PDF, PNG, JPG)
+  const handleCvFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Batas ukuran 5MB
+    const MAX_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      toast("Ukuran file terlalu besar (maksimal 5MB). Silakan gunakan link Google Drive atau perkecil file.", "error");
+      return;
+    }
+
+    // Jika gambar (PNG / JPG / JPEG)
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const maxDim = 1800;
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            const mimeType = file.type === "image/png" ? "image/png" : "image/jpeg";
+            const compressedDataUrl = canvas.toDataURL(mimeType, 0.88);
+            setForm((prev) => ({
+              ...prev,
+              cvUrl: compressedDataUrl,
+              cvFileName: file.name,
+            }));
+            toast(`Foto/Gambar Resume (${file.name}) berhasil dipilih!`, "success");
+          } else {
+            setForm((prev) => ({
+              ...prev,
+              cvUrl: event.target?.result as string,
+              cvFileName: file.name,
+            }));
+          }
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // PDF atau dokumen lainnya
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm((prev) => ({
+          ...prev,
+          cvUrl: reader.result as string,
+          cvFileName: file.name,
+        }));
+        toast(`File CV ${file.name} berhasil dipilih!`, "success");
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const loadSocials = async () => {
@@ -330,13 +400,18 @@ export default function AdminSettingsPage() {
           </CardContent>
         </Card>
 
-        {/* CV Upload */}
+        {/* CV / Resume Upload (PDF, PNG, JPG) */}
         <Card className="glass-card border-gray-800 text-white">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle>CV / Resume</CardTitle>
-                <CardDescription className="text-gray-400">Upload CV atau tempel link Google Drive / Dropbox.</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-emerald-400" />
+                  CV / Resume
+                </CardTitle>
+                <CardDescription className="text-gray-400">
+                  Upload file Resume / CV dalam format <strong>PDF, PNG, atau JPG</strong>, atau gunakan link eksternal (Google Drive / Dropbox).
+                </CardDescription>
               </div>
               <div className="flex items-center gap-2">
                 <input 
@@ -346,39 +421,112 @@ export default function AdminSettingsPage() {
                   onChange={(e) => setForm({ ...form, cvActive: e.target.checked })}
                   className="w-4 h-4 rounded border-gray-850 bg-gray-900 accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
                 />
-                <Label htmlFor="cvActive" className="text-sm font-medium cursor-pointer">Aktifkan</Label>
+                <Label htmlFor="cvActive" className="text-sm font-medium cursor-pointer">Aktifkan di Web</Label>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
+            {/* File Upload Box */}
             <div className="grid gap-2">
-              <Label>Upload CV (PDF)</Label>
+              <Label className="text-xs font-semibold text-zinc-300">
+                Pilih File Dokumen (PDF, PNG, JPG)
+              </Label>
               <Input
                 type="file"
-                accept=".pdf,.doc,.docx"
-                className="bg-gray-900 border-gray-800 file:text-white"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setForm({ ...form, cvUrl: reader.result as string, cvFileName: file.name });
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
+                accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                className="bg-gray-900 border-gray-800 file:text-white file:bg-zinc-800 file:hover:bg-zinc-700 file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
+                onChange={handleCvFileUpload}
               />
-              {form.cvFileName && (
-                <p className="text-xs text-zinc-400 font-medium">✓ File: {form.cvFileName}</p>
-              )}
+              <p className="text-[11px] text-zinc-400">
+                Mendukung berkas <strong>PDF</strong>, gambar <strong>PNG</strong>, dan foto <strong>JPG</strong> (Maks. 5MB).
+              </p>
             </div>
-            <div className="grid gap-2">
-              <Label>Atau Link URL (Google Drive / Dropbox)</Label>
+
+            {/* Active CV Status & Preview */}
+            {form.cvUrl && (
+              <div className="p-3 bg-zinc-900/80 border border-zinc-800 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  {/* Thumbnail / Icon */}
+                  {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName) ? (
+                    <div className="w-12 h-12 rounded border border-zinc-700 overflow-hidden bg-zinc-950 shrink-0">
+                      <img 
+                        src={form.cvUrl} 
+                        alt="Preview CV" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                  )}
+
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-zinc-200 truncate max-w-[220px] sm:max-w-[320px]">
+                        {form.cvFileName || "Berkas CV / Resume"}
+                      </span>
+                      <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 shrink-0">
+                        {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName)
+                          ? "GAMBAR"
+                          : form.cvUrl.startsWith("data:application/pdf") || /\.pdf$/i.test(form.cvFileName)
+                          ? "PDF"
+                          : "LINK"}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-emerald-400 font-medium mt-0.5">
+                      ✓ Siap didownload oleh pengunjung
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-200"
+                    onClick={() => {
+                      if (form.cvUrl.startsWith("data:")) {
+                        const win = window.open();
+                        if (win) {
+                          win.document.write(
+                            `<iframe src="${form.cvUrl}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`
+                          );
+                        }
+                      } else {
+                        window.open(form.cvUrl, "_blank");
+                      }
+                    }}
+                  >
+                    <Eye className="w-3.5 h-3.5 mr-1" />
+                    Lihat
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 text-xs text-red-400 hover:bg-red-500/10 hover:text-red-300"
+                    onClick={() => {
+                      setForm({ ...form, cvUrl: "", cvFileName: "" });
+                      toast("File CV telah dihapus dari formulir.", "info");
+                    }}
+                  >
+                    <Trash2 className="w-3.5 h-3.5 mr-1" />
+                    Hapus
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Alternatif: Link Eksternal */}
+            <div className="grid gap-2 pt-2 border-t border-zinc-800/80">
+              <Label className="text-xs text-zinc-400">Atau Tempel Link Eksternal (Google Drive / Dropbox / Cloud)</Label>
               <Input
                 value={form.cvUrl && !form.cvUrl.startsWith("data:") ? form.cvUrl : ""}
                 onChange={(e) => setForm({ ...form, cvUrl: e.target.value, cvFileName: e.target.value ? "Link Eksternal" : "" })}
                 placeholder="https://drive.google.com/..."
-                className="bg-gray-900 border-gray-800"
+                className="bg-gray-900 border-gray-800 text-xs text-white"
               />
             </div>
           </CardContent>
