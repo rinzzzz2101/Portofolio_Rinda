@@ -134,7 +134,7 @@ export default function AdminOrganizationsPage() {
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Riwayat Organisasi" : "Tambah Riwayat Organisasi"}</DialogTitle>
-              <DialogDescription className="text-gray-400">Masukkan detail organisasi Anda.</DialogDescription>
+              <DialogDescription className="text-muted-foreground">Masukkan detail organisasi Anda.</DialogDescription>
             </DialogHeader>
             {errorMsg && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm">{errorMsg}</div>}
             
@@ -202,7 +202,7 @@ export default function AdminOrganizationsPage() {
       ) : organizations.length === 0 ? (
         <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-            <Users className="w-16 h-16 text-gray-500 mb-4" />
+            <Users className="w-16 h-16 text-muted-foreground mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Riwayat Organisasi</h3>
             <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tambah Organisasi" untuk mulai menambahkan.</p>
           </CardContent>
@@ -210,7 +210,7 @@ export default function AdminOrganizationsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {organizations.map((org) => (
-            <Card key={org.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
+            <Card key={org.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-border transition-all">
               <CardContent className="p-6 space-y-4">
                 <div className="flex justify-between items-start">
                   <div>
@@ -218,12 +218,12 @@ export default function AdminOrganizationsPage() {
                     <p className="text-sm font-medium mt-1" style={{ color: "var(--text-secondary)" }}>
                       {org.role}
                     </p>
-                    <p className="text-gray-500 text-xs mt-1">
+                    <p className="text-muted-foreground text-xs mt-1">
                       {new Date(org.startDate).getFullYear()} — {org.endDate ? new Date(org.endDate).getFullYear() : "Sekarang"}
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(org)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(org)} className="p-2 hover:bg-zinc-200 dark:hover:bg-muted" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(org.id)} className="hover:bg-red-500/10 text-red-500">

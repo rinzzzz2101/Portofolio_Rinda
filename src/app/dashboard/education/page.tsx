@@ -136,7 +136,7 @@ export default function AdminEducationPage() {
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Riwayat Pendidikan" : "Tambah Riwayat Pendidikan"}</DialogTitle>
-              <DialogDescription className="text-gray-400">Masukkan detail sekolah atau universitas Anda.</DialogDescription>
+              <DialogDescription className="text-muted-foreground">Masukkan detail sekolah atau universitas Anda.</DialogDescription>
             </DialogHeader>
             {errorMsg && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm">{errorMsg}</div>}
             
@@ -210,7 +210,7 @@ export default function AdminEducationPage() {
       ) : educations.length === 0 ? (
         <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-            <GraduationCap className="w-16 h-16 text-gray-500 mb-4" />
+            <GraduationCap className="w-16 h-16 text-muted-foreground mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Riwayat Pendidikan</h3>
             <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tambah Pendidikan" untuk mulai menambahkan.</p>
           </CardContent>
@@ -218,7 +218,7 @@ export default function AdminEducationPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {educations.map((edu) => (
-            <Card key={edu.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
+            <Card key={edu.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-border transition-all">
               <CardContent className="p-6 space-y-4">
                 <div className="flex justify-between items-start">
                   <div>
@@ -226,12 +226,12 @@ export default function AdminEducationPage() {
                     <p className="text-sm font-medium mt-1" style={{ color: "var(--text-secondary)" }}>
                       {edu.degree} {edu.fieldOfStudy ? `• ${edu.fieldOfStudy}` : ""}
                     </p>
-                    <p className="text-gray-500 text-xs mt-1">
+                    <p className="text-muted-foreground text-xs mt-1">
                       Angkatan {new Date(edu.startDate).getFullYear()}{edu.endDate ? ` — Lulus ${new Date(edu.endDate).getFullYear()}` : ""}
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(edu)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(edu)} className="p-2 hover:bg-zinc-200 dark:hover:bg-muted" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(edu.id)} className="hover:bg-red-500/10 text-red-500">

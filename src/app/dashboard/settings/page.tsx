@@ -357,7 +357,7 @@ export default function AdminSettingsPage() {
                   }}
                 />
                 {form.faviconUrl && (
-                  <div className="w-10 h-10 border border-gray-800 rounded-lg overflow-hidden bg-gray-950 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 border border-border rounded-lg overflow-hidden bg-gray-950 flex items-center justify-center shrink-0">
                     <img src={form.faviconUrl} alt="Favicon Preview" className="w-6 h-6 object-contain" />
                   </div>
                 )}
@@ -403,7 +403,7 @@ export default function AdminSettingsPage() {
             <div className="grid gap-2">
               <Label>Status Tersedia (Opsional)</Label>
               <Input value={form.hireStatus} onChange={(e) => setForm({ ...form, hireStatus: e.target.value })} placeholder="Contoh: Available for hire"  />
-              <p className="text-xs text-gray-500">Jika dikosongkan, label ini tidak akan muncul di halaman depan.</p>
+              <p className="text-xs text-muted-foreground">Jika dikosongkan, label ini tidak akan muncul di halaman depan.</p>
             </div>
             <div className="grid gap-2">
               <Label>Deskripsi Singkat (Hero)</Label>
@@ -463,7 +463,7 @@ export default function AdminSettingsPage() {
                   id="cvActive" 
                   checked={form.cvActive} 
                   onChange={(e) => setForm({ ...form, cvActive: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-850 bg-gray-900 accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
+                  className="w-4 h-4 rounded border-gray-850 bg-muted accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
                 />
                 <Label htmlFor="cvActive" className="text-sm font-medium cursor-pointer">Aktifkan di Web</Label>
               </div>
@@ -478,7 +478,7 @@ export default function AdminSettingsPage() {
               <Input
                 type="file"
                 accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-                className="file:text-foreground file:bg-zinc-800 file:hover:bg-zinc-700 file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
+                className="file:text-foreground file:bg-muted file:hover:bg-zinc-700 file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
                 onChange={handleCvFileUpload}
               />
               <p className="text-[11px] text-muted-foreground">
@@ -492,7 +492,7 @@ export default function AdminSettingsPage() {
                 <div className="flex items-center gap-3 overflow-hidden">
                   {/* Thumbnail / Icon */}
                   {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName) ? (
-                    <div className="w-12 h-12 rounded border border-zinc-700 overflow-hidden bg-zinc-950 shrink-0">
+                    <div className="w-12 h-12 rounded border border-border overflow-hidden bg-zinc-950 shrink-0">
                       <img 
                         src={form.cvUrl} 
                         alt="Preview CV" 
@@ -500,17 +500,17 @@ export default function AdminSettingsPage() {
                       />
                     </div>
                   ) : (
-                    <div className="w-10 h-10 rounded-lg bg-zinc-700/20 border border-zinc-700/30 flex items-center justify-center text-foreground shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-zinc-700/20 border border-border/30 flex items-center justify-center text-foreground shrink-0">
                       <FileText className="w-5 h-5" />
                     </div>
                   )}
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-zinc-200 truncate max-w-[220px] sm:max-w-[320px]">
+                      <span className="text-xs font-semibold text-foreground truncate max-w-[220px] sm:max-w-[320px]">
                         {form.cvFileName || "Berkas CV / Resume"}
                       </span>
-                      <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-zinc-800 text-foreground border border-zinc-700 shrink-0">
+                      <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-muted text-foreground border border-border shrink-0">
                         {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName)
                           ? "GAMBAR"
                           : form.cvUrl.startsWith("data:application/pdf") || /\.pdf$/i.test(form.cvFileName)
@@ -529,7 +529,7 @@ export default function AdminSettingsPage() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-8 text-xs border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-200"
+                    className="h-8 text-xs border-border bg-muted hover:bg-zinc-700 text-foreground"
                     onClick={() => {
                       if (form.cvUrl.startsWith("data:")) {
                         const win = window.open();
@@ -590,7 +590,7 @@ export default function AdminSettingsPage() {
                   id="socialActive" 
                   checked={form.socialActive} 
                   onChange={(e) => setForm({ ...form, socialActive: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-850 bg-gray-900 accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
+                  className="w-4 h-4 rounded border-gray-850 bg-muted accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
                 />
                 <Label htmlFor="socialActive" className="text-sm font-medium cursor-pointer">Aktifkan</Label>
               </div>
@@ -598,11 +598,11 @@ export default function AdminSettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Form Tambah Link */}
-            <div className="p-3 border border-gray-800 bg-gray-950/40 rounded-xl space-y-3">
-              <p className="text-xs font-semibold text-zinc-405">Tambah Link Baru</p>
+            <div className="p-3 border border-border bg-muted rounded-xl space-y-3">
+              <p className="text-xs font-semibold text-foreground">Tambah Link Baru</p>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <Label className="text-[10px] text-gray-400">Platform</Label>
+                  <Label className="text-[10px] text-muted-foreground">Platform</Label>
                   <select 
                     value={newSocial.platform} 
                     onChange={(e) => setNewSocial({ ...newSocial, platform: e.target.value })}
@@ -619,7 +619,7 @@ export default function AdminSettingsPage() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-[10px] text-gray-400">URL Link</Label>
+                  <Label className="text-[10px] text-muted-foreground">URL Link</Label>
                   <Input 
                     value={newSocial.url} 
                     onChange={(e) => setNewSocial({ ...newSocial, url: e.target.value })}
@@ -631,7 +631,7 @@ export default function AdminSettingsPage() {
               <Button 
                 onClick={handleAddSocial} 
                 size="sm" 
-                className="w-full text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium h-8"
+                className="btn-primary w-full text-xs h-8"
               >
                 + Tambah Sosial Media
               </Button>
@@ -639,15 +639,15 @@ export default function AdminSettingsPage() {
 
             {/* List Link Yang Ada */}
             <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1">
-              <Label className="text-xs font-medium text-gray-400">Daftar Link Aktif (Tanpa Batas)</Label>
+              <Label className="text-xs font-medium text-muted-foreground">Daftar Link Aktif (Tanpa Batas)</Label>
               {socials.length === 0 ? (
-                <p className="text-xs text-gray-500 italic py-2">Belum ada link sosial media.</p>
+                <p className="text-xs text-muted-foreground italic py-2">Belum ada link sosial media.</p>
               ) : (
                 socials.map((link) => (
-                  <div key={link.id} className="flex justify-between items-center p-2 rounded-lg bg-gray-900/60 border border-gray-800 text-xs">
+                  <div key={link.id} className="flex justify-between items-center p-2 rounded-lg bg-muted border border-border text-xs">
                     <div className="truncate max-w-[70%]">
                       <span className="font-semibold text-muted-foreground mr-2">{link.platform}</span>
-                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-foreground underline truncate max-w-[150px] inline-block align-middle">
+                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground underline truncate max-w-[150px] inline-block align-middle">
                         {link.url}
                       </a>
                     </div>
@@ -675,7 +675,7 @@ export default function AdminSettingsPage() {
                   <ShieldCheck className="w-4 h-4 text-foreground" />
                   Keamanan Akun
                 </CardTitle>
-                <CardDescription className="text-gray-400 mt-1">Kelola kata sandi untuk masuk ke dashboard admin.</CardDescription>
+                <CardDescription className="text-muted-foreground mt-1">Kelola kata sandi untuk masuk ke dashboard admin.</CardDescription>
               </div>
               <Button
                 type="button"
@@ -693,11 +693,11 @@ export default function AdminSettingsPage() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-950/60 border border-zinc-800">
-              <div className="w-9 h-9 rounded-full bg-zinc-700/20 border border-zinc-700/30 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-full bg-zinc-700/20 border border-border/30 flex items-center justify-center shrink-0">
                 <KeyRound className="w-4 h-4 text-foreground" />
               </div>
               <div>
-                <p className="text-sm font-medium text-zinc-200">Kata Sandi Admin</p>
+                <p className="text-sm font-medium text-foreground">Kata Sandi Admin</p>
                 <p className="text-xs text-zinc-500 mt-0.5">Klik tombol <span className="text-foreground font-medium">Ganti Sandi</span> untuk memperbarui kata sandi login.</p>
               </div>
             </div>
@@ -712,11 +712,11 @@ export default function AdminSettingsPage() {
           style={{ background: "rgba(0,0,0,0.75)" }}
           onClick={(e) => { if (e.target === e.currentTarget) setShowPasswordModal(false); }}
         >
-          <div className="w-full max-w-md bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="w-full max-w-md bg-zinc-900 border border-border rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-zinc-700/20 border border-zinc-700/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-zinc-700/20 border border-border/30 flex items-center justify-center">
                   <KeyRound className="w-4 h-4 text-foreground" />
                 </div>
                 <div>
@@ -730,7 +730,7 @@ export default function AdminSettingsPage() {
                   setPasswordStep("request");
                   setOtpCode("");
                 }}
-                className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-zinc-800 transition"
+                className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -740,13 +740,13 @@ export default function AdminSettingsPage() {
             <div className="px-6 py-5 space-y-4">
               {passwordStep === "request" && (
                 <div className="space-y-4 text-center pb-2">
-                  <div className="w-16 h-16 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center mx-auto mb-2 text-muted-foreground">
+                  <div className="w-16 h-16 rounded-full bg-muted border border-border flex items-center justify-center mx-auto mb-2 text-muted-foreground">
                     <ShieldCheck className="w-8 h-8" />
                   </div>
                   <p className="text-sm text-foreground">
                     Untuk mengganti sandi, kami perlu mengirimkan kode verifikasi (OTP) ke email Anda:
                   </p>
-                  <p className="text-sm font-bold text-zinc-200">
+                  <p className="text-sm font-bold text-foreground">
                     {form.email || "rinda.dev21@gmail.com"}
                   </p>
                 </div>

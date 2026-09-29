@@ -145,7 +145,7 @@ export default function AdminBlogsPage() {
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Artikel" : "Tulis Artikel Baru"}</DialogTitle>
-              <DialogDescription className="text-gray-400">Tulis dan atur detail artikel blog Anda.</DialogDescription>
+              <DialogDescription className="text-muted-foreground">Tulis dan atur detail artikel blog Anda.</DialogDescription>
             </DialogHeader>
             {errorMsg && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm">{errorMsg}</div>}
             
@@ -167,7 +167,7 @@ export default function AdminBlogsPage() {
               <div className="grid gap-2">
                 <Label style={{ color: "var(--text-primary)" }}>Konten (Markdown)</Label>
                 <textarea required value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })}
-                  className="flex min-h-[200px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
+                  className="flex min-h-[200px] w-full rounded-md border border-border bg-muted px-3 py-2 text-sm font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                   placeholder={"# Judul\n\nTulis konten artikel Anda di sini menggunakan format Markdown..."} />
               </div>
               <div className="flex items-center gap-2 mt-2">
@@ -176,7 +176,7 @@ export default function AdminBlogsPage() {
                   id="isPublished"
                   checked={form.isPublished}
                   onChange={(e) => setForm({ ...form, isPublished: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-800 bg-gray-900 accent-zinc-100 focus:ring-zinc-500"
+                  className="w-4 h-4 rounded border-border bg-muted accent-zinc-100 focus:ring-zinc-500"
                 />
                 <Label htmlFor="isPublished" className="cursor-pointer" style={{ color: "var(--text-primary)" }}>Publikasikan Langsung (Published)</Label>
               </div>
@@ -202,7 +202,7 @@ export default function AdminBlogsPage() {
       ) : blogs.length === 0 ? (
         <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-            <FileText className="w-16 h-16 text-gray-500 mb-4" />
+            <FileText className="w-16 h-16 text-muted-foreground mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Artikel</h3>
             <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tulis Artikel" untuk mulai menulis.</p>
           </CardContent>
@@ -210,7 +210,7 @@ export default function AdminBlogsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {blogs.map((blog) => (
-            <Card key={blog.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
+            <Card key={blog.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-border transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start gap-3">
                   <div className="flex-1">
@@ -218,17 +218,17 @@ export default function AdminBlogsPage() {
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${blog.isPublished ? "bg-green-500/10 text-green-400 border border-green-500/30" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30"}`}>
                         {blog.isPublished ? "Published" : "Draft"}
                       </span>
-                      <span className="text-xs text-zinc-300 bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-foreground bg-muted border border-border px-2 py-0.5 rounded-full">
                         {blog.category}
                       </span>
                     </div>
                     <h3 className="font-bold leading-snug line-clamp-2" style={{ color: "var(--text-primary)" }}>{blog.title}</h3>
                   </div>
                   <div className="flex gap-1 shrink-0">
-                    <Button size="sm" variant="ghost" onClick={() => togglePublishStatus(blog)} className={`hover:bg-gray-800 ${blog.isPublished ? "text-green-400" : "text-gray-400"}`} title={blog.isPublished ? "Kembalikan ke Draft" : "Publikasikan"}>
+                    <Button size="sm" variant="ghost" onClick={() => togglePublishStatus(blog)} className={`hover:bg-gray-800 ${blog.isPublished ? "text-green-400" : "text-muted-foreground"}`} title={blog.isPublished ? "Kembalikan ke Draft" : "Publikasikan"}>
                       {blog.isPublished ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(blog)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(blog)} className="p-2 hover:bg-zinc-200 dark:hover:bg-muted" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(blog.id)} className="hover:bg-red-500/10 text-red-500">
@@ -237,7 +237,7 @@ export default function AdminBlogsPage() {
                   </div>
                 </div>
                 <p className="text-sm line-clamp-2" style={{ color: "var(--text-muted)" }}>{blog.content}</p>
-                <div className="flex items-center justify-between text-xs text-gray-500">
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
                     {new Date(blog.createdAt).toLocaleDateString("id-ID", { dateStyle: "medium" })}

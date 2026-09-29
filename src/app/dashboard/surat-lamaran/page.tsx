@@ -974,8 +974,8 @@ ${data.nama}`;
             onClick={() => setIsMiniPreviewVisible(!isMiniPreviewVisible)}
             className={`text-xs h-9 transition-all font-medium ${
               isMiniPreviewVisible 
-                ? "border-zinc-500/60 bg-zinc-700/20 text-foreground hover:bg-zinc-700/30 hover:text-foreground shadow-md shadow-emerald-950/40" 
-                : "border-zinc-700 bg-card text-foreground hover:bg-zinc-700 hover:text-foreground hover:border-zinc-500 shadow-md"
+                ? "border-zinc-500/60 bg-zinc-700/20 text-foreground hover:bg-zinc-700/30 hover:text-foreground shadow-md shadow-md" 
+                : "border-border bg-card text-foreground hover:bg-zinc-700 hover:text-foreground hover:border-zinc-500 shadow-md"
             }`}
             title={isMiniPreviewVisible ? "Sembunyikan pratinjau surat" : "Tampilkan pratinjau surat mengambang"}
           >
@@ -995,7 +995,7 @@ ${data.nama}`;
               variant="ghost"
               size="sm"
               onClick={handleDownloadDoc}
-              className="text-foreground hover:text-foreground hover:bg-zinc-800 text-xs h-8 px-2.5"
+              className="text-foreground hover:text-foreground hover:bg-muted text-xs h-8 px-2.5"
               title="Download File Microsoft Word (.doc)"
             >
               <FileDown className="w-3.5 h-3.5 mr-1 text-blue-400" />
@@ -1006,7 +1006,7 @@ ${data.nama}`;
               variant="ghost"
               size="sm"
               onClick={handleDownloadTxt}
-              className="text-foreground hover:text-foreground hover:bg-zinc-800 text-xs h-8 px-2.5 border-l border-border"
+              className="text-foreground hover:text-foreground hover:bg-muted text-xs h-8 px-2.5 border-l border-border"
               title="Download File Teks (.txt)"
             >
               <Download className="w-3.5 h-3.5 mr-1 text-muted-foreground" />
@@ -1019,7 +1019,7 @@ ${data.nama}`;
             variant="outline"
             size="sm"
             onClick={handleCopyText}
-            className="border-border bg-muted text-foreground hover:text-foreground hover:bg-zinc-800 text-xs h-9"
+            className="border-border bg-muted text-foreground hover:text-foreground hover:bg-muted text-xs h-9"
           >
             {copied ? <Check className="w-3.5 h-3.5 mr-1.5 text-foreground" /> : <Copy className="w-3.5 h-3.5 mr-1.5" />}
             {copied ? "Tersalin!" : "Salin Teks"}
@@ -1029,7 +1029,7 @@ ${data.nama}`;
             type="button"
             size="sm"
             onClick={handleDownloadPDF}
-            className="bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs h-9 shadow-lg shadow-emerald-950/50"
+            className="bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs h-9 shadow-lg shadow-md"
           >
             <Download className="w-3.5 h-3.5 mr-1.5" />
             Download PDF
@@ -1048,7 +1048,7 @@ ${data.nama}`;
           }
         >
           <div 
-            className="flex flex-col rounded-xl overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.7)] border-2 border-zinc-700/90 bg-card backdrop-blur-md transition-shadow hover:border-zinc-500/80 ring-1 ring-white/10"
+            className="flex flex-col rounded-xl overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.7)] border-2 border-border/90 bg-card backdrop-blur-md transition-shadow hover:border-zinc-500/80 ring-1 ring-white/10"
             style={{ width: `${miniSize.width}px` }}
           >
             {/* Header Drag Bar (Bisa di-drag untuk memindahkan posisi) */}
@@ -1057,7 +1057,7 @@ ${data.nama}`;
               onPointerMove={handleDragMove}
               onPointerUp={handleDragEnd}
               onPointerCancel={handleDragEnd}
-              className="flex items-center justify-between px-2.5 py-1.5 bg-card border-b border-border cursor-grab active:cursor-grabbing select-none touch-none hover:bg-zinc-800/60 transition-colors"
+              className="flex items-center justify-between px-2.5 py-1.5 bg-card border-b border-border cursor-grab active:cursor-grabbing select-none touch-none hover:bg-muted/60 transition-colors"
               title="Tahan dan geser untuk memindahkan pratinjau"
             >
               <div className="flex items-center gap-1.5 text-foreground pointer-events-none">
@@ -1072,7 +1072,7 @@ ${data.nama}`;
                 <button
                   type="button"
                   onClick={() => setIsEnlargedOpen(true)}
-                  className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-zinc-800 transition"
+                  className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-muted transition"
                   title="Perbesar penuh"
                 >
                   <ZoomIn className="w-3.5 h-3.5" />
@@ -1082,7 +1082,7 @@ ${data.nama}`;
                 <button
                   type="button"
                   onClick={() => setIsMiniPreviewVisible(false)}
-                  className="p-1 text-muted-foreground hover:text-red-400 rounded hover:bg-zinc-800 transition"
+                  className="p-1 text-muted-foreground hover:text-red-400 rounded hover:bg-muted transition"
                   title="Tutup pratinjau"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -1243,7 +1243,7 @@ ${data.nama}`;
                   className={`text-xs px-2.5 py-1 rounded-md border transition-all ${
                     data.posisi === p.value
                       ? "bg-zinc-700/20 text-foreground border-zinc-500/40 font-semibold"
-                      : "bg-muted border-border text-muted-foreground hover:text-foreground hover:border-zinc-700"
+                      : "bg-muted border-border text-muted-foreground hover:text-foreground hover:border-border"
                   }`}
                 >
                   {p.label}
@@ -1342,7 +1342,7 @@ ${data.nama}`;
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                   data.signatureMode === "gambar"
                     ? "bg-zinc-700/10 border-zinc-500/60 shadow-md shadow-zinc-950/20 ring-1 ring-zinc-500/30"
-                    : "bg-muted border-border hover:border-zinc-700"
+                    : "bg-muted border-border hover:border-border"
                 }`}
               >
                 <div>
@@ -1351,7 +1351,7 @@ ${data.nama}`;
                       <PenTool className="w-3.5 h-3.5 text-foreground" /> Gambar Pen
                     </span>
                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                      data.signatureMode === "gambar" ? "border-zinc-500 bg-zinc-500" : "border-zinc-700"
+                      data.signatureMode === "gambar" ? "border-zinc-500 bg-zinc-500" : "border-border"
                     }`}>
                       {data.signatureMode === "gambar" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
                     </div>
@@ -1408,7 +1408,7 @@ ${data.nama}`;
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                   data.signatureMode === "asli"
                     ? "bg-zinc-700/10 border-zinc-500/60 shadow-md shadow-zinc-950/20 ring-1 ring-zinc-500/30"
-                    : "bg-muted border-border hover:border-zinc-700"
+                    : "bg-muted border-border hover:border-border"
                 }`}
               >
                 <div>
@@ -1417,7 +1417,7 @@ ${data.nama}`;
                       <Sparkles className="w-3.5 h-3.5 text-foreground" /> TTD Asli Rinda
                     </span>
                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                      data.signatureMode === "asli" ? "border-zinc-500 bg-zinc-500" : "border-zinc-700"
+                      data.signatureMode === "asli" ? "border-zinc-500 bg-zinc-500" : "border-border"
                     }`}>
                       {data.signatureMode === "asli" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
                     </div>
@@ -1439,7 +1439,7 @@ ${data.nama}`;
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                   data.signatureMode === "manual"
                     ? "bg-zinc-700/10 border-zinc-500/60 shadow-md shadow-zinc-950/20 ring-1 ring-zinc-500/30"
-                    : "bg-muted border-border hover:border-zinc-700"
+                    : "bg-muted border-border hover:border-border"
                 }`}
               >
                 <div>
@@ -1448,7 +1448,7 @@ ${data.nama}`;
                       <CheckCircle2 className="w-3.5 h-3.5 text-muted-foreground" /> TTD Basah (Manual)
                     </span>
                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                      data.signatureMode === "manual" ? "border-zinc-500 bg-zinc-500" : "border-zinc-700"
+                      data.signatureMode === "manual" ? "border-zinc-500 bg-zinc-500" : "border-border"
                     }`}>
                       {data.signatureMode === "manual" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
                     </div>
@@ -1472,7 +1472,7 @@ ${data.nama}`;
             className="pb-3 border-b border-border cursor-pointer hover:bg-muted/30 transition flex flex-row items-center justify-between"
           >
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-foreground">
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-foreground">
                 <User className="w-4 h-4" />
               </div>
               <div>
@@ -1630,7 +1630,7 @@ ${data.nama}`;
                 variant="outline"
                 size="sm"
                 onClick={handleDownloadDoc}
-                className="h-8 text-xs border-zinc-700 bg-zinc-800 text-foreground hover:text-foreground"
+                className="h-8 text-xs border-border bg-muted text-foreground hover:text-foreground"
                 title="Download file Microsoft Word (.doc)"
               >
                 <FileDown className="w-3.5 h-3.5 mr-1 text-blue-400" />
@@ -1642,7 +1642,7 @@ ${data.nama}`;
                 type="button"
                 size="sm"
                 onClick={handleDownloadPDF}
-                className="h-8 text-xs bg-zinc-100 hover:bg-white text-zinc-950 font-medium shadow-md shadow-emerald-950/50"
+                className="h-8 text-xs bg-zinc-100 hover:bg-white text-zinc-950 font-medium shadow-md shadow-md"
               >
                 <Download className="w-3.5 h-3.5 mr-1" />
                 Download PDF
@@ -1652,7 +1652,7 @@ ${data.nama}`;
               <button
                 type="button"
                 onClick={() => setIsEnlargedOpen(false)}
-                className="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-red-500/20 hover:text-red-400 border border-zinc-700 hover:border-red-500/30 flex items-center justify-center text-foreground transition"
+                className="w-8 h-8 rounded-lg bg-muted hover:bg-red-500/20 hover:text-red-400 border border-border hover:border-red-500/30 flex items-center justify-center text-foreground transition"
                 title="Tutup Pratinjau (ESC)"
               >
                 <X className="w-4 h-4" />
@@ -1678,7 +1678,7 @@ ${data.nama}`;
       {/* ===================== MODAL KANVAS GAMBAR PEN ===================== */}
       {isCanvasModalOpen && (
         <div className="no-print fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="bg-[#121215] border border-border rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-foreground flex flex-col">
+          <div className="bg-card border border-border rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-foreground flex flex-col">
             
             {/* Modal Header */}
             <div className="p-4 sm:p-5 border-b border-border flex items-center justify-between">
@@ -1693,7 +1693,7 @@ ${data.nama}`;
               </div>
               <button
                 onClick={() => setIsCanvasModalOpen(false)}
-                className="text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-zinc-800 transition"
+                className="text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-muted transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1711,7 +1711,7 @@ ${data.nama}`;
                       onClick={() => setPenColor("#111827")}
                       title="Hitam Formal"
                       className={`w-5 h-5 rounded-full border ${
-                        penColor === "#111827" ? "ring-2 ring-zinc-400 border-white bg-black" : "border-zinc-700 bg-muted"
+                        penColor === "#111827" ? "ring-2 ring-zinc-400 border-white bg-black" : "border-border bg-muted"
                       }`}
                     />
                     <button
@@ -1719,7 +1719,7 @@ ${data.nama}`;
                       onClick={() => setPenColor("#1d4ed8")}
                       title="Biru Pulpen Formal"
                       className={`w-5 h-5 rounded-full border ${
-                        penColor === "#1d4ed8" ? "ring-2 ring-zinc-400 border-white bg-blue-600" : "border-zinc-700 bg-blue-700"
+                        penColor === "#1d4ed8" ? "ring-2 ring-zinc-400 border-white bg-blue-600" : "border-border bg-blue-700"
                       }`}
                     />
                   </div>
@@ -1732,21 +1732,21 @@ ${data.nama}`;
                     <button
                       type="button"
                       onClick={() => setPenWidth(1.5)}
-                      className={`px-2 py-0.5 rounded ${penWidth === 1.5 ? "bg-zinc-800 text-foreground font-bold" : "text-muted-foreground"}`}
+                      className={`px-2 py-0.5 rounded ${penWidth === 1.5 ? "bg-muted text-foreground font-bold" : "text-muted-foreground"}`}
                     >
                       Tipis
                     </button>
                     <button
                       type="button"
                       onClick={() => setPenWidth(2.5)}
-                      className={`px-2 py-0.5 rounded ${penWidth === 2.5 ? "bg-zinc-800 text-foreground font-bold" : "text-muted-foreground"}`}
+                      className={`px-2 py-0.5 rounded ${penWidth === 2.5 ? "bg-muted text-foreground font-bold" : "text-muted-foreground"}`}
                     >
                       Sedang
                     </button>
                     <button
                       type="button"
                       onClick={() => setPenWidth(4)}
-                      className={`px-2 py-0.5 rounded ${penWidth === 4 ? "bg-zinc-800 text-foreground font-bold" : "text-muted-foreground"}`}
+                      className={`px-2 py-0.5 rounded ${penWidth === 4 ? "bg-muted text-foreground font-bold" : "text-muted-foreground"}`}
                     >
                       Tebal
                     </button>

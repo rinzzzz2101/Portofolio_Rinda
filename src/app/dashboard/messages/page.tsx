@@ -92,7 +92,7 @@ export default function AdminMessagesPage() {
                   </div>
                   <div className="flex gap-2">
                     {!msg.isRead && (
-                      <Button size="sm" variant="ghost" onClick={() => handleMarkRead(msg.id)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: 'var(--text-secondary)' }} title="Tandai sudah dibaca">
+                      <Button size="sm" variant="ghost" onClick={() => handleMarkRead(msg.id)} className="p-2 hover:bg-zinc-200 dark:hover:bg-muted" style={{ color: 'var(--text-secondary)' }} title="Tandai sudah dibaca">
                         <Eye className="w-4 h-4" />
                       </Button>
                     )}

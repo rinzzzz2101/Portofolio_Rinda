@@ -230,7 +230,7 @@ export default function AdminProjectsPage() {
                       <h3 className="text-xl font-bold mt-2" style={{ color: 'var(--text-primary)' }}>{project.title}</h3>
                     </div>
                     <div className="flex gap-1">
-                      <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(project)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: 'var(--text-secondary)' }}><Edit2 className="w-4 h-4" /></Button>
+                      <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(project)} className="p-2 hover:bg-zinc-200 dark:hover:bg-muted" style={{ color: 'var(--text-secondary)' }}><Edit2 className="w-4 h-4" /></Button>
                       <Button size="sm" variant="ghost" onClick={() => handleDelete(project.id)} className="p-2 hover:bg-red-500/10 text-red-500"><Trash2 className="w-4 h-4" /></Button>
                     </div>
                   </div>

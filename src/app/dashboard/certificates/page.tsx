@@ -128,7 +128,7 @@ export default function AdminCertificatesPage() {
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Sertifikat" : "Tambah Sertifikat"}</DialogTitle>
-              <DialogDescription className="text-gray-400">Upload sertifikat dan penghargaan Anda.</DialogDescription>
+              <DialogDescription className="text-muted-foreground">Upload sertifikat dan penghargaan Anda.</DialogDescription>
             </DialogHeader>
             {errorMsg && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-400 text-sm">{errorMsg}</div>}
             
@@ -213,7 +213,7 @@ export default function AdminCertificatesPage() {
                   }}
                 />
                 {form.pdfUrl && (
-                  <p className="text-xs text-zinc-400 font-medium">✓ Dokumen siap diupload</p>
+                  <p className="text-xs text-muted-foreground font-medium">✓ Dokumen siap diupload</p>
                 )}
               </div>
             </div>
@@ -238,7 +238,7 @@ export default function AdminCertificatesPage() {
       ) : certificates.length === 0 ? (
         <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-            <GraduationCap className="w-16 h-16 text-gray-500 mb-4" />
+            <GraduationCap className="w-16 h-16 text-muted-foreground mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Sertifikat</h3>
             <p style={{ color: "var(--text-muted)" }}>Klik tombol "+ Tambah Sertifikat" untuk mulai menambahkan.</p>
           </CardContent>
@@ -246,14 +246,14 @@ export default function AdminCertificatesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certificates.map((cert) => (
-            <Card key={cert.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
+            <Card key={cert.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-border transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start">
-                  <div className="w-10 h-10 bg-zinc-800 border border-zinc-750 rounded-xl flex items-center justify-center shrink-0">
-                    <GraduationCap className="w-5 h-5 text-zinc-300" />
+                  <div className="w-10 h-10 bg-muted border border-border rounded-xl flex items-center justify-center shrink-0">
+                    <GraduationCap className="w-5 h-5 text-foreground" />
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(cert)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: "var(--text-secondary)" }}>
+                    <Button size="sm" variant="ghost" onClick={() => handleOpenEdit(cert)} className="p-2 hover:bg-zinc-200 dark:hover:bg-muted" style={{ color: "var(--text-secondary)" }}>
                       <Edit2 className="w-4 h-4" />
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(cert.id)} className="hover:bg-red-500/10 text-red-500">
@@ -266,14 +266,14 @@ export default function AdminCertificatesPage() {
                   <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>{cert.issuer}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-xs text-gray-500">
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Calendar className="w-3 h-3" />
                     {new Date(cert.issueDate).toLocaleDateString("id-ID", { year: "numeric", month: "long" })}
                   </span>
                   {cert.pdfUrl && (
                     <button 
                       onClick={() => setSelectedCert(cert)}
-                      className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-300 transition-colors"
+                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <ExternalLink className="w-3 h-3" /> Lihat
                     </button>
@@ -298,7 +298,7 @@ export default function AdminCertificatesPage() {
                 <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{selectedCert.issuer}</p>
               </div>
               <button 
-                className="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" 
+                className="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-muted transition" 
                 style={{ color: 'var(--text-muted)' }}
                 onClick={() => setSelectedCert(null)}
               >
