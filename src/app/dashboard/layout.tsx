@@ -28,7 +28,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 glass border-b border-zinc-800 z-50 flex items-center justify-between px-6 bg-[#09090b]/90 backdrop-blur-md no-print">
         <h2 className="text-xl font-bold text-zinc-100">Admin Panel</h2>
-        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white p-2">
+        <button 
+          suppressHydrationWarning 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+          className="text-white p-2"
+        >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -63,6 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="p-4 border-t border-zinc-800 space-y-2">
           <NavItem onClick={closeMenu} href="/dashboard/settings" icon={<Settings size={20} />} label="Settings" active={pathname === "/dashboard/settings"} />
           <button 
+            suppressHydrationWarning
             onClick={handleLogout} 
             className="flex items-center gap-3 w-full p-3 rounded-lg text-zinc-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
           >

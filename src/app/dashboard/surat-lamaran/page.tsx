@@ -90,6 +90,7 @@ interface Stroke {
 
 export default function SuratLamaranPage() {
   const { toast } = useToast();
+  const [isMounted, setIsMounted] = useState(false);
   const [data, setData] = useState(DEFAULT_DATA);
   const [copied, setCopied] = useState(false);
   const [zoomScale, setZoomScale] = useState<number>(1);
@@ -118,6 +119,7 @@ export default function SuratLamaranPage() {
 
   // Inisialisasi posisi awal di pojok kanan atas setelah client mount
   useEffect(() => {
+    setIsMounted(true);
     if (typeof window !== "undefined") {
       const defaultW = 190;
       const minX = getSidebarBoundary() + 10;
@@ -867,6 +869,17 @@ ${data.nama}`;
       </div>
     </div>
   );
+
+  if (!isMounted) {
+    return (
+      <div className="bg-[#09090b] text-zinc-100 flex-1 flex items-center justify-center min-h-[60vh]">
+        <div className="flex flex-col items-center gap-3 text-zinc-400">
+          <div className="w-7 h-7 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-zinc-400">Memuat formulir surat lamaran...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#09090b] text-zinc-100 flex flex-col relative pb-20">
