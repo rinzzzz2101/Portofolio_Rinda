@@ -164,14 +164,27 @@ export async function loginAdmin(email: string, password: string) {
       return { success: false, error: "Email dan password wajib diisi." };
     }
 
+    // Ambil setting dari DB (mungkin null jika row belum ada)
     const setting = await prisma.setting.findUnique({
       where: { id: "singleton" },
     });
 
-    const registeredEmail = (setting?.email || "rinda.dev21@gmail.com").toLowerCase().trim();
-    const isValidEmail = inputEmail === registeredEmail || inputEmail === "rinda.dev21@gmail.com";
+    console.log("[Login Debug] setting found:", !!setting);
+    console.log("[Login Debug] adminPassword from DB:", setting?.adminPassword ? "(set)" : "(null/empty)");
+    console.log("[Login Debug] email from DB:", setting?.email || "(empty)");
 
-    const registeredPassword = setting?.adminPassword || "12345678";
+    // Email yang valid: dari DB (jika ada & tidak kosong), atau fallback hardcoded
+    const dbEmail = (setting?.email || "").trim().toLowerCase();
+    const fallbackEmail = "rinda.dev21@gmail.com";
+    const validEmail = dbEmail || fallbackEmail;
+    const isValidEmail = inputEmail === validEmail || inputEmail === fallbackEmail;
+
+    // Password: dari DB jika ada & tidak kosong, fallback default
+    const dbPassword = (setting?.adminPassword || "").trim();
+    const registeredPassword = dbPassword || "12345678";
+
+    console.log("[Login Debug] inputEmail:", inputEmail, "| validEmail:", validEmail, "| isValidEmail:", isValidEmail);
+    console.log("[Login Debug] passwordMatch:", inputPass === registeredPassword);
 
     if (!isValidEmail || inputPass !== registeredPassword) {
       return { success: false, error: "Email atau password salah!" };
