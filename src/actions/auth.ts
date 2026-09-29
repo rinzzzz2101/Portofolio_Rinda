@@ -1,9 +1,9 @@
 "use server";
 
 import nodemailer from "nodemailer";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function sendPasswordOtp(targetEmail: string) {
   try {
@@ -120,3 +120,85 @@ export async function verifyPasswordOtp(targetEmail: string, inputCode: string) 
     return { success: false, error: "Terjadi kesalahan saat memverifikasi kode." };
   }
 }
+
+export async function updateAdminPassword(newPassword: string) {
+  try {
+    const trimmed = (newPassword || "").trim();
+    if (!trimmed || trimmed.length < 6) {
+      return { success: false, error: "Kata sandi minimal 6 karakter." };
+    }
+
+    await prisma.setting.upsert({
+      where: { id: "singleton" },
+      update: { adminPassword: trimmed },
+      create: { id: "singleton", adminPassword: trimmed, description: "", about: "", cvUrl: "" },
+    });
+
+    revalidatePath("/dashboard/settings");
+    return { success: true, message: "Kata sandi berhasil diperbarui dan disimpan ke database!" };
+  } catch (error) {
+    console.error("[Update Password Error]:", error);
+    return { success: false, error: "Gagal menyimpan kata sandi ke database." };
+  }
+}
+
+export async function resetPasswordWithOtp(targetEmail: string, inputCode: string, newPassword: string) {
+  try {
+    const verifyRes = await verifyPasswordOtp(targetEmail, inputCode);
+    if (!verifyRes.success) {
+      return verifyRes;
+    }
+    return await updateAdminPassword(newPassword);
+  } catch (error) {
+    console.error("[Reset Password Error]:", error);
+    return { success: false, error: "Gagal mereset kata sandi." };
+  }
+}
+
+export async function loginAdmin(email: string, password: string) {
+  try {
+    const inputEmail = (email || "").trim().toLowerCase();
+    const inputPass = (password || "").trim();
+
+    if (!inputEmail || !inputPass) {
+      return { success: false, error: "Email dan password wajib diisi." };
+    }
+
+    const setting = await prisma.setting.findUnique({
+      where: { id: "singleton" },
+    });
+
+    const registeredEmail = (setting?.email || "rinda.dev21@gmail.com").toLowerCase().trim();
+    const isValidEmail = inputEmail === registeredEmail || inputEmail === "rinda.dev21@gmail.com";
+
+    const registeredPassword = setting?.adminPassword || "12345678";
+
+    if (!isValidEmail || inputPass !== registeredPassword) {
+      return { success: false, error: "Email atau password salah!" };
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set("dummy_auth", "true", {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 hari
+      sameSite: "lax",
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("[Login Error]:", error);
+    return { success: false, error: "Terjadi kesalahan sistem saat memproses login." };
+  }
+}
+
+export async function logoutAdmin() {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete("dummy_auth");
+    return { success: true };
+  } catch (error) {
+    console.error("[Logout Error]:", error);
+    return { success: false };
+  }
+}
+

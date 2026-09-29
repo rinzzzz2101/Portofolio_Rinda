@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, Save, CheckCircle2, Trash2, KeyRound, Eye, EyeOff, ShieldCheck, X, FileText, Image as ImageIcon, UploadCloud, ExternalLink } from "lucide-react";
 import { getSettings, saveSettings } from "@/actions/settings";
 import { getSocialLinks, createSocialLink, deleteSocialLink } from "@/actions/socials";
-import { sendPasswordOtp, verifyPasswordOtp } from "@/actions/auth";
+import { sendPasswordOtp, verifyPasswordOtp, updateAdminPassword } from "@/actions/auth";
 import { useToast } from "@/components/ui/toast-provider";
 import { PanelLoading } from "@/components/ui/loading";
 
@@ -61,10 +61,6 @@ export default function AdminSettingsPage() {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordSaved, setPasswordSaved] = useState(false);
 
-  const getStoredPassword = () => {
-    if (typeof window === "undefined") return "12345678";
-    return localStorage.getItem("admin_password") || "12345678";
-  };
 
   const handleSendOtp = async () => {
     const targetEmail = form.email || "rinda.dev21@gmail.com";
@@ -106,7 +102,7 @@ export default function AdminSettingsPage() {
     }
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     if (!passwordForm.newPass || !passwordForm.confirm) {
       toast("Semua field harus diisi!", "error");
       return;
@@ -120,19 +116,27 @@ export default function AdminSettingsPage() {
       return;
     }
     setPasswordLoading(true);
-    setTimeout(() => {
-      localStorage.setItem("admin_password", passwordForm.newPass);
+    try {
+      const res = await updateAdminPassword(passwordForm.newPass);
+      if (res.success) {
+        localStorage.setItem("admin_password", passwordForm.newPass);
+        setPasswordSaved(true);
+        setPasswordForm({ current: "", newPass: "", confirm: "" });
+        toast(res.message || "Sandi berhasil diperbarui dan disimpan permanen!", "success");
+        setTimeout(() => {
+          setPasswordSaved(false);
+          setShowPasswordModal(false);
+          setPasswordStep("request");
+          setOtpCode("");
+        }, 1500);
+      } else {
+        toast(res.error || "Gagal memperbarui kata sandi", "error");
+      }
+    } catch (err) {
+      toast("Terjadi kesalahan saat menyimpan kata sandi", "error");
+    } finally {
       setPasswordLoading(false);
-      setPasswordSaved(true);
-      setPasswordForm({ current: "", newPass: "", confirm: "" });
-      toast("Sandi berhasil diperbarui!", "success");
-      setTimeout(() => {
-        setPasswordSaved(false);
-        setShowPasswordModal(false);
-        setPasswordStep("request");
-        setOtpCode("");
-      }, 1500);
-    }, 800);
+    }
   };
 
   // Handler Upload Berkas CV / Resume (Mendukung PDF, PNG, JPG)

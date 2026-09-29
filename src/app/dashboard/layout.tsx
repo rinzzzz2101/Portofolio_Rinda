@@ -5,16 +5,21 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X, ScrollText } from "lucide-react";
 import { ConfirmProvider } from "@/components/ui/confirm-provider";
+import { logoutAdmin } from "@/actions/auth";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    // Hapus cookie auth
-    document.cookie = "dummy_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    
+  const handleLogout = async () => {
+    // Hapus cookie auth dari sisi browser
+    document.cookie = "dummy_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; max-age=0;";
+    try {
+      await logoutAdmin();
+    } catch (e) {
+      console.error("Logout error:", e);
+    }
     // Redirect ke login
     router.push("/login");
   };

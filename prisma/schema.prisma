@@ -128,6 +128,7 @@ model Setting {
   twitter      String   @default("")
   cvUrl        String   @db.Text
   cvFileName   String   @default("")
+  adminPassword String  @default("12345678")
   cvActive            Boolean  @default(true)
   socialActive        Boolean  @default(true)
   overviewActive      Boolean  @default(true)

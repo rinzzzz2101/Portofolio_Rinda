@@ -33,7 +33,8 @@ export async function getSettings() {
         }
       };
     }
-    return { success: true, data: setting };
+    const { adminPassword, ...safeSetting } = setting;
+    return { success: true, data: safeSetting };
   } catch (error) {
     return { success: false, data: null };
   }
