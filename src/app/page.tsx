@@ -114,14 +114,18 @@ export default function Home() {
           if (typeof document !== "undefined") {
             document.title = s.siteTitle || "Portfolio.";
             if (s.faviconUrl) {
-              // Remove existing icon links to bypass browser static build caching
-              const existingLinks = document.querySelectorAll("link[rel~='icon']");
-              existingLinks.forEach(el => el.parentNode?.removeChild(el));
+              try {
+                // Remove existing icon links safely
+                const existingLinks = document.querySelectorAll("link[rel~='icon']");
+                existingLinks.forEach(el => (el as Element).remove());
 
-              const link = document.createElement('link');
-              link.rel = 'icon';
-              link.href = s.faviconUrl;
-              document.getElementsByTagName('head')[0].appendChild(link);
+                const link = document.createElement('link');
+                link.rel = 'icon';
+                link.href = s.faviconUrl;
+                document.head.appendChild(link);
+              } catch (e) {
+                console.warn("Favicon update failed:", e);
+              }
             }
           }
         }
