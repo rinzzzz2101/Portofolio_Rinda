@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   DARK MODE (default)
+   ============================================ */
 @layer base {
-  :root {
+  :root,
+  .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
 
@@ -33,6 +37,81 @@
     --ring: 240 4.9% 83.9%;
 
     --radius: 0.5rem;
+
+    /* Custom semantic tokens - dark */
+    --bg-base:        #09090b;
+    --bg-card:        #141417;
+    --bg-muted:       #18181b;
+    --bg-hover:       #1f1f23;
+    --border-subtle:  rgba(255,255,255,0.06);
+    --border-default: #27272a;
+    --text-primary:   #f4f4f5;
+    --text-secondary: #a1a1aa;
+    --text-muted:     #71717a;
+    --text-dim:       #52525b;
+    --nav-bg:         rgba(9, 9, 11, 0.85);
+    --scrollbar-thumb: #27272a;
+    --scrollbar-hover: #3f3f46;
+    --glass-bg:       rgba(9, 9, 11, 0.7);
+    --glass-card-bg:  rgba(20, 20, 23, 0.4);
+    --btn-primary-bg: #ffffff;
+    --btn-primary-fg: #09090b;
+    --btn-primary-hover: #e4e4e7;
+  }
+}
+
+/* ============================================
+   LIGHT MODE
+   ============================================ */
+@layer base {
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+
+    /* Custom semantic tokens - light */
+    --bg-base:        #fafafa;
+    --bg-card:        #ffffff;
+    --bg-muted:       #f4f4f5;
+    --bg-hover:       #e4e4e7;
+    --border-subtle:  rgba(0,0,0,0.06);
+    --border-default: #d4d4d8;
+    --text-primary:   #09090b;
+    --text-secondary: #3f3f46;
+    --text-muted:     #71717a;
+    --text-dim:       #a1a1aa;
+    --nav-bg:         rgba(250, 250, 250, 0.88);
+    --scrollbar-thumb: #d4d4d8;
+    --scrollbar-hover: #a1a1aa;
+    --glass-bg:       rgba(250, 250, 250, 0.75);
+    --glass-card-bg:  rgba(255, 255, 255, 0.6);
+    --btn-primary-bg: #09090b;
+    --btn-primary-fg: #fafafa;
+    --btn-primary-hover: #27272a;
   }
 }
 
@@ -42,25 +121,34 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
-/* Glassmorphism Classes */
+/* ============================================
+   GLASSMORPHISM
+   ============================================ */
 .glass {
-  background: rgba(9, 9, 11, 0.7);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  transition: background 0.3s ease;
 }
 
 .glass-card {
-  background: rgba(20, 20, 23, 0.4);
+  background: var(--glass-card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  transition: background 0.3s ease;
 }
 
-/* Modern Sleek Scrollbar */
+/* ============================================
+   SCROLLBAR
+   ============================================ */
 html {
   scroll-behavior: smooth;
 }
@@ -71,18 +159,18 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(9, 9, 11, 0.4);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
   transition: all 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: var(--scrollbar-hover);
 }
 
 ::-webkit-scrollbar-corner {
@@ -91,10 +179,28 @@ html {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #27272a transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-/* Print Utilities */
+/* ============================================
+   THEME TRANSITION — semua elemen smooth
+   ============================================ */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+
+/* Kecualikan animasi yg memang harus cepat */
+button, a, [role="button"] {
+  transition-duration: 0.15s;
+}
+
+/* ============================================
+   PRINT
+   ============================================ */
 @media print {
   @page {
     size: A4 portrait;

@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Github, Linkedin, Twitter, Instagram, Facebook, Youtube, Link as LinkIcon, Mail, MapPin, ExternalLink, Briefcase, Menu, X } from "lucide-react";
+import { ArrowRight, Download, Github, Linkedin, Twitter, Instagram, Facebook, Youtube, Link as LinkIcon, Mail, MapPin, ExternalLink, Briefcase, Menu, X, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/ui/theme-provider";
 
 import { getProjects } from "@/actions/projects";
 import { getSkills } from "@/actions/skills";
@@ -28,6 +29,7 @@ const fadeInUp = {
 
 export default function Home() {
   const { toast } = useToast();
+  const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [hero, setHero] = useState({
     name: "",
@@ -179,14 +181,14 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-[#09090b] text-white flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
         <div className="z-10 flex flex-col items-center gap-6">
-          <div className="w-8 h-8 border-2 border-zinc-800 border-t-zinc-200 rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: 'var(--border-default)', borderTopColor: 'var(--text-primary)' }} />
           <div className="space-y-1 text-center">
-            <h3 className="text-lg font-bold tracking-widest text-zinc-100 uppercase">
+            <h3 className="text-lg font-bold tracking-widest uppercase" style={{ color: 'var(--text-primary)' }}>
               PORTFOLIO.
             </h3>
-            <p className="text-xs text-zinc-500 font-medium tracking-wide">
+            <p className="text-xs font-medium tracking-wide" style={{ color: 'var(--text-muted)' }}>
               Menyiapkan pengalaman terbaik...
             </p>
           </div>
@@ -196,46 +198,80 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-800">
+    <main className="min-h-screen" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
       
       {/* NAVBAR */}
-      <nav className="fixed top-0 w-full z-50 glass border-b border-zinc-850 bg-[#09090b]/80 backdrop-blur-md">
+      <nav className="fixed top-0 w-full z-50 glass border-b backdrop-blur-md" style={{ backgroundColor: 'var(--nav-bg)', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-bold text-xl tracking-tight">{siteTitle}</span>
+          <span className="font-bold text-xl tracking-tight" style={{ color: 'var(--text-primary)' }}>{siteTitle}</span>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex gap-6 text-sm font-medium text-zinc-400">
-            {activeSections.overview && <a href="#about" className="hover:text-white transition">About</a>}
-            {activeSections.skills && <a href="#skills" className="hover:text-white transition">Skills</a>}
-            {activeSections.education && <a href="#education" className="hover:text-white transition">Pendidikan</a>}
-            {activeSections.experience && <a href="#experience" className="hover:text-white transition">Experience</a>}
-            {activeSections.projects && <a href="#projects" className="hover:text-white transition">Projects</a>}
-            {activeSections.certificates && certificates.length > 0 && <a href="#certificates" className="hover:text-white transition">Sertifikat</a>}
-            {activeSections.blogs && blogs.length > 0 && <a href="#blog" className="hover:text-white transition">Blog</a>}
-            {activeSections.messages && <a href="#contact" className="hover:text-white transition">Contact</a>}
+          <div className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+            {activeSections.overview && <a href="#about" className="transition hover:opacity-70">About</a>}
+            {activeSections.skills && <a href="#skills" className="transition hover:opacity-70">Skills</a>}
+            {activeSections.education && <a href="#education" className="transition hover:opacity-70">Pendidikan</a>}
+            {activeSections.experience && <a href="#experience" className="transition hover:opacity-70">Experience</a>}
+            {activeSections.projects && <a href="#projects" className="transition hover:opacity-70">Projects</a>}
+            {activeSections.certificates && certificates.length > 0 && <a href="#certificates" className="transition hover:opacity-70">Sertifikat</a>}
+            {activeSections.blogs && blogs.length > 0 && <a href="#blog" className="transition hover:opacity-70">Blog</a>}
+            {activeSections.messages && <a href="#contact" className="transition hover:opacity-70">Contact</a>}
+
+            {/* Theme Toggle Button - Desktop */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="ml-2 p-2 rounded-full border transition-all hover:scale-110"
+              style={{
+                backgroundColor: 'var(--bg-muted)',
+                borderColor: 'var(--border-default)',
+                color: 'var(--text-secondary)',
+              }}
+            >
+              {theme === 'dark'
+                ? <Sun size={16} className="text-yellow-400" />
+                : <Moon size={16} className="text-indigo-500" />
+              }
+            </button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden text-zinc-400 hover:text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile: Theme Toggle + Hamburger */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="p-2 rounded-full border transition-all"
+              style={{
+                backgroundColor: 'var(--bg-muted)',
+                borderColor: 'var(--border-default)',
+                color: 'var(--text-secondary)',
+              }}
+            >
+              {theme === 'dark'
+                ? <Sun size={16} className="text-yellow-400" />
+                : <Moon size={16} className="text-indigo-500" />
+              }
+            </button>
+            <button 
+              style={{ color: 'var(--text-secondary)' }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-zinc-800 bg-[#09090b]/95 backdrop-blur-xl absolute w-full left-0 top-16 shadow-2xl">
-            <div className="flex flex-col px-6 py-4 space-y-4 text-sm font-medium text-zinc-400">
-              {activeSections.overview && <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">About</a>}
-              {activeSections.skills && <a href="#skills" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">Skills</a>}
-              {activeSections.experience && <a href="#experience" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">Experience</a>}
-              {activeSections.projects && <a href="#projects" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">Projects</a>}
-              {activeSections.education && <a href="#education" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">Pendidikan</a>}
-              {activeSections.certificates && certificates.length > 0 && <a href="#certificates" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">Sertifikat</a>}
-              {activeSections.blogs && blogs.length > 0 && <a href="#blog" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2 border-b border-zinc-850">Blog</a>}
-              {activeSections.messages && <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-white py-2">Contact</a>}
+          <div className="md:hidden border-t backdrop-blur-xl absolute w-full left-0 top-16 shadow-2xl" style={{ backgroundColor: 'var(--nav-bg)', borderColor: 'var(--border-default)' }}>
+            <div className="flex flex-col px-6 py-4 space-y-1 text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+              {activeSections.overview && <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>About</a>}
+              {activeSections.skills && <a href="#skills" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>Skills</a>}
+              {activeSections.experience && <a href="#experience" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>Experience</a>}
+              {activeSections.projects && <a href="#projects" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>Projects</a>}
+              {activeSections.education && <a href="#education" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>Pendidikan</a>}
+              {activeSections.certificates && certificates.length > 0 && <a href="#certificates" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>Sertifikat</a>}
+              {activeSections.blogs && blogs.length > 0 && <a href="#blog" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 border-b hover:opacity-70 transition" style={{ borderColor: 'var(--border-subtle)' }}>Blog</a>}
+              {activeSections.messages && <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block py-2.5 hover:opacity-70 transition">Contact</a>}
             </div>
           </div>
         )}
@@ -625,7 +661,7 @@ export default function Home() {
       </div>
       
       {/* FOOTER */}
-      <footer className="border-t border-zinc-850 py-8 text-center text-zinc-550 text-sm">
+      <footer className="border-t py-8 text-center text-sm" style={{ borderColor: 'var(--border-default)', color: 'var(--text-muted)' }}>
         <p>© {new Date().getFullYear()} {hero.name}. All rights reserved.</p>
       </footer>
       {/* Certificate Modal Overlay */}
