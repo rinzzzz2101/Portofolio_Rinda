@@ -67,7 +67,7 @@ export default function AdminSettingsPage() {
   };
 
   const handleSendOtp = async () => {
-    const targetEmail = form.email || "rinda.dev@portfolio.com";
+    const targetEmail = form.email || "rinda.dev21@gmail.com";
     setPasswordLoading(true);
     try {
       const res = await sendPasswordOtp(targetEmail);
@@ -89,7 +89,7 @@ export default function AdminSettingsPage() {
       toast("Harap masukkan kode OTP!", "error");
       return;
     }
-    const targetEmail = form.email || "rinda.dev@portfolio.com";
+    const targetEmail = form.email || "rinda.dev21@gmail.com";
     setPasswordLoading(true);
     try {
       const res = await verifyPasswordOtp(targetEmail, otpCode);
@@ -743,7 +743,7 @@ export default function AdminSettingsPage() {
                     Untuk mengganti sandi, kami perlu mengirimkan kode verifikasi (OTP) ke email Anda:
                   </p>
                   <p className="text-sm font-bold text-emerald-400">
-                    {form.email || "rinda.dev@portfolio.com"}
+                    {form.email || "rinda.dev21@gmail.com"}
                   </p>
                 </div>
               )}

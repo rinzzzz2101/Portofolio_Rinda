@@ -24,6 +24,7 @@ export async function sendPasswordOtp(targetEmail: string) {
     console.log(`[OTP] Generated OTP for ${email}: ${code}`);
 
     let sentViaSmtp = false;
+    let smtpErrorMessage = "";
 
     const smtpHost = process.env.SMTP_HOST;
     const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 465;
@@ -64,19 +65,27 @@ export async function sendPasswordOtp(targetEmail: string) {
           `,
         });
         sentViaSmtp = true;
-      } catch (mailError) {
-        console.warn("[OTP] Gagal mengirim via SMTP:", mailError);
+      } catch (mailError: any) {
+        console.error("[OTP] Gagal mengirim via SMTP:", mailError);
+        smtpErrorMessage = mailError?.message || "Gagal mengirim email melalui SMTP";
+      }
+
+      if (!sentViaSmtp) {
+        return {
+          success: false,
+          error: `Gagal mengirim email OTP ke ${email}: ${smtpErrorMessage}`,
+        };
       }
     }
 
     return {
       success: true,
       sentViaSmtp,
-      // Hanya kembalikan code jika SMTP belum dikonfigurasi (mode dev)
+      // Hanya kembalikan code jika SMTP belum dikonfigurasi sama sekali (mode dev lokal)
       code: sentViaSmtp ? undefined : code,
       message: sentViaSmtp
         ? `Kode verifikasi telah dikirim ke email: ${email}`
-        : `Kode verifikasi (simulasi): ${code}`,
+        : `Mode simulasi lokal: Kode OTP Anda adalah ${code}`,
     };
   } catch (error) {
     console.error("[OTP Error]:", error);
