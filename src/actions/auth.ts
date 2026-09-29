@@ -49,12 +49,12 @@ export async function sendPasswordOtp(targetEmail: string) {
           subject: "Kode Verifikasi Ganti Sandi - Portfolio",
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; background: #09090b; color: #ffffff; padding: 32px; border-radius: 12px; border: 1px solid #27272a;">
-              <h2 style="color: #10b981; margin-top: 0;">Verifikasi Ganti Sandi</h2>
+              <h2 style="color: #ffffff; margin-top: 0;">Verifikasi Ganti Sandi</h2>
               <p style="color: #a1a1aa; font-size: 14px; line-height: 1.6;">
                 Kami menerima permintaan untuk mengubah kata sandi akun Admin Portfolio Anda. Gunakan kode verifikasi di bawah ini untuk melanjutkan:
               </p>
               <div style="text-align: center; margin: 28px 0;">
-                <span style="display: inline-block; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #10b981; background: #18181b; padding: 14px 28px; border-radius: 8px; border: 1px solid #27272a;">
+                <span style="display: inline-block; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #ffffff; background: #18181b; padding: 14px 28px; border-radius: 8px; border: 1px solid #27272a;">
                   ${code}
                 </span>
               </div>

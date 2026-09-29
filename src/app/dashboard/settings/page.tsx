@@ -357,7 +357,7 @@ export default function AdminSettingsPage() {
                   }}
                 />
                 {form.faviconUrl && (
-                  <div className="w-10 h-10 border border-border rounded-lg overflow-hidden bg-gray-950 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 border border-border rounded-lg overflow-hidden bg-muted flex items-center justify-center shrink-0">
                     <img src={form.faviconUrl} alt="Favicon Preview" className="w-6 h-6 object-contain" />
                   </div>
                 )}
@@ -394,22 +394,26 @@ export default function AdminSettingsPage() {
           <CardContent className="space-y-4">
             <div className="grid gap-2">
               <Label>Nama Lengkap</Label>
-              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Rinda Dev"  />
+              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Rinda Dev" />
             </div>
             <div className="grid gap-2">
               <Label>Jabatan / Profesi</Label>
-              <Input value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Full Stack Developer"  />
+              <Input value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Full Stack Developer" />
             </div>
             <div className="grid gap-2">
               <Label>Status Tersedia (Opsional)</Label>
-              <Input value={form.hireStatus} onChange={(e) => setForm({ ...form, hireStatus: e.target.value })} placeholder="Contoh: Available for hire"  />
+              <Input value={form.hireStatus} onChange={(e) => setForm({ ...form, hireStatus: e.target.value })} placeholder="Contoh: Available for hire" />
               <p className="text-xs text-muted-foreground">Jika dikosongkan, label ini tidak akan muncul di halaman depan.</p>
             </div>
             <div className="grid gap-2">
               <Label>Deskripsi Singkat (Hero)</Label>
-              <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
-                placeholder="Saya fokus membangun aplikasi web modern..." />
+              <textarea 
+                value={form.description} 
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                className="flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2" 
+                style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
+                placeholder="Saya fokus membangun aplikasi web modern..." 
+              />
             </div>
           </CardContent>
         </Card>
@@ -423,23 +427,27 @@ export default function AdminSettingsPage() {
           <CardContent className="space-y-4">
             <div className="grid gap-2">
               <Label>Deskripsi About Me</Label>
-              <textarea value={form.about} onChange={(e) => setForm({ ...form, about: e.target.value })}
-                className="flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
-                placeholder="Ceritakan tentang diri Anda secara lengkap..." />
+              <textarea 
+                value={form.about} 
+                onChange={(e) => setForm({ ...form, about: e.target.value })}
+                className="flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2" 
+                style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
+                placeholder="Ceritakan tentang diri Anda secara lengkap..." 
+              />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label>Email</Label>
-                <Input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="rinda@example.com"  />
+                <Input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="rinda@example.com" />
               </div>
               <div className="grid gap-2">
                 <Label>No. HP / WhatsApp</Label>
-                <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+62812..."  />
+                <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+62812..." />
               </div>
             </div>
             <div className="grid gap-2">
               <Label>Lokasi</Label>
-              <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Jakarta, Indonesia"  />
+              <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Jakarta, Indonesia" />
             </div>
           </CardContent>
         </Card>
@@ -463,7 +471,7 @@ export default function AdminSettingsPage() {
                   id="cvActive" 
                   checked={form.cvActive} 
                   onChange={(e) => setForm({ ...form, cvActive: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-850 bg-muted accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
+                  className="w-4 h-4 rounded cursor-pointer accent-zinc-800 dark:accent-zinc-200"
                 />
                 <Label htmlFor="cvActive" className="text-sm font-medium cursor-pointer">Aktifkan di Web</Label>
               </div>
@@ -478,7 +486,7 @@ export default function AdminSettingsPage() {
               <Input
                 type="file"
                 accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-                className="file:text-foreground file:bg-muted file:hover:bg-zinc-700 file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
+                className="file:text-foreground file:bg-muted file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
                 onChange={handleCvFileUpload}
               />
               <p className="text-[11px] text-muted-foreground">
@@ -488,11 +496,14 @@ export default function AdminSettingsPage() {
 
             {/* Active CV Status & Preview */}
             {form.cvUrl && (
-              <div className="p-3 bg-zinc-900/80 border border-zinc-800 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div 
+                className="p-3.5 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-colors"
+                style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}
+              >
                 <div className="flex items-center gap-3 overflow-hidden">
                   {/* Thumbnail / Icon */}
                   {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName) ? (
-                    <div className="w-12 h-12 rounded border border-border overflow-hidden bg-zinc-950 shrink-0">
+                    <div className="w-12 h-12 rounded-lg border overflow-hidden shrink-0 flex items-center justify-center" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-card)" }}>
                       <img 
                         src={form.cvUrl} 
                         alt="Preview CV" 
@@ -500,17 +511,20 @@ export default function AdminSettingsPage() {
                       />
                     </div>
                   ) : (
-                    <div className="w-10 h-10 rounded-lg bg-zinc-700/20 border border-border/30 flex items-center justify-center text-foreground shrink-0">
+                    <div className="w-10 h-10 rounded-lg border flex items-center justify-center shrink-0" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-card)", color: "var(--text-primary)" }}>
                       <FileText className="w-5 h-5" />
                     </div>
                   )}
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-foreground truncate max-w-[220px] sm:max-w-[320px]">
+                      <span className="text-xs font-semibold truncate max-w-[220px] sm:max-w-[320px]" style={{ color: "var(--text-primary)" }}>
                         {form.cvFileName || "Berkas CV / Resume"}
                       </span>
-                      <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-muted text-foreground border border-border shrink-0">
+                      <span 
+                        className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border shrink-0"
+                        style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
+                      >
                         {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName)
                           ? "GAMBAR"
                           : form.cvUrl.startsWith("data:application/pdf") || /\.pdf$/i.test(form.cvFileName)
@@ -518,7 +532,7 @@ export default function AdminSettingsPage() {
                           : "LINK"}
                       </span>
                     </div>
-                    <p className="text-[11px] text-muted-foreground font-medium mt-0.5">
+                    <p className="text-[11px] font-medium mt-0.5" style={{ color: "var(--text-muted)" }}>
                       ✓ Siap didownload oleh pengunjung
                     </p>
                   </div>
@@ -527,9 +541,8 @@ export default function AdminSettingsPage() {
                 <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                   <Button
                     type="button"
-                    variant="outline"
                     size="sm"
-                    className="h-8 text-xs border-border bg-muted hover:bg-zinc-700 text-foreground"
+                    className="h-8 text-xs btn-outline"
                     onClick={() => {
                       if (form.cvUrl.startsWith("data:")) {
                         const win = window.open();
@@ -550,7 +563,7 @@ export default function AdminSettingsPage() {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="h-8 text-xs text-red-400 hover:bg-red-500/10 hover:text-red-300"
+                    className="h-8 text-xs text-red-500 hover:bg-red-500/10"
                     onClick={() => {
                       setForm({ ...form, cvUrl: "", cvFileName: "" });
                       toast("File CV telah dihapus dari formulir.", "info");
@@ -564,13 +577,13 @@ export default function AdminSettingsPage() {
             )}
 
             {/* Alternatif: Link Eksternal */}
-            <div className="grid gap-2 pt-2 border-t border-zinc-800/80">
-              <Label className="text-xs text-muted-foreground">Atau Tempel Link Eksternal (Google Drive / Dropbox / Cloud)</Label>
+            <div className="grid gap-2 pt-2 border-t" style={{ borderColor: "var(--border-default)" }}>
+              <Label className="text-xs" style={{ color: "var(--text-muted)" }}>Atau Tempel Link Eksternal (Google Drive / Dropbox / Cloud)</Label>
               <Input
                 value={form.cvUrl && !form.cvUrl.startsWith("data:") ? form.cvUrl : ""}
                 onChange={(e) => setForm({ ...form, cvUrl: e.target.value, cvFileName: e.target.value ? "Link Eksternal" : "" })}
                 placeholder="https://drive.google.com/..."
-                className="text-xs text-foreground"
+                className="text-xs"
               />
             </div>
           </CardContent>
@@ -590,7 +603,7 @@ export default function AdminSettingsPage() {
                   id="socialActive" 
                   checked={form.socialActive} 
                   onChange={(e) => setForm({ ...form, socialActive: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-850 bg-muted accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
+                  className="w-4 h-4 rounded cursor-pointer accent-zinc-800 dark:accent-zinc-200"
                 />
                 <Label htmlFor="socialActive" className="text-sm font-medium cursor-pointer">Aktifkan</Label>
               </div>
@@ -598,15 +611,16 @@ export default function AdminSettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Form Tambah Link */}
-            <div className="p-3 border border-border bg-muted rounded-xl space-y-3">
-              <p className="text-xs font-semibold text-foreground">Tambah Link Baru</p>
+            <div className="p-3 border rounded-xl space-y-3" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}>
+              <p className="text-xs font-semibold" style={{ color: "var(--text-primary)" }}>Tambah Link Baru</p>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <Label className="text-[10px] text-muted-foreground">Platform</Label>
+                  <Label className="text-[10px]" style={{ color: "var(--text-muted)" }}>Platform</Label>
                   <select 
                     value={newSocial.platform} 
                     onChange={(e) => setNewSocial({ ...newSocial, platform: e.target.value })}
-                    className="w-full h-9 rounded-lg border px-3 py-1 text-xs shadow-sm focus:outline-none focus:ring-2" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
+                    className="w-full h-9 rounded-lg border px-3 py-1 text-xs shadow-sm focus:outline-none focus:ring-2" 
+                    style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
                   >
                     <option value="Github">Github</option>
                     <option value="Linkedin">Linkedin</option>
@@ -619,7 +633,7 @@ export default function AdminSettingsPage() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-[10px] text-muted-foreground">URL Link</Label>
+                  <Label className="text-[10px]" style={{ color: "var(--text-muted)" }}>URL Link</Label>
                   <Input 
                     value={newSocial.url} 
                     onChange={(e) => setNewSocial({ ...newSocial, url: e.target.value })}
@@ -639,15 +653,15 @@ export default function AdminSettingsPage() {
 
             {/* List Link Yang Ada */}
             <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1">
-              <Label className="text-xs font-medium text-muted-foreground">Daftar Link Aktif (Tanpa Batas)</Label>
+              <Label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Daftar Link Aktif (Tanpa Batas)</Label>
               {socials.length === 0 ? (
-                <p className="text-xs text-muted-foreground italic py-2">Belum ada link sosial media.</p>
+                <p className="text-xs italic py-2" style={{ color: "var(--text-muted)" }}>Belum ada link sosial media.</p>
               ) : (
                 socials.map((link) => (
-                  <div key={link.id} className="flex justify-between items-center p-2 rounded-lg bg-muted border border-border text-xs">
+                  <div key={link.id} className="flex justify-between items-center p-2 rounded-lg border text-xs" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}>
                     <div className="truncate max-w-[70%]">
-                      <span className="font-semibold text-muted-foreground mr-2">{link.platform}</span>
-                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground underline truncate max-w-[150px] inline-block align-middle">
+                      <span className="font-semibold mr-2" style={{ color: "var(--text-primary)" }}>{link.platform}</span>
+                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="underline truncate max-w-[150px] inline-block align-middle hover:opacity-80" style={{ color: "var(--text-muted)" }}>
                         {link.url}
                       </a>
                     </div>
@@ -655,7 +669,7 @@ export default function AdminSettingsPage() {
                       size="sm" 
                       variant="ghost" 
                       onClick={() => handleRemoveSocial(link.id)} 
-                      className="h-6 px-2 hover:bg-red-500/10 text-red-400 text-xs"
+                      className="h-6 px-2 hover:bg-red-500/10 text-red-500 text-xs"
                     >
                       <Trash2 className="w-3.5 h-3.5 mr-1" /> Hapus
                     </Button>
@@ -675,7 +689,7 @@ export default function AdminSettingsPage() {
                   <ShieldCheck className="w-4 h-4 text-foreground" />
                   Keamanan Akun
                 </CardTitle>
-                <CardDescription className="text-muted-foreground mt-1">Kelola kata sandi untuk masuk ke dashboard admin.</CardDescription>
+                <CardDescription style={{ color: "var(--text-muted)" }} className="mt-1">Kelola kata sandi untuk masuk ke dashboard admin.</CardDescription>
               </div>
               <Button
                 type="button"
@@ -692,13 +706,13 @@ export default function AdminSettingsPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-950/60 border border-zinc-800">
-              <div className="w-9 h-9 rounded-full bg-zinc-700/20 border border-border/30 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 p-4 rounded-xl border" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}>
+              <div className="w-9 h-9 rounded-full border flex items-center justify-center shrink-0" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-default)" }}>
                 <KeyRound className="w-4 h-4 text-foreground" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Kata Sandi Admin</p>
-                <p className="text-xs text-zinc-500 mt-0.5">Klik tombol <span className="text-foreground font-medium">Ganti Sandi</span> untuk memperbarui kata sandi login.</p>
+                <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Kata Sandi Admin</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Klik tombol <span className="font-medium" style={{ color: "var(--text-primary)" }}>Ganti Sandi</span> untuk memperbarui kata sandi login.</p>
               </div>
             </div>
           </CardContent>
@@ -708,20 +722,19 @@ export default function AdminSettingsPage() {
       {/* ===== MODAL GANTI SANDI ===== */}
       {showPasswordModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: "rgba(0,0,0,0.75)" }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in"
           onClick={(e) => { if (e.target === e.currentTarget) setShowPasswordModal(false); }}
         >
-          <div className="w-full max-w-md bg-zinc-900 border border-border rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="w-full max-w-md panel rounded-2xl shadow-2xl overflow-hidden border animate-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+            <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "var(--border-default)" }}>
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-zinc-700/20 border border-border/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg border flex items-center justify-center" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}>
                   <KeyRound className="w-4 h-4 text-foreground" />
                 </div>
                 <div>
                   <h2 className="text-base font-bold" style={{ color: "var(--text-primary)" }}>Ganti Kata Sandi</h2>
-                  <p className="text-xs text-zinc-500">Perbarui sandi akun admin Anda</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Perbarui sandi akun admin Anda</p>
                 </div>
               </div>
               <button
@@ -740,13 +753,13 @@ export default function AdminSettingsPage() {
             <div className="px-6 py-5 space-y-4">
               {passwordStep === "request" && (
                 <div className="space-y-4 text-center pb-2">
-                  <div className="w-16 h-16 rounded-full bg-muted border border-border flex items-center justify-center mx-auto mb-2 text-muted-foreground">
+                  <div className="w-16 h-16 rounded-full border flex items-center justify-center mx-auto mb-2 text-foreground" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}>
                     <ShieldCheck className="w-8 h-8" />
                   </div>
-                  <p className="text-sm text-foreground">
+                  <p className="text-sm" style={{ color: "var(--text-primary)" }}>
                     Untuk mengganti sandi, kami perlu mengirimkan kode verifikasi (OTP) ke email Anda:
                   </p>
-                  <p className="text-sm font-bold text-foreground">
+                  <p className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>
                     {form.email || "rinda.dev21@gmail.com"}
                   </p>
                 </div>
@@ -754,7 +767,7 @@ export default function AdminSettingsPage() {
 
               {passwordStep === "verify" && (
                 <div className="space-y-4 pb-2">
-                  <Label htmlFor="otpCode" className="text-sm text-foreground">Kode Verifikasi (OTP)</Label>
+                  <Label htmlFor="otpCode" className="text-sm">Kode Verifikasi (OTP)</Label>
                   <Input
                     id="otpCode"
                     value={otpCode}
@@ -763,7 +776,7 @@ export default function AdminSettingsPage() {
                     className="text-center tracking-widest text-lg font-bold h-12"
                     maxLength={6}
                   />
-                  <p className="text-xs text-muted-foreground text-center">
+                  <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
                     Cek kotak masuk email Anda (atau cek toast jika SMTP belum diatur).
                   </p>
                 </div>
@@ -773,7 +786,7 @@ export default function AdminSettingsPage() {
                 <>
                   {/* Sandi Baru */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="newPass" className="text-sm text-foreground">Sandi Baru</Label>
+                    <Label htmlFor="newPass" className="text-sm">Sandi Baru</Label>
                     <div className="relative">
                       <Input
                         id="newPass"
@@ -792,13 +805,13 @@ export default function AdminSettingsPage() {
                       </button>
                     </div>
                     {passwordForm.newPass.length > 0 && passwordForm.newPass.length < 6 && (
-                      <p className="text-xs text-red-400">Sandi harus minimal 6 karakter</p>
+                      <p className="text-xs text-red-500">Sandi harus minimal 6 karakter</p>
                     )}
                   </div>
 
                   {/* Konfirmasi Sandi */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="confirmPass" className="text-sm text-foreground">Konfirmasi Sandi Baru</Label>
+                    <Label htmlFor="confirmPass" className="text-sm">Konfirmasi Sandi Baru</Label>
                     <div className="relative">
                       <Input
                         id="confirmPass"
@@ -817,10 +830,12 @@ export default function AdminSettingsPage() {
                       </button>
                     </div>
                     {passwordForm.confirm.length > 0 && passwordForm.newPass !== passwordForm.confirm && (
-                      <p className="text-xs text-red-400">Konfirmasi sandi tidak cocok</p>
+                      <p className="text-xs text-red-500">Konfirmasi sandi tidak cocok</p>
                     )}
                     {passwordForm.confirm.length > 0 && passwordForm.newPass === passwordForm.confirm && passwordForm.newPass.length >= 6 && (
-                      <p className="text-xs text-foreground flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Sandi cocok</p>
+                      <p className="text-xs flex items-center gap-1 font-medium" style={{ color: "var(--text-primary)" }}>
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Sandi cocok
+                      </p>
                     )}
                   </div>
                 </>
