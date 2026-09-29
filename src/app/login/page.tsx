@@ -26,11 +26,11 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    // DUMMY LOGIN (Karena Supabase Auth belum terkoneksi .env)
-    // Nanti akan diganti menggunakan supabase.auth.signInWithPassword
+    // Login menggunakan password yang tersimpan (default: "12345678", bisa diubah via Settings)
+    const storedPassword = localStorage.getItem("admin_password") || "12345678";
     setTimeout(() => {
-      if (email === "rinda.dev21@gmail.com" && password === "12345678") {
-        // Simulasi set cookie atau token (Middleware akan handle ini nanti via Supabase)
+      if (email === "rinda.dev21@gmail.com" && password === storedPassword) {
+        // Simulasi set cookie atau token
         document.cookie = "dummy_auth=true; path=/";
         router.push("/dashboard");
       } else {

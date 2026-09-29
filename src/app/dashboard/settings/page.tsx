@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Settings, Save, CheckCircle2, Trash2 } from "lucide-react";
+import { Settings, Save, CheckCircle2, Trash2, KeyRound, Eye, EyeOff, ShieldCheck, X } from "lucide-react";
 import { getSettings, saveSettings } from "@/actions/settings";
 import { getSocialLinks, createSocialLink, deleteSocialLink } from "@/actions/socials";
 import { useToast } from "@/components/ui/toast-provider";
@@ -48,6 +48,52 @@ export default function AdminSettingsPage() {
 
   const [socials, setSocials] = useState<any[]>([]);
   const [newSocial, setNewSocial] = useState({ platform: "Github", url: "" });
+
+  // State untuk modal Ganti Sandi
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({ current: "", newPass: "", confirm: "" });
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordSaved, setPasswordSaved] = useState(false);
+
+  const getStoredPassword = () => {
+    if (typeof window === "undefined") return "12345678";
+    return localStorage.getItem("admin_password") || "12345678";
+  };
+
+  const handleChangePassword = () => {
+    const storedPassword = getStoredPassword();
+    if (!passwordForm.current || !passwordForm.newPass || !passwordForm.confirm) {
+      toast("Semua field harus diisi!", "error");
+      return;
+    }
+    if (passwordForm.current !== storedPassword) {
+      toast("Sandi saat ini tidak sesuai!", "error");
+      return;
+    }
+    if (passwordForm.newPass.length < 6) {
+      toast("Sandi baru minimal 6 karakter!", "error");
+      return;
+    }
+    if (passwordForm.newPass !== passwordForm.confirm) {
+      toast("Konfirmasi sandi tidak cocok!", "error");
+      return;
+    }
+    setPasswordLoading(true);
+    setTimeout(() => {
+      localStorage.setItem("admin_password", passwordForm.newPass);
+      setPasswordLoading(false);
+      setPasswordSaved(true);
+      setPasswordForm({ current: "", newPass: "", confirm: "" });
+      toast("Sandi berhasil diperbarui!", "success");
+      setTimeout(() => {
+        setPasswordSaved(false);
+        setShowPasswordModal(false);
+      }, 1500);
+    }, 800);
+  };
 
   const loadSocials = async () => {
     const res = await getSocialLinks();
@@ -427,7 +473,179 @@ export default function AdminSettingsPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Keamanan Akun — Ganti Sandi */}
+        <Card className="glass-card border-gray-800 text-white lg:col-span-2">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  Keamanan Akun
+                </CardTitle>
+                <CardDescription className="text-gray-400 mt-1">Kelola kata sandi untuk masuk ke dashboard admin.</CardDescription>
+              </div>
+              <Button
+                type="button"
+                onClick={() => {
+                  setPasswordForm({ current: "", newPass: "", confirm: "" });
+                  setPasswordSaved(false);
+                  setShowPasswordModal(true);
+                }}
+                className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white flex items-center gap-2 text-sm"
+              >
+                <KeyRound className="w-4 h-4 text-emerald-400" />
+                Ganti Sandi
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-950/60 border border-zinc-800">
+              <div className="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                <KeyRound className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-zinc-200">Kata Sandi Admin</p>
+                <p className="text-xs text-zinc-500 mt-0.5">Klik tombol <span className="text-zinc-300 font-medium">Ganti Sandi</span> untuk memperbarui kata sandi login.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      {/* ===== MODAL GANTI SANDI ===== */}
+      {showPasswordModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.75)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowPasswordModal(false); }}
+        >
+          <div className="w-full max-w-md bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <KeyRound className="w-4 h-4 text-emerald-400" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white">Ganti Kata Sandi</h2>
+                  <p className="text-xs text-zinc-500">Perbarui sandi akun admin Anda</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowPasswordModal(false)}
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 py-5 space-y-4">
+              {/* Sandi Saat Ini */}
+              <div className="space-y-1.5">
+                <Label htmlFor="currentPass" className="text-sm text-zinc-300">Sandi Saat Ini</Label>
+                <div className="relative">
+                  <Input
+                    id="currentPass"
+                    type={showCurrent ? "text" : "password"}
+                    value={passwordForm.current}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, current: e.target.value })}
+                    placeholder="Masukkan sandi saat ini"
+                    className="bg-zinc-800 border-zinc-700 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrent(!showCurrent)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                  >
+                    {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Sandi Baru */}
+              <div className="space-y-1.5">
+                <Label htmlFor="newPass" className="text-sm text-zinc-300">Sandi Baru</Label>
+                <div className="relative">
+                  <Input
+                    id="newPass"
+                    type={showNew ? "text" : "password"}
+                    value={passwordForm.newPass}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, newPass: e.target.value })}
+                    placeholder="Minimal 6 karakter"
+                    className="bg-zinc-800 border-zinc-700 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNew(!showNew)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                  >
+                    {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {passwordForm.newPass.length > 0 && passwordForm.newPass.length < 6 && (
+                  <p className="text-xs text-red-400">Sandi harus minimal 6 karakter</p>
+                )}
+              </div>
+
+              {/* Konfirmasi Sandi */}
+              <div className="space-y-1.5">
+                <Label htmlFor="confirmPass" className="text-sm text-zinc-300">Konfirmasi Sandi Baru</Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPass"
+                    type={showConfirm ? "text" : "password"}
+                    value={passwordForm.confirm}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
+                    placeholder="Ulangi sandi baru"
+                    className="bg-zinc-800 border-zinc-700 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                  >
+                    {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {passwordForm.confirm.length > 0 && passwordForm.newPass !== passwordForm.confirm && (
+                  <p className="text-xs text-red-400">Konfirmasi sandi tidak cocok</p>
+                )}
+                {passwordForm.confirm.length > 0 && passwordForm.newPass === passwordForm.confirm && passwordForm.newPass.length >= 6 && (
+                  <p className="text-xs text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Sandi cocok</p>
+                )}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 pb-5 flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowPasswordModal(false)}
+                className="flex-1 border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+              >
+                Batal
+              </Button>
+              <Button
+                type="button"
+                onClick={handleChangePassword}
+                disabled={passwordLoading || passwordSaved}
+                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+              >
+                {passwordSaved ? (
+                  <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Tersimpan!</>
+                ) : passwordLoading ? (
+                  "Menyimpan..."
+                ) : (
+                  <><KeyRound className="w-4 h-4 mr-1.5" /> Simpan Sandi</>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -98,7 +98,7 @@ export default function SuratLamaranPage() {
   // State Pembesar Preview (Modal Mengambang)
   const [isEnlargedOpen, setIsEnlargedOpen] = useState(false);
   // State Mini Preview Visibility (Toggle buka/tutup floating card kecil)
-  const [isMiniPreviewVisible, setIsMiniPreviewVisible] = useState(true);
+  const [isMiniPreviewVisible, setIsMiniPreviewVisible] = useState(false);
   // State Ukuran & Posisi Mini Preview (Bisa digeser & di-resize dari pojok bawah)
   const [miniPos, setMiniPos] = useState<{ x: number; y: number } | null>(null);
   const [miniSize, setMiniSize] = useState<{ width: number; height: number }>({ width: 190, height: 268 });
