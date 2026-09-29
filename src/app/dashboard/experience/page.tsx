@@ -122,16 +122,16 @@ export default function AdminExperiencePage() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Manajemen Pengalaman Kerja</h1>
-          <p className="text-gray-400 mt-2">Atur riwayat pengalaman profesional Anda.</p>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Manajemen Pengalaman Kerja</h1>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Atur riwayat pengalaman profesional Anda.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+        <Button onClick={handleOpenCreate} className="btn-primary">
           <Plus className="w-4 h-4 mr-2" /> Tambah Pengalaman
         </Button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[540px] bg-[#0a0a0a] border-gray-800 text-white">
+        <DialogContent className="sm:max-w-[540px]">
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Pengalaman Kerja" : "Tambah Pengalaman Kerja"}</DialogTitle>
@@ -142,44 +142,44 @@ export default function AdminExperiencePage() {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label>Posisi / Jabatan</Label>
-                  <Input required value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} placeholder="Frontend Developer" className="bg-gray-900 border-gray-800" />
+                  <Label style={{ color: "var(--text-primary)" }}>Posisi / Jabatan</Label>
+                  <Input required value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} placeholder="Frontend Developer"  />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Nama Perusahaan</Label>
-                  <Input required value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} placeholder="PT. ABC Indonesia" className="bg-gray-900 border-gray-800" />
+                  <Label style={{ color: "var(--text-primary)" }}>Nama Perusahaan</Label>
+                  <Input required value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} placeholder="PT. ABC Indonesia"  />
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label>Lokasi (Opsional)</Label>
-                <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Jakarta, Indonesia" className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Lokasi (Opsional)</Label>
+                <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Jakarta, Indonesia"  />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label>Tanggal Mulai</Label>
-                  <Input type="date" required value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                  <Label style={{ color: "var(--text-primary)" }}>Tanggal Mulai</Label>
+                  <Input type="date" required value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })}  />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Tanggal Selesai</Label>
-                  <Input type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                  <Label style={{ color: "var(--text-primary)" }}>Tanggal Selesai</Label>
+                  <Input type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })}  />
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label>Deskripsi Pekerjaan</Label>
+                <Label style={{ color: "var(--text-primary)" }}>Deskripsi Pekerjaan</Label>
                 <textarea required value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="flex min-h-[100px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
+                  className="flex min-h-[100px] w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
                   placeholder="Jelaskan tanggung jawab dan pencapaian Anda..." />
               </div>
             </div>
             
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
-              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="btn-outline">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="border transition-colors font-medium" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+              <Button type="submit" disabled={loading} className="btn-primary">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan")}
               </Button>
             </DialogFooter>
@@ -190,7 +190,7 @@ export default function AdminExperiencePage() {
       {fetching ? (
         <LoadingSpinner message="Mengambil data pengalaman..." />
       ) : experiences.length === 0 ? (
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <Briefcase className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Pengalaman Kerja</h3>
@@ -200,7 +200,7 @@ export default function AdminExperiencePage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {experiences.map((exp) => (
-            <Card key={exp.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
+            <Card key={exp.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">

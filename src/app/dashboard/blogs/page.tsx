@@ -132,16 +132,16 @@ export default function AdminBlogsPage() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Manajemen Blog</h1>
-          <p className="text-gray-400 mt-2">Tulis artikel dan bagikan pengetahuan Anda.</p>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Manajemen Blog</h1>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Tulis artikel dan bagikan pengetahuan Anda.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+        <Button onClick={handleOpenCreate} className="btn-primary">
           <Plus className="w-4 h-4 mr-2" /> Tulis Artikel
         </Button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[600px] bg-[#0a0a0a] border-gray-800 text-white">
+        <DialogContent className="sm:max-w-[600px]">
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Artikel" : "Tulis Artikel Baru"}</DialogTitle>
@@ -151,21 +151,21 @@ export default function AdminBlogsPage() {
             
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label>Judul Artikel</Label>
-                <Input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Cara Membangun Portfolio Modern" className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Judul Artikel</Label>
+                <Input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Cara Membangun Portfolio Modern"  />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label>Kategori</Label>
-                  <Input required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} placeholder="Tutorial, Tips, Review..." className="bg-gray-900 border-gray-800" />
+                  <Label style={{ color: "var(--text-primary)" }}>Kategori</Label>
+                  <Input required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} placeholder="Tutorial, Tips, Review..."  />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Tags (pisahkan dgn koma)</Label>
-                  <Input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="nextjs, react, web" className="bg-gray-900 border-gray-800" />
+                  <Label style={{ color: "var(--text-primary)" }}>Tags (pisahkan dgn koma)</Label>
+                  <Input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="nextjs, react, web"  />
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label>Konten (Markdown)</Label>
+                <Label style={{ color: "var(--text-primary)" }}>Konten (Markdown)</Label>
                 <textarea required value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })}
                   className="flex min-h-[200px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                   placeholder={"# Judul\n\nTulis konten artikel Anda di sini menggunakan format Markdown..."} />
@@ -178,18 +178,18 @@ export default function AdminBlogsPage() {
                   onChange={(e) => setForm({ ...form, isPublished: e.target.checked })}
                   className="w-4 h-4 rounded border-gray-800 bg-gray-900 accent-zinc-100 focus:ring-zinc-500"
                 />
-                <Label htmlFor="isPublished" className="cursor-pointer">Publikasikan Langsung (Published)</Label>
+                <Label htmlFor="isPublished" className="cursor-pointer" style={{ color: "var(--text-primary)" }}>Publikasikan Langsung (Published)</Label>
               </div>
             </div>
             
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
-              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="btn-outline">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="border transition-colors font-medium" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+              <Button type="submit" disabled={loading} className="btn-primary">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan Artikel")}
               </Button>
             </DialogFooter>
@@ -200,7 +200,7 @@ export default function AdminBlogsPage() {
       {fetching ? (
         <LoadingSpinner message="Mengambil data artikel..." />
       ) : blogs.length === 0 ? (
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <FileText className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Artikel</h3>
@@ -210,7 +210,7 @@ export default function AdminBlogsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {blogs.map((blog) => (
-            <Card key={blog.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
+            <Card key={blog.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start gap-3">
                   <div className="flex-1">

@@ -308,10 +308,10 @@ export default function AdminSettingsPage() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Pengaturan Profil</h1>
-          <p className="text-gray-400 mt-2">Atur nama site, favicon, serta profil utama yang tampil di Landing Page.</p>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Pengaturan Profil</h1>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Atur nama site, favicon, serta profil utama yang tampil di Landing Page.</p>
         </div>
-        <Button onClick={handleSave} disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium flex items-center gap-2">
+        <Button onClick={handleSave} disabled={loading} className="btn-primary px-5 py-2.5 shadow-md flex items-center gap-2">
           {saved ? (
             <><CheckCircle2 className="w-4 h-4 text-zinc-300" /> Tersimpan!</>
           ) : (
@@ -322,7 +322,7 @@ export default function AdminSettingsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* General Settings */}
-        <Card className="glass-card border-gray-800 text-white lg:col-span-2">
+        <Card className="panel lg:col-span-2">
           <CardHeader>
             <CardTitle>Pengaturan Umum</CardTitle>
             <CardDescription className="text-gray-400">Atur judul situs dan ikon browser Anda.</CardDescription>
@@ -335,7 +335,7 @@ export default function AdminSettingsPage() {
                 value={form.siteTitle}
                 onChange={(e) => setForm({ ...form, siteTitle: e.target.value })}
                 placeholder="Portfolio."
-                className="bg-gray-900 border-gray-800"
+                
               />
             </div>
             <div className="grid gap-2">
@@ -344,7 +344,7 @@ export default function AdminSettingsPage() {
                 <Input
                   type="file"
                   accept="image/*"
-                  className="bg-gray-900 border-gray-800 file:text-white"
+                  
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
@@ -367,7 +367,7 @@ export default function AdminSettingsPage() {
         </Card>
 
         {/* Landing Page Section Visibility */}
-        <Card className="glass-card border-gray-800 text-white lg:col-span-2">
+        <Card className="panel lg:col-span-2">
           <CardHeader>
             <CardTitle>Visibilitas Modul Landing Page</CardTitle>
             <CardDescription className="text-gray-400">Aktifkan atau nonaktifkan modul/bagian yang ingin ditampilkan di Landing Page.</CardDescription>
@@ -386,7 +386,7 @@ export default function AdminSettingsPage() {
         </Card>
 
         {/* Hero Section */}
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel">
           <CardHeader>
             <CardTitle>Hero Section</CardTitle>
             <CardDescription className="text-gray-400">Data yang tampil di bagian paling atas website.</CardDescription>
@@ -394,15 +394,15 @@ export default function AdminSettingsPage() {
           <CardContent className="space-y-4">
             <div className="grid gap-2">
               <Label>Nama Lengkap</Label>
-              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Rinda Dev" className="bg-gray-900 border-gray-800" />
+              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Rinda Dev"  />
             </div>
             <div className="grid gap-2">
               <Label>Jabatan / Profesi</Label>
-              <Input value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Full Stack Developer" className="bg-gray-900 border-gray-800" />
+              <Input value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Full Stack Developer"  />
             </div>
             <div className="grid gap-2">
               <Label>Status Tersedia (Opsional)</Label>
-              <Input value={form.hireStatus} onChange={(e) => setForm({ ...form, hireStatus: e.target.value })} placeholder="Contoh: Available for hire" className="bg-gray-900 border-gray-800" />
+              <Input value={form.hireStatus} onChange={(e) => setForm({ ...form, hireStatus: e.target.value })} placeholder="Contoh: Available for hire"  />
               <p className="text-xs text-gray-500">Jika dikosongkan, label ini tidak akan muncul di halaman depan.</p>
             </div>
             <div className="grid gap-2">
@@ -415,7 +415,7 @@ export default function AdminSettingsPage() {
         </Card>
 
         {/* About Me */}
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel">
           <CardHeader>
             <CardTitle>Tentang Saya</CardTitle>
             <CardDescription className="text-gray-400">Data yang tampil di section About Me.</CardDescription>
@@ -430,22 +430,22 @@ export default function AdminSettingsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label>Email</Label>
-                <Input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="rinda@example.com" className="bg-gray-900 border-gray-800" />
+                <Input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="rinda@example.com"  />
               </div>
               <div className="grid gap-2">
                 <Label>No. HP / WhatsApp</Label>
-                <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+62812..." className="bg-gray-900 border-gray-800" />
+                <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+62812..."  />
               </div>
             </div>
             <div className="grid gap-2">
               <Label>Lokasi</Label>
-              <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Jakarta, Indonesia" className="bg-gray-900 border-gray-800" />
+              <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Jakarta, Indonesia"  />
             </div>
           </CardContent>
         </Card>
 
         {/* CV / Resume Upload (PDF, PNG, JPG) */}
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
@@ -478,7 +478,7 @@ export default function AdminSettingsPage() {
               <Input
                 type="file"
                 accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-                className="bg-gray-900 border-gray-800 file:text-white file:bg-zinc-800 file:hover:bg-zinc-700 file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
+                className="file:text-white file:bg-zinc-800 file:hover:bg-zinc-700 file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
                 onChange={handleCvFileUpload}
               />
               <p className="text-[11px] text-zinc-400">
@@ -570,14 +570,14 @@ export default function AdminSettingsPage() {
                 value={form.cvUrl && !form.cvUrl.startsWith("data:") ? form.cvUrl : ""}
                 onChange={(e) => setForm({ ...form, cvUrl: e.target.value, cvFileName: e.target.value ? "Link Eksternal" : "" })}
                 placeholder="https://drive.google.com/..."
-                className="bg-gray-900 border-gray-800 text-xs text-white"
+                className="text-xs text-white"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Social Media Card */}
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
@@ -624,7 +624,7 @@ export default function AdminSettingsPage() {
                     value={newSocial.url} 
                     onChange={(e) => setNewSocial({ ...newSocial, url: e.target.value })}
                     placeholder="https://..." 
-                    className="h-9 text-xs bg-gray-900 border-gray-800"
+                    className="h-9 text-xs"
                   />
                 </div>
               </div>
@@ -667,7 +667,7 @@ export default function AdminSettingsPage() {
         </Card>
 
         {/* Keamanan Akun — Ganti Sandi */}
-        <Card className="glass-card border-gray-800 text-white lg:col-span-2">
+        <Card className="panel lg:col-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -760,7 +760,7 @@ export default function AdminSettingsPage() {
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value)}
                     placeholder="Masukkan 6 digit kode"
-                    className="bg-zinc-800 border-zinc-700 text-center tracking-widest text-lg font-bold h-12"
+                    className="text-center tracking-widest text-lg font-bold h-12"
                     maxLength={6}
                   />
                   <p className="text-xs text-zinc-400 text-center">
@@ -781,7 +781,7 @@ export default function AdminSettingsPage() {
                         value={passwordForm.newPass}
                         onChange={(e) => setPasswordForm({ ...passwordForm, newPass: e.target.value })}
                         placeholder="Minimal 6 karakter"
-                        className="bg-zinc-800 border-zinc-700 pr-10"
+                        className="pr-10"
                       />
                       <button
                         type="button"
@@ -806,7 +806,7 @@ export default function AdminSettingsPage() {
                         value={passwordForm.confirm}
                         onChange={(e) => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
                         placeholder="Ulangi sandi baru"
-                        className="bg-zinc-800 border-zinc-700 pr-10"
+                        className="pr-10"
                       />
                       <button
                         type="button"
@@ -837,7 +837,7 @@ export default function AdminSettingsPage() {
                   setPasswordStep("request");
                   setOtpCode("");
                 }}
-                className="flex-1 border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                className="flex-1 btn-outline"
               >
                 Batal
               </Button>
@@ -847,7 +847,7 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleSendOtp}
                   disabled={passwordLoading}
-                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
+                  className="flex-1 btn-primary"
                 >
                   {passwordLoading ? "Mengirim..." : "Kirim Kode OTP"}
                 </Button>
@@ -858,7 +858,7 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleVerifyOtp}
                   disabled={passwordLoading}
-                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
+                  className="flex-1 btn-primary"
                 >
                   {passwordLoading ? "Memeriksa..." : "Verifikasi OTP"}
                 </Button>
@@ -869,7 +869,7 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleChangePassword}
                   disabled={passwordLoading || passwordSaved}
-                  className="flex-1 bg-zinc-100 hover:bg-white text-zinc-950 font-medium"
+                  className="flex-1 btn-primary"
                 >
                   {passwordSaved ? (
                     <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Tersimpan!</>
@@ -890,14 +890,14 @@ export default function AdminSettingsPage() {
 
 function VisibilityToggle({ id, label, checked, onChange }: { id: string; label: string; checked: boolean; onChange: (val: boolean) => void }) {
   return (
-    <div className="flex items-center justify-between p-4 border border-zinc-800 rounded-xl bg-zinc-950/40 hover:border-zinc-700/60 transition-all">
-      <Label htmlFor={id} className="text-sm font-medium cursor-pointer select-none text-zinc-300">{label}</Label>
+    <div className="flex items-center justify-between p-4 border rounded-xl transition-all" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)' }}>
+      <Label htmlFor={id} className="text-sm font-medium cursor-pointer select-none" style={{ color: 'var(--text-primary)' }}>{label}</Label>
       <input 
         type="checkbox" 
         id={id} 
         checked={checked} 
         onChange={(e) => onChange(e.target.checked)}
-        className="w-4 h-4 rounded border-gray-850 bg-gray-900 accent-zinc-100 focus:ring-zinc-500 cursor-pointer"
+        className="w-4 h-4 rounded cursor-pointer accent-zinc-800 dark:accent-zinc-200"
       />
     </div>
   );

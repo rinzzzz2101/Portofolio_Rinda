@@ -115,16 +115,16 @@ export default function AdminCertificatesPage() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Manajemen Sertifikat</h1>
-          <p className="text-gray-400 mt-2">Atur sertifikat dan penghargaan Anda di sini.</p>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Manajemen Sertifikat</h1>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Atur sertifikat dan penghargaan Anda di sini.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+        <Button onClick={handleOpenCreate} className="btn-primary">
           <Plus className="w-4 h-4 mr-2" /> Tambah Sertifikat
         </Button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[480px] bg-[#0a0a0a] border-gray-800 text-white">
+        <DialogContent className="sm:max-w-[480px]">
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Sertifikat" : "Tambah Sertifikat"}</DialogTitle>
@@ -134,23 +134,23 @@ export default function AdminCertificatesPage() {
             
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label>Nama Sertifikat</Label>
-                <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="AWS Certified Developer" className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Nama Sertifikat</Label>
+                <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="AWS Certified Developer"  />
               </div>
               <div className="grid gap-2">
-                <Label>Penerbit</Label>
-                <Input required value={form.issuer} onChange={(e) => setForm({ ...form, issuer: e.target.value })} placeholder="Amazon Web Services" className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Penerbit</Label>
+                <Input required value={form.issuer} onChange={(e) => setForm({ ...form, issuer: e.target.value })} placeholder="Amazon Web Services"  />
               </div>
               <div className="grid gap-2">
-                <Label>Tanggal Terbit</Label>
-                <Input type="date" required value={form.issueDate} onChange={(e) => setForm({ ...form, issueDate: e.target.value })} className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Tanggal Terbit</Label>
+                <Input type="date" required value={form.issueDate} onChange={(e) => setForm({ ...form, issueDate: e.target.value })}  />
               </div>
               <div className="grid gap-2">
-                <Label>Upload Dokumen (PDF, PNG, JPG) - Opsional</Label>
+                <Label style={{ color: "var(--text-primary)" }}>Upload Dokumen (PDF, PNG, JPG) - Opsional</Label>
                 <Input
                   type="file"
                   accept=".pdf,.png,.jpg,.jpeg"
-                  className="bg-gray-900 border-gray-800 file:text-white"
+                  
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
@@ -219,13 +219,13 @@ export default function AdminCertificatesPage() {
             </div>
             
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
-              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="btn-outline">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="border transition-colors font-medium" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+              <Button type="submit" disabled={loading} className="btn-primary">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan")}
               </Button>
             </DialogFooter>
@@ -236,7 +236,7 @@ export default function AdminCertificatesPage() {
       {fetching ? (
         <LoadingSpinner message="Mengambil data sertifikat..." />
       ) : certificates.length === 0 ? (
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <GraduationCap className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Sertifikat</h3>
@@ -246,7 +246,7 @@ export default function AdminCertificatesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certificates.map((cert) => (
-            <Card key={cert.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
+            <Card key={cert.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-3">
                 <div className="flex justify-between items-start">
                   <div className="w-10 h-10 bg-zinc-800 border border-zinc-750 rounded-xl flex items-center justify-center shrink-0">
@@ -286,19 +286,27 @@ export default function AdminCertificatesPage() {
       )}
       {/* Certificate Preview Modal */}
       {selectedCert && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in" onClick={() => setSelectedCert(null)}>
-          <div className="relative max-w-2xl w-full bg-[#0a0a0a] border border-gray-800 rounded-2xl overflow-hidden p-6 shadow-2xl space-y-4" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in" onClick={() => setSelectedCert(null)}>
+          <div 
+            className="relative max-w-2xl w-full border rounded-2xl overflow-hidden p-6 shadow-2xl space-y-4"
+            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-bold text-xl text-white">{selectedCert.name}</h3>
-                <p className="text-zinc-400 text-sm mt-1">{selectedCert.issuer}</p>
+                <h3 className="font-bold text-xl" style={{ color: 'var(--text-primary)' }}>{selectedCert.name}</h3>
+                <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{selectedCert.issuer}</p>
               </div>
-              <button className="text-gray-400 hover:text-white p-1" onClick={() => setSelectedCert(null)}>
-                <X className="w-6 h-6" />
+              <button 
+                className="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" 
+                style={{ color: 'var(--text-muted)' }}
+                onClick={() => setSelectedCert(null)}
+              >
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="w-full min-h-[300px] h-[450px] flex items-center justify-center bg-gray-950 border border-gray-900 rounded-xl overflow-hidden relative p-1">
+            <div className="w-full min-h-[300px] h-[450px] flex items-center justify-center border rounded-xl overflow-hidden relative p-1" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)' }}>
               {selectedCert.pdfUrl.startsWith("data:application/pdf") || selectedCert.pdfUrl.endsWith(".pdf") ? (
                 <iframe src={selectedCert.pdfUrl} className="w-full h-full rounded-lg border-0 bg-white" title={selectedCert.name} />
               ) : (
@@ -310,13 +318,13 @@ export default function AdminCertificatesPage() {
               <a 
                 href={selectedCert.pdfUrl} 
                 download={`sertifikat-${selectedCert.name.toLowerCase().replace(/\s+/g, '-')}${selectedCert.pdfUrl.startsWith("data:application/pdf") || selectedCert.pdfUrl.endsWith(".pdf") ? ".pdf" : ".jpg"}`}
-                className="inline-flex items-center justify-center px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium rounded-lg text-sm transition"
+                className="btn-primary inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm transition"
               >
                 Download Dokumen
               </a>
               <button 
                 onClick={() => setSelectedCert(null)}
-                className="px-4 py-2 border border-gray-800 hover:bg-gray-900 text-gray-300 rounded-lg text-sm transition"
+                className="btn-outline px-4 py-2 rounded-lg text-sm transition"
               >
                 Tutup
               </button>

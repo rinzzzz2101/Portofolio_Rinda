@@ -128,16 +128,16 @@ export default function AdminSkillsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Manajemen Skills</h1>
-          <p className="text-gray-400 mt-2">Atur Hard Skill dan Soft Skill Anda di sini.</p>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Manajemen Skills</h1>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Atur Hard Skill dan Soft Skill Anda di sini.</p>
         </div>
-        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+        <Button onClick={handleOpenCreate} className="btn-primary">
           <Plus className="w-4 h-4 mr-2" /> Tambah Skill
         </Button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[480px] bg-[#0a0a0a] border-gray-800 text-white">
+        <DialogContent className="sm:max-w-[480px]">
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Skill" : "Tambah Skill Baru"}</DialogTitle>
@@ -151,7 +151,7 @@ export default function AdminSkillsPage() {
             <div className="grid gap-4 py-4">
               {/* Tipe Skill Toggle */}
               <div className="grid gap-2">
-                <Label>Tipe Skill</Label>
+                <Label style={{ color: "var(--text-primary)" }}>Tipe Skill</Label>
                 <div className="grid grid-cols-2 gap-2">
                   {SKILL_TYPES.map((type) => (
                     <button
@@ -174,18 +174,18 @@ export default function AdminSkillsPage() {
               </div>
 
               <div className="grid gap-2">
-                <Label>Nama Skill</Label>
+                <Label style={{ color: "var(--text-primary)" }}>Nama Skill</Label>
                 <Input
                   required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder={form.category === "Hard Skill" ? "React.js, Python, Figma..." : "Komunikasi, Kepemimpinan..."}
-                  className="bg-gray-900 border-gray-800"
+                  
                 />
               </div>
 
               <div className="grid gap-2">
-                <Label>
+                <Label style={{ color: "var(--text-primary)" }}>
                   Level Keahlian{" "}
                   <span className={form.category === "Hard Skill" ? "text-zinc-200" : "text-zinc-400"}>
                     {form.level}%
@@ -205,15 +205,15 @@ export default function AdminSkillsPage() {
               </div>
             </div>
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
-              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="btn-outline">
                 Batal
               </Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="border transition-colors font-medium" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+              <Button type="submit" disabled={loading} className="btn-primary">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan Skill")}
               </Button>
             </DialogFooter>
@@ -251,7 +251,7 @@ export default function AdminSkillsPage() {
       {fetching ? (
         <LoadingSpinner message="Mengambil data keahlian..." />
       ) : filteredSkills.length === 0 ? (
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <Code2 className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Skill</h3>
@@ -261,7 +261,7 @@ export default function AdminSkillsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredSkills.map((skill) => (
-            <Card key={skill.id} className={`glass-card border-zinc-850 text-white hover:border-zinc-700 transition-all`}>
+            <Card key={skill.id} className="panel p-5 transition-all shadow-sm hover:shadow-md">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">

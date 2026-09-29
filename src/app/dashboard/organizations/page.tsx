@@ -120,17 +120,17 @@ export default function AdminOrganizationsPage() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Manajemen Organisasi</h1>
-          <p className="text-gray-400 mt-2">Atur riwayat pengalaman berorganisasi Anda.</p>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Manajemen Organisasi</h1>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Atur riwayat pengalaman berorganisasi Anda.</p>
         </div>
         
-        <Button onClick={handleOpenCreate} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+        <Button onClick={handleOpenCreate} className="btn-primary">
           <Plus className="w-4 h-4 mr-2" /> Tambah Organisasi
         </Button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[500px] bg-[#0a0a0a] border-gray-800 text-white">
+        <DialogContent className="sm:max-w-[500px]">
           <form onSubmit={(e) => handleSubmit(e, false)}>
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Riwayat Organisasi" : "Tambah Riwayat Organisasi"}</DialogTitle>
@@ -140,16 +140,16 @@ export default function AdminOrganizationsPage() {
             
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label>Nama Organisasi</Label>
-                <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Senat Mahasiswa, Komunitas Dev..." className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Nama Organisasi</Label>
+                <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Senat Mahasiswa, Komunitas Dev..."  />
               </div>
               <div className="grid gap-2">
-                <Label>Jabatan / Peran</Label>
-                <Input required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Ketua, Hubungan Masyarakat, Anggota..." className="bg-gray-900 border-gray-800" />
+                <Label style={{ color: "var(--text-primary)" }}>Jabatan / Peran</Label>
+                <Input required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Ketua, Hubungan Masyarakat, Anggota..."  />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label>Tahun Masuk</Label>
+                  <Label style={{ color: "var(--text-primary)" }}>Tahun Masuk</Label>
                   <Input
                     type="number"
                     required
@@ -158,11 +158,11 @@ export default function AdminOrganizationsPage() {
                     value={form.startDate}
                     onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                     placeholder={new Date().getFullYear().toString()}
-                    className="bg-gray-900 border-gray-800"
+                    
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Tahun Selesai (Opsional)</Label>
+                  <Label style={{ color: "var(--text-primary)" }}>Tahun Selesai (Opsional)</Label>
                   <Input
                     type="number"
                     min="1900"
@@ -170,12 +170,12 @@ export default function AdminOrganizationsPage() {
                     value={form.endDate}
                     onChange={(e) => setForm({ ...form, endDate: e.target.value })}
                     placeholder="Kosongkan jika masih aktif"
-                    className="bg-gray-900 border-gray-800"
+                    
                   />
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label>Keterangan / Deskripsi (Opsional)</Label>
+                <Label style={{ color: "var(--text-primary)" }}>Keterangan / Deskripsi (Opsional)</Label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
                   className="flex min-h-[80px] w-full rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-550"
                   placeholder="Deskripsi tugas, pencapaian program kerja..." />
@@ -183,13 +183,13 @@ export default function AdminOrganizationsPage() {
             </div>
             
             <DialogFooter className="flex flex-col sm:flex-row gap-2">
-              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="border-gray-800 text-white hover:bg-gray-900">Batal</Button>
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); setEditingId(null); }} className="btn-outline">Batal</Button>
               {!editingId && (
-                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="bg-zinc-850 hover:bg-zinc-800 border border-zinc-750 text-zinc-100">
+                <Button type="button" onClick={(e) => handleSubmit(e, true)} disabled={loading} className="border transition-colors font-medium" style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
                   {loading ? "Menyimpan..." : "Simpan & Tambah Lagi"}
                 </Button>
               )}
-              <Button type="submit" disabled={loading} className="bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-medium">
+              <Button type="submit" disabled={loading} className="btn-primary">
                 {loading ? "Menyimpan..." : (editingId ? "Simpan Perubahan" : "Simpan")}
               </Button>
             </DialogFooter>
@@ -200,7 +200,7 @@ export default function AdminOrganizationsPage() {
       {fetching ? (
         <LoadingSpinner message="Mengambil data organisasi..." />
       ) : organizations.length === 0 ? (
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel shadow-sm hover:shadow-md transition-all">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
             <Users className="w-16 h-16 text-gray-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Belum ada Riwayat Organisasi</h3>
@@ -210,7 +210,7 @@ export default function AdminOrganizationsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {organizations.map((org) => (
-            <Card key={org.id} className="glass-card border-gray-800 text-white hover:border-zinc-700 transition-all">
+            <Card key={org.id} className="panel shadow-sm hover:shadow-md transition-all hover:border-zinc-700 transition-all">
               <CardContent className="p-6 space-y-4">
                 <div className="flex justify-between items-start">
                   <div>

@@ -104,95 +104,60 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
       {/* Modal Dialog overlay */}
       {state && state.isOpen && (
         <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(0, 0, 0, 0.75)",
-            backdropFilter: "blur(4px)",
-            zIndex: 999999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "16px",
-          }}
+          className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in-0 duration-200"
           onClick={handleCancel}
         >
           <div
+            className="w-full max-w-md rounded-2xl border shadow-2xl overflow-hidden transition-all"
             style={{
-              width: "100%",
-              maxWidth: "420px",
-              backgroundColor: "#09090b",
-              borderRadius: "16px",
-              border: "1px solid #27272a",
-              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.5)",
-              overflow: "hidden",
+              backgroundColor: 'var(--bg-card)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-primary)'
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header / Body */}
-            <div style={{ padding: "24px 24px 20px 24px" }} className="space-y-4">
+            <div className="p-6 space-y-4">
               <div className="flex items-center gap-3">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${colors.icon}`}
                 >
                   <AlertTriangle className="w-5 h-5" />
                 </div>
-                <h3 style={{ fontSize: "18px", fontWeight: 700, color: "white" }}>
+                <h3 className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>
                   {state.title}
                 </h3>
               </div>
 
-              <p style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.6 }}>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                 {state.message}
               </p>
             </div>
 
             {/* Footer Actions */}
             <div
+              className="p-4 px-6 flex justify-end gap-3 border-t"
               style={{
-                backgroundColor: "#121214",
-                padding: "16px 24px",
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "12px",
-                borderTop: "1px solid #1f1f23",
+                backgroundColor: 'var(--bg-muted)',
+                borderColor: 'var(--border-default)'
               }}
             >
               <button
                 onClick={handleCancel}
+                className="px-4 py-2 rounded-lg border text-sm font-medium transition-colors"
                 style={{
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  border: "1px solid #27272a",
-                  backgroundColor: "transparent",
-                  color: "#e4e4e7",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  cursor: "pointer",
-                  transition: "background-color 0.2s",
+                  borderColor: 'var(--border-default)',
+                  color: 'var(--text-secondary)',
+                  backgroundColor: 'transparent'
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#18181b")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-hover)')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
               >
                 {state.cancelText}
               </button>
               <button
                 onClick={handleConfirm}
-                className={`${colors.button}`}
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  border: "none",
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "opacity 0.2s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-opacity shadow-sm ${colors.button}`}
               >
                 {state.confirmText}
               </button>

@@ -48,39 +48,55 @@ export default function AdminMessagesPage() {
   return (
     <div className="p-8 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Pesan Masuk</h1>
-        <p className="text-gray-400 mt-2">Baca pesan dari pengunjung website Anda.</p>
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Pesan Masuk</h1>
+        <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>Baca pesan dari pengunjung website Anda.</p>
       </div>
 
       {loading ? (
         <LoadingSpinner message="Memuat pesan masuk..." />
       ) : messages.length === 0 ? (
-        <Card className="glass-card border-gray-800 text-white">
+        <Card className="panel">
           <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-            <Mail className="w-16 h-16 text-gray-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">Belum ada Pesan</h3>
-            <p className="text-gray-400">Pesan dari form Contact di Landing Page akan muncul di sini.</p>
+            <Mail className="w-16 h-16 mb-4" style={{ color: 'var(--text-dim)' }} />
+            <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Belum ada Pesan</h3>
+            <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Pesan dari form Contact di Landing Page akan muncul di sini.</p>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-4">
           {messages.map((msg) => (
-            <Card key={msg.id} className={`glass-card border-gray-800 text-white ${!msg.isRead ? "border-l-4 border-l-zinc-300" : ""}`}>
+            <Card 
+              key={msg.id} 
+              className="panel shadow-sm hover:shadow-md transition-all"
+              style={{
+                borderLeftWidth: !msg.isRead ? '4px' : '1px',
+                borderLeftColor: !msg.isRead ? 'var(--text-primary)' : 'var(--border-default)'
+              }}
+            >
               <CardContent className="p-6">
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
-                    <h4 className="font-bold text-lg">{msg.name}</h4>
-                    <p className="text-zinc-400 text-sm">{msg.email}</p>
-                    <p className="text-gray-300 mt-3">{msg.message}</p>
-                    <p className="text-gray-500 text-xs mt-2">{new Date(msg.createdAt).toLocaleDateString("id-ID", { dateStyle: "long" })}</p>
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>{msg.name}</h4>
+                      {!msg.isRead && (
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}>
+                          Baru
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{msg.email}</p>
+                    <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }}>{msg.message}</p>
+                    <p className="text-xs mt-2" style={{ color: 'var(--text-dim)' }}>
+                      {new Date(msg.createdAt).toLocaleDateString("id-ID", { dateStyle: "long" })}
+                    </p>
                   </div>
                   <div className="flex gap-2">
                     {!msg.isRead && (
-                      <Button size="sm" variant="ghost" onClick={() => handleMarkRead(msg.id)} className="hover:bg-gray-800">
+                      <Button size="sm" variant="ghost" onClick={() => handleMarkRead(msg.id)} className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: 'var(--text-secondary)' }} title="Tandai sudah dibaca">
                         <Eye className="w-4 h-4" />
                       </Button>
                     )}
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(msg.id)} className="hover:bg-red-500/10 text-red-400">
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(msg.id)} className="p-2 hover:bg-red-500/10 text-red-500" title="Hapus pesan">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
