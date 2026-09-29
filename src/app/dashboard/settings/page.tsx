@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, Save, CheckCircle2, Trash2, KeyRound, Eye, EyeOff, ShieldCheck, X, FileText, Image as ImageIcon, UploadCloud, ExternalLink } from "lucide-react";
 import { getSettings, saveSettings } from "@/actions/settings";
 import { getSocialLinks, createSocialLink, deleteSocialLink } from "@/actions/socials";
+import { sendPasswordOtp, verifyPasswordOtp } from "@/actions/auth";
 import { useToast } from "@/components/ui/toast-provider";
 import { PanelLoading } from "@/components/ui/loading";
 
@@ -51,6 +52,8 @@ export default function AdminSettingsPage() {
 
   // State untuk modal Ganti Sandi
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordStep, setPasswordStep] = useState<"request" | "verify" | "change">("request");
+  const [otpCode, setOtpCode] = useState("");
   const [passwordForm, setPasswordForm] = useState({ current: "", newPass: "", confirm: "" });
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
@@ -63,14 +66,49 @@ export default function AdminSettingsPage() {
     return localStorage.getItem("admin_password") || "12345678";
   };
 
-  const handleChangePassword = () => {
-    const storedPassword = getStoredPassword();
-    if (!passwordForm.current || !passwordForm.newPass || !passwordForm.confirm) {
-      toast("Semua field harus diisi!", "error");
+  const handleSendOtp = async () => {
+    const targetEmail = form.email || "rinda.dev@portfolio.com";
+    setPasswordLoading(true);
+    try {
+      const res = await sendPasswordOtp(targetEmail);
+      if (res.success) {
+        toast(res.message, "success");
+        setPasswordStep("verify");
+      } else {
+        toast(res.error || "Gagal mengirim OTP", "error");
+      }
+    } catch (err) {
+      toast("Terjadi kesalahan sistem", "error");
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otpCode) {
+      toast("Harap masukkan kode OTP!", "error");
       return;
     }
-    if (passwordForm.current !== storedPassword) {
-      toast("Sandi saat ini tidak sesuai!", "error");
+    const targetEmail = form.email || "rinda.dev@portfolio.com";
+    setPasswordLoading(true);
+    try {
+      const res = await verifyPasswordOtp(targetEmail, otpCode);
+      if (res.success) {
+        toast("Kode OTP diverifikasi!", "success");
+        setPasswordStep("change");
+      } else {
+        toast(res.error || "Kode OTP salah", "error");
+      }
+    } catch (err) {
+      toast("Terjadi kesalahan verifikasi", "error");
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
+  const handleChangePassword = () => {
+    if (!passwordForm.newPass || !passwordForm.confirm) {
+      toast("Semua field harus diisi!", "error");
       return;
     }
     if (passwordForm.newPass.length < 6) {
@@ -91,6 +129,8 @@ export default function AdminSettingsPage() {
       setTimeout(() => {
         setPasswordSaved(false);
         setShowPasswordModal(false);
+        setPasswordStep("request");
+        setOtpCode("");
       }, 1500);
     }, 800);
   };
@@ -681,7 +721,11 @@ export default function AdminSettingsPage() {
                 </div>
               </div>
               <button
-                onClick={() => setShowPasswordModal(false)}
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setPasswordStep("request");
+                  setOtpCode("");
+                }}
                 className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
               >
                 <X className="w-4 h-4" />
@@ -690,80 +734,93 @@ export default function AdminSettingsPage() {
 
             {/* Body */}
             <div className="px-6 py-5 space-y-4">
-              {/* Sandi Saat Ini */}
-              <div className="space-y-1.5">
-                <Label htmlFor="currentPass" className="text-sm text-zinc-300">Sandi Saat Ini</Label>
-                <div className="relative">
-                  <Input
-                    id="currentPass"
-                    type={showCurrent ? "text" : "password"}
-                    value={passwordForm.current}
-                    onChange={(e) => setPasswordForm({ ...passwordForm, current: e.target.value })}
-                    placeholder="Masukkan sandi saat ini"
-                    className="bg-zinc-800 border-zinc-700 pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowCurrent(!showCurrent)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
-                  >
-                    {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+              {passwordStep === "request" && (
+                <div className="space-y-4 text-center pb-2">
+                  <div className="w-16 h-16 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center mx-auto mb-2 text-zinc-400">
+                    <ShieldCheck className="w-8 h-8" />
+                  </div>
+                  <p className="text-sm text-zinc-300">
+                    Untuk mengganti sandi, kami perlu mengirimkan kode verifikasi (OTP) ke email Anda:
+                  </p>
+                  <p className="text-sm font-bold text-emerald-400">
+                    {form.email || "rinda.dev@portfolio.com"}
+                  </p>
                 </div>
-              </div>
+              )}
 
-              {/* Sandi Baru */}
-              <div className="space-y-1.5">
-                <Label htmlFor="newPass" className="text-sm text-zinc-300">Sandi Baru</Label>
-                <div className="relative">
+              {passwordStep === "verify" && (
+                <div className="space-y-4 pb-2">
+                  <Label htmlFor="otpCode" className="text-sm text-zinc-300">Kode Verifikasi (OTP)</Label>
                   <Input
-                    id="newPass"
-                    type={showNew ? "text" : "password"}
-                    value={passwordForm.newPass}
-                    onChange={(e) => setPasswordForm({ ...passwordForm, newPass: e.target.value })}
-                    placeholder="Minimal 6 karakter"
-                    className="bg-zinc-800 border-zinc-700 pr-10"
+                    id="otpCode"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value)}
+                    placeholder="Masukkan 6 digit kode"
+                    className="bg-zinc-800 border-zinc-700 text-center tracking-widest text-lg font-bold h-12"
+                    maxLength={6}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowNew(!showNew)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
-                  >
-                    {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+                  <p className="text-xs text-zinc-400 text-center">
+                    Cek kotak masuk email Anda (atau cek toast jika SMTP belum diatur).
+                  </p>
                 </div>
-                {passwordForm.newPass.length > 0 && passwordForm.newPass.length < 6 && (
-                  <p className="text-xs text-red-400">Sandi harus minimal 6 karakter</p>
-                )}
-              </div>
+              )}
 
-              {/* Konfirmasi Sandi */}
-              <div className="space-y-1.5">
-                <Label htmlFor="confirmPass" className="text-sm text-zinc-300">Konfirmasi Sandi Baru</Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPass"
-                    type={showConfirm ? "text" : "password"}
-                    value={passwordForm.confirm}
-                    onChange={(e) => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
-                    placeholder="Ulangi sandi baru"
-                    className="bg-zinc-800 border-zinc-700 pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
-                  >
-                    {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-                {passwordForm.confirm.length > 0 && passwordForm.newPass !== passwordForm.confirm && (
-                  <p className="text-xs text-red-400">Konfirmasi sandi tidak cocok</p>
-                )}
-                {passwordForm.confirm.length > 0 && passwordForm.newPass === passwordForm.confirm && passwordForm.newPass.length >= 6 && (
-                  <p className="text-xs text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Sandi cocok</p>
-                )}
-              </div>
+              {passwordStep === "change" && (
+                <>
+                  {/* Sandi Baru */}
+                  <div className="space-y-1.5">
+                    <Label htmlFor="newPass" className="text-sm text-zinc-300">Sandi Baru</Label>
+                    <div className="relative">
+                      <Input
+                        id="newPass"
+                        type={showNew ? "text" : "password"}
+                        value={passwordForm.newPass}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, newPass: e.target.value })}
+                        placeholder="Minimal 6 karakter"
+                        className="bg-zinc-800 border-zinc-700 pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNew(!showNew)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                      >
+                        {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    {passwordForm.newPass.length > 0 && passwordForm.newPass.length < 6 && (
+                      <p className="text-xs text-red-400">Sandi harus minimal 6 karakter</p>
+                    )}
+                  </div>
+
+                  {/* Konfirmasi Sandi */}
+                  <div className="space-y-1.5">
+                    <Label htmlFor="confirmPass" className="text-sm text-zinc-300">Konfirmasi Sandi Baru</Label>
+                    <div className="relative">
+                      <Input
+                        id="confirmPass"
+                        type={showConfirm ? "text" : "password"}
+                        value={passwordForm.confirm}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
+                        placeholder="Ulangi sandi baru"
+                        className="bg-zinc-800 border-zinc-700 pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirm(!showConfirm)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                      >
+                        {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    {passwordForm.confirm.length > 0 && passwordForm.newPass !== passwordForm.confirm && (
+                      <p className="text-xs text-red-400">Konfirmasi sandi tidak cocok</p>
+                    )}
+                    {passwordForm.confirm.length > 0 && passwordForm.newPass === passwordForm.confirm && passwordForm.newPass.length >= 6 && (
+                      <p className="text-xs text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Sandi cocok</p>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Footer */}
@@ -771,25 +828,54 @@ export default function AdminSettingsPage() {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setShowPasswordModal(false)}
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setPasswordStep("request");
+                  setOtpCode("");
+                }}
                 className="flex-1 border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-white"
               >
                 Batal
               </Button>
-              <Button
-                type="button"
-                onClick={handleChangePassword}
-                disabled={passwordLoading || passwordSaved}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
-              >
-                {passwordSaved ? (
-                  <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Tersimpan!</>
-                ) : passwordLoading ? (
-                  "Menyimpan..."
-                ) : (
-                  <><KeyRound className="w-4 h-4 mr-1.5" /> Simpan Sandi</>
-                )}
-              </Button>
+
+              {passwordStep === "request" && (
+                <Button
+                  type="button"
+                  onClick={handleSendOtp}
+                  disabled={passwordLoading}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                >
+                  {passwordLoading ? "Mengirim..." : "Kirim Kode OTP"}
+                </Button>
+              )}
+
+              {passwordStep === "verify" && (
+                <Button
+                  type="button"
+                  onClick={handleVerifyOtp}
+                  disabled={passwordLoading}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                >
+                  {passwordLoading ? "Memeriksa..." : "Verifikasi OTP"}
+                </Button>
+              )}
+
+              {passwordStep === "change" && (
+                <Button
+                  type="button"
+                  onClick={handleChangePassword}
+                  disabled={passwordLoading || passwordSaved}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
+                >
+                  {passwordSaved ? (
+                    <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Tersimpan!</>
+                  ) : passwordLoading ? (
+                    "Menyimpan..."
+                  ) : (
+                    <><KeyRound className="w-4 h-4 mr-1.5" /> Simpan Sandi</>
+                  )}
+                </Button>
+              )}
             </div>
           </div>
         </div>

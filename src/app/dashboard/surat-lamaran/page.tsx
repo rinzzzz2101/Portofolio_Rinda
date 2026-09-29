@@ -32,6 +32,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast-provider";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 // Format tanggal standar Bahasa Indonesia
 function getIndonesianDateString(date = new Date()) {
@@ -342,9 +344,68 @@ export default function SuratLamaranPage() {
     }
   };
 
-  // Aksi Cetak / Simpan PDF
-  const handlePrint = () => {
-    window.print();
+  // Aksi Download PDF (Agar tampilan 100% sama dengan warna/style yang dilihat)
+  const handleDownloadPDF = async () => {
+    try {
+      toast("Sedang memproses PDF, mohon tunggu...", "info");
+      
+      // Ambil elemen asli (bisa yang hidden print:block atau yang ada di dalam modal)
+      // Kita pakai querySelector('.print-area') untuk mengambil template aslinya
+      const originalElement = document.querySelector('.print-area') as HTMLElement;
+      if (!originalElement) {
+        toast("Gagal menemukan area dokumen.", "error");
+        return;
+      }
+
+      // html2canvas sering bermasalah jika elemen berada di dalam kontainer yang di-scale atau hidden.
+      // Solusinya: kita clone elemennya, taruh di body dengan ukuran aslinya, ambil gambarnya, lalu hapus.
+      const clone = originalElement.cloneNode(true) as HTMLElement;
+      
+      // Reset style clone agar dirender sempurna oleh html2canvas
+      Object.assign(clone.style, {
+        position: 'absolute',
+        top: '-9999px',
+        left: '-9999px',
+        transform: 'none',
+        display: 'block',
+        visibility: 'visible',
+        width: '660px',
+        height: '920px' // Atau biarkan auto tergantung isi
+      });
+      
+      // Tambahkan ke body agar dirender browser
+      document.body.appendChild(clone);
+
+      const canvas = await html2canvas(clone, {
+        scale: 2, // Kualitas tinggi
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false
+      });
+
+      // Hapus clone dari body setelah screenshot selesai
+      document.body.removeChild(clone);
+
+      const imgData = canvas.toDataURL('image/png');
+      
+      // Kertas A4 (210 x 297 mm)
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Surat_Lamaran_${data.nama}_${data.posisi.replace(/\s+/g, '_')}.pdf`);
+      
+      toast("File PDF berhasil diunduh!", "success");
+    } catch (err) {
+      console.error("PDF Generation Error:", err);
+      toast("Terjadi kesalahan saat mengunduh PDF.", "error");
+    }
   };
 
   // Aksi Download Word (.doc)
@@ -967,11 +1028,11 @@ ${data.nama}`;
           <Button
             type="button"
             size="sm"
-            onClick={handlePrint}
+            onClick={handleDownloadPDF}
             className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs h-9 shadow-lg shadow-emerald-950/50"
           >
-            <Printer className="w-3.5 h-3.5 mr-1.5" />
-            Cetak / PDF
+            <Download className="w-3.5 h-3.5 mr-1.5" />
+            Download PDF
           </Button>
         </div>
       </header>
@@ -1511,11 +1572,11 @@ ${data.nama}`;
             <Button
               type="button"
               size="sm"
-              onClick={handlePrint}
+              onClick={handleDownloadPDF}
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium"
             >
-              <Printer className="w-3.5 h-3.5 mr-1" />
-              Cetak / PDF
+              <Download className="w-3.5 h-3.5 mr-1" />
+              Download PDF
             </Button>
           </div>
         </div>
@@ -1580,10 +1641,10 @@ ${data.nama}`;
               <Button
                 type="button"
                 size="sm"
-                onClick={handlePrint}
+                onClick={handleDownloadPDF}
                 className="h-8 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium shadow-md shadow-emerald-950/50"
               >
-                <Printer className="w-3.5 h-3.5 mr-1" />
+                <Download className="w-3.5 h-3.5 mr-1" />
                 Download PDF
               </Button>
 
