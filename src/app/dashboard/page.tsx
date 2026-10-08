@@ -86,6 +86,18 @@ export default async function DashboardOverview() {
               </span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: 'var(--text-muted)' }} />
             </Link>
+            <Link href="/dashboard/cv" className="flex items-center justify-between w-full px-4 py-3 rounded-lg transition-colors border group" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)' }}>
+              <span className="text-sm font-medium flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                <Plus className="w-4 h-4" /> + Kelola Curriculum Vitae (CV)
+              </span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: 'var(--text-muted)' }} />
+            </Link>
+            <Link href="/dashboard/download-berkas" className="flex items-center justify-between w-full px-4 py-3 rounded-lg transition-colors border group" style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-default)' }}>
+              <span className="text-sm font-medium flex items-center gap-2 text-blue-400">
+                <Plus className="w-4 h-4" /> + Download Berkas Lengkap (PDF)
+              </span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-blue-400" />
+            </Link>
           </CardContent>
         </Card>
       </div>

@@ -1,16 +1,40 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Settings, Save, CheckCircle2, Trash2, KeyRound, Eye, EyeOff, ShieldCheck, X, FileText, Image as ImageIcon, UploadCloud, ExternalLink } from "lucide-react";
+import { 
+  Settings, 
+  Save, 
+  CheckCircle2, 
+  Trash2, 
+  KeyRound, 
+  Eye, 
+  EyeOff, 
+  ShieldCheck, 
+  X, 
+  FileText, 
+  Image as ImageIcon, 
+  UploadCloud, 
+  ExternalLink,
+  FileBadge,
+  Sparkles,
+  RefreshCw,
+  ArrowRight,
+  Download,
+  Check
+} from "lucide-react";
 import { getSettings, saveSettings } from "@/actions/settings";
 import { getSocialLinks, createSocialLink, deleteSocialLink } from "@/actions/socials";
 import { sendPasswordOtp, verifyPasswordOtp, updateAdminPassword } from "@/actions/auth";
+import { getCvInitialData } from "@/actions/cv";
 import { useToast } from "@/components/ui/toast-provider";
 import { PanelLoading } from "@/components/ui/loading";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function AdminSettingsPage() {
   const { toast } = useToast();
@@ -50,6 +74,11 @@ export default function AdminSettingsPage() {
   const [socials, setSocials] = useState<any[]>([]);
   const [newSocial, setNewSocial] = useState({ platform: "Github", url: "" });
 
+  // State & Handler CV ATS Builder
+  const [cvAtsData, setCvAtsData] = useState<any>(null);
+  const [isSyncingCv, setIsSyncingCv] = useState(false);
+  const cvPrintRef = useRef<HTMLDivElement>(null);
+
   // State untuk modal Ganti Sandi
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordStep, setPasswordStep] = useState<"request" | "verify" | "change">("request");
@@ -61,6 +90,128 @@ export default function AdminSettingsPage() {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordSaved, setPasswordSaved] = useState(false);
 
+  const loadCvAtsData = async () => {
+    try {
+      let raw: any = null;
+      if (typeof window !== "undefined") {
+        const localDraft = localStorage.getItem("cv_ats_draft");
+        if (localDraft) {
+          try {
+            raw = JSON.parse(localDraft);
+          } catch (e) {}
+        }
+      }
+
+      if (!raw) {
+        const res = await getCvInitialData();
+        if (res.success && res.data) {
+          raw = {
+            name: res.data.profile?.name || "RINDA",
+            email: res.data.profile?.email || "rinda.dev21@gmail.com",
+            phone: res.data.profile?.phone || "(+62)8121-413-7112",
+            location: res.data.profile?.location || "Kec. Kawali, Kab. Ciamis",
+            about: res.data.profile?.about || "Saya merupakan lulusan SMK jurusan Rekayasa Perangkat Lunak yang memiliki semangat kerja tinggi, disiplin, jujur, dan bertanggung jawab dalam bekerja. Mampu bekerja sama dalam tim maupun individu, cepat belajar hal baru, serta siap bekerja di bawah tekanan dan target kerja perusahaan.",
+            educations: res.data.educations || [
+              { id: "edu-1", institution: "SMKN 1 Kawali Jurusan Rekayasa Perangkat Lunak", major: "", period: "2023 - 2026" },
+              { id: "edu-2", institution: "SMPN 1 Kawali", major: "", period: "2020 - 2023" }
+            ],
+            experiences: res.data.experiences || [
+              {
+                id: "exp-1",
+                title: "PKL PT.Inovindo Digital Media",
+                period: "SEPTEMBER 2025 - FEBRUARI 2026",
+                bullets: [
+                  { id: "b-1", text: "Membantu pengelolaan aplikasi dan website" },
+                  { id: "b-2", text: "Membuat UI/UX sederhana" },
+                  { id: "b-3", text: "Belajar kedisiplinan dan tanggung jawab kerja" }
+                ]
+              }
+            ],
+            organizations: res.data.organizations || [
+              { id: "org-1", name: "Himpunan PPLG", role: "Anggota korlap Himpunan PPLG", period: "2024 - 2025" }
+            ],
+            hardSkills: res.data.skills?.filter((s: any) => s.category === "hard").map((s: any) => s.name) || [
+              "HTML", "CSS", "PHP", "JavaScript", "Laravel", "Tailwind CSS", "MySQL", "Git & GitHub"
+            ],
+            softSkills: res.data.skills?.filter((s: any) => s.category === "soft").map((s: any) => s.name) || [
+              "Komunikasi yang baik", "Kerja sama tim", "Manajemen waktu", "Problem Solving"
+            ],
+          };
+        }
+      }
+      if (raw) {
+        setCvAtsData(raw);
+      }
+    } catch (err) {
+      console.error("Gagal memuat data CV ATS:", err);
+    }
+  };
+
+  const handleSyncCvFromBuilder = async () => {
+    if (!cvAtsData) {
+      toast("Data CV ATS belum siap. Silakan buka editor CV terlebih dahulu.", "error");
+      return;
+    }
+    setIsSyncingCv(true);
+    try {
+      if (!cvPrintRef.current) {
+        toast("Elemen template CV ATS tidak ditemukan.", "error");
+        return;
+      }
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+      });
+
+      const pdfPageWidth = pdf.internal.pageSize.getWidth();
+      const pdfPageHeight = pdf.internal.pageSize.getHeight();
+
+      const cvClone = cvPrintRef.current.cloneNode(true) as HTMLElement;
+      cvClone.style.transform = "none";
+      cvClone.style.position = "fixed";
+      cvClone.style.left = "-9999px";
+      cvClone.style.top = "0";
+      cvClone.style.width = "794px";
+      cvClone.style.minHeight = "1123px";
+      cvClone.style.backgroundColor = "#ffffff";
+      cvClone.style.color = "#000000";
+      cvClone.style.display = "block";
+      document.body.appendChild(cvClone);
+
+      const cvCanvas = await html2canvas(cvClone, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false
+      });
+      document.body.removeChild(cvClone);
+
+      const cvImgData = cvCanvas.toDataURL("image/png");
+      const cvImgHeight = (cvCanvas.height * pdfPageWidth) / cvCanvas.width;
+
+      pdf.addImage(cvImgData, "PNG", 0, 0, pdfPageWidth, Math.min(cvImgHeight, pdfPageHeight));
+
+      const pdfDataUri = pdf.output("datauristring");
+      const cleanName = (cvAtsData.name || "Rinda").trim().replace(/\s+/g, "_");
+      const fileName = `CV_${cleanName}_ATS.pdf`;
+
+      setForm((prev) => ({
+        ...prev,
+        cvUrl: pdfDataUri,
+        cvFileName: fileName,
+        cvActive: true,
+      }));
+
+      toast(`CV ATS "${fileName}" berhasil disinkronkan ke portofolio! Klik tombol "Simpan Perubahan" untuk menerapkan permanen.`, "success");
+    } catch (err) {
+      console.error("Gagal sinkronisasi CV ATS:", err);
+      toast("Terjadi kesalahan saat memproses CV ATS ke format PDF.", "error");
+    } finally {
+      setIsSyncingCv(false);
+    }
+  };
 
   const handleSendOtp = async () => {
     const targetEmail = form.email || "rinda.dev21@gmail.com";
@@ -251,6 +402,7 @@ export default function AdminSettingsPage() {
       }
     });
     loadSocials();
+    loadCvAtsData();
   }, []);
 
   const handleSave = async () => {
@@ -452,17 +604,17 @@ export default function AdminSettingsPage() {
           </CardContent>
         </Card>
 
-        {/* CV / Resume Upload (PDF, PNG, JPG) */}
+        {/* CV / Resume Section dengan Integrasi CV ATS Builder */}
         <Card className="panel">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-foreground" />
-                  CV / Resume
+                  <FileBadge className="w-5 h-5 text-foreground" />
+                  CV / Resume Pengunjung
                 </CardTitle>
                 <CardDescription style={{ color: "var(--text-muted)" }}>
-                  Upload file Resume / CV dalam format <strong>PDF, PNG, atau JPG</strong>, atau gunakan link eksternal (Google Drive / Dropbox).
+                  Hubungkan langsung dengan <strong>Editor CV ATS</strong> atau upload file dokumen kustom.
                 </CardDescription>
               </div>
               <div className="flex items-center gap-2">
@@ -473,35 +625,68 @@ export default function AdminSettingsPage() {
                   onChange={(e) => setForm({ ...form, cvActive: e.target.checked })}
                   className="w-4 h-4 rounded cursor-pointer accent-zinc-800 dark:accent-zinc-200"
                 />
-                <Label htmlFor="cvActive" className="text-sm font-medium cursor-pointer">Aktifkan di Web</Label>
+                <Label htmlFor="cvActive" className="text-sm font-medium cursor-pointer">Aktifkan di Landing Page</Label>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* File Upload Box */}
-            <div className="grid gap-2">
-              <Label className="text-xs font-semibold text-foreground">
-                Pilih File Dokumen (PDF, PNG, JPG)
-              </Label>
-              <Input
-                type="file"
-                accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-                className="file:text-foreground file:bg-muted file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
-                onChange={handleCvFileUpload}
-              />
-              <p className="text-[11px] text-muted-foreground">
-                Mendukung berkas <strong>PDF</strong>, gambar <strong>PNG</strong>, dan foto <strong>JPG</strong> (Maks. 5MB).
-              </p>
+            
+            {/* 1. KOTAK UTAMA: SINKRONISASI DARI EDITOR CV ATS */}
+            <div 
+              className="p-4 rounded-xl border transition-all"
+              style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}
+            >
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                      <Sparkles className="w-3 h-3" /> CV ATS Terintegrasi
+                    </span>
+                    {cvAtsData && (
+                      <span className="text-[11px] text-muted-foreground font-medium">
+                        Profil: <strong>{cvAtsData.name || "RINDA"}</strong> ({cvAtsData.educations?.length || 0} Pendidikan, {cvAtsData.experiences?.length || 0} Pengalaman)
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Sinkronkan berkas CV ATS yang dibuat di <strong>Editor CV</strong> agar otomatis menjadi file download tombol utama di Landing Page.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 w-full md:w-auto shrink-0">
+                  <Button
+                    type="button"
+                    onClick={handleSyncCvFromBuilder}
+                    disabled={isSyncingCv}
+                    className="btn-primary text-xs h-9 font-semibold shadow-sm w-full sm:w-auto flex items-center justify-center gap-1.5"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${isSyncingCv ? "animate-spin" : ""}`} />
+                    {isSyncingCv ? "Menyusun PDF ATS..." : "Sinkronkan dari Editor CV"}
+                  </Button>
+                </div>
+              </div>
+
+              {/* Tautan Cepat Ke Editor CV */}
+              <div className="mt-3 pt-3 border-t flex flex-wrap items-center gap-3 text-xs" style={{ borderColor: "var(--border-default)" }}>
+                <span className="text-muted-foreground font-medium">Menu Terkait:</span>
+                <Link 
+                  href="/dashboard/cv" 
+                  className="inline-flex items-center gap-1 text-foreground hover:underline font-semibold"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  Buka Editor CV ATS
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
             </div>
 
-            {/* Active CV Status & Preview */}
-            {form.cvUrl && (
+            {/* 2. STATUS & PRATINJAU FILE CV AKTIF */}
+            {form.cvUrl ? (
               <div 
                 className="p-3.5 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-colors"
                 style={{ backgroundColor: "var(--bg-muted)", borderColor: "var(--border-default)" }}
               >
                 <div className="flex items-center gap-3 overflow-hidden">
-                  {/* Thumbnail / Icon */}
                   {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName) ? (
                     <div className="w-12 h-12 rounded-lg border overflow-hidden shrink-0 flex items-center justify-center" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-card)" }}>
                       <img 
@@ -512,7 +697,7 @@ export default function AdminSettingsPage() {
                     </div>
                   ) : (
                     <div className="w-10 h-10 rounded-lg border flex items-center justify-center shrink-0" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-card)", color: "var(--text-primary)" }}>
-                      <FileText className="w-5 h-5" />
+                      <FileBadge className="w-5 h-5 text-emerald-500" />
                     </div>
                   )}
 
@@ -525,15 +710,17 @@ export default function AdminSettingsPage() {
                         className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border shrink-0"
                         style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}
                       >
-                        {form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName)
+                        {form.cvFileName?.includes("_ATS")
+                          ? "CV ATS"
+                          : form.cvUrl.startsWith("data:image/") || /\.(png|jpe?g)$/i.test(form.cvFileName)
                           ? "GAMBAR"
                           : form.cvUrl.startsWith("data:application/pdf") || /\.pdf$/i.test(form.cvFileName)
                           ? "PDF"
                           : "LINK"}
                       </span>
                     </div>
-                    <p className="text-[11px] font-medium mt-0.5" style={{ color: "var(--text-muted)" }}>
-                      ✓ Siap didownload oleh pengunjung
+                    <p className="text-[11px] font-medium mt-0.5 text-emerald-500 flex items-center gap-1">
+                      <Check className="w-3 h-3" /> Siap diunduh pengunjung di landing page
                     </p>
                   </div>
                 </div>
@@ -574,18 +761,40 @@ export default function AdminSettingsPage() {
                   </Button>
                 </div>
               </div>
+            ) : (
+              <div className="p-3 rounded-lg border border-dashed text-xs text-muted-foreground flex items-center justify-between" style={{ borderColor: "var(--border-default)" }}>
+                <span>Belum ada file CV yang aktif. Silakan klik tombol <strong>"Sinkronkan dari Editor CV"</strong> di atas atau upload manual di bawah.</span>
+              </div>
             )}
 
-            {/* Alternatif: Link Eksternal */}
-            <div className="grid gap-2 pt-2 border-t" style={{ borderColor: "var(--border-default)" }}>
-              <Label className="text-xs" style={{ color: "var(--text-muted)" }}>Atau Tempel Link Eksternal (Google Drive / Dropbox / Cloud)</Label>
-              <Input
-                value={form.cvUrl && !form.cvUrl.startsWith("data:") ? form.cvUrl : ""}
-                onChange={(e) => setForm({ ...form, cvUrl: e.target.value, cvFileName: e.target.value ? "Link Eksternal" : "" })}
-                placeholder="https://drive.google.com/..."
-                className="text-xs"
-              />
+            {/* 3. OPSI ALTERNATIF: UPLOAD FILE MANUAL / LINK EKSTERNAL */}
+            <div className="space-y-3 pt-3 border-t" style={{ borderColor: "var(--border-default)" }}>
+              <div className="grid gap-1.5">
+                <Label className="text-xs font-semibold text-foreground">
+                  Atau Upload File Manual (PDF, PNG, JPG)
+                </Label>
+                <Input
+                  type="file"
+                  accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                  className="file:text-foreground file:bg-muted file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs cursor-pointer"
+                  onChange={handleCvFileUpload}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Gunakan ini jika Anda memiliki file CV custom buatan sendiri di luar template ATS (Maks. 5MB).
+                </p>
+              </div>
+
+              <div className="grid gap-1.5 pt-1">
+                <Label className="text-xs font-semibold text-foreground">Atau Tempel Link Eksternal (Google Drive / Dropbox / Cloud)</Label>
+                <Input
+                  value={form.cvUrl && !form.cvUrl.startsWith("data:") ? form.cvUrl : ""}
+                  onChange={(e) => setForm({ ...form, cvUrl: e.target.value, cvFileName: e.target.value ? "Link Eksternal" : "" })}
+                  placeholder="https://drive.google.com/..."
+                  className="text-xs"
+                />
+              </div>
             </div>
+
           </CardContent>
         </Card>
 
@@ -894,6 +1103,163 @@ export default function AdminSettingsPage() {
                     <><KeyRound className="w-4 h-4 mr-1.5" /> Simpan Sandi</>
                   )}
                 </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Offscreen A4 ATS CV Renderer for 1-Click Sync */}
+      {cvAtsData && (
+        <div style={{ position: "absolute", left: "-9999px", top: 0, opacity: 0, pointerEvents: "none" }}>
+          <div
+            ref={cvPrintRef}
+            className="w-[794px] min-h-[1123px] bg-white text-black p-[50px] font-sans flex flex-col justify-between"
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              color: "#111827",
+              backgroundColor: "#ffffff"
+            }}
+          >
+            <div className="space-y-4">
+              {/* 1. Header Nama & Kontak */}
+              <div className="text-center pb-2">
+                <h1 className="text-3xl font-black tracking-widest text-[#1e3a8a] mb-1.5 uppercase">
+                  {cvAtsData.name || "RINDA"}
+                </h1>
+                <div className="text-[12.5px] text-gray-800 font-medium tracking-tight flex items-center justify-center flex-wrap gap-x-2">
+                  <span>{cvAtsData.email || "rinda.dev21@gmail.com"}</span>
+                  <span>|</span>
+                  <span>{cvAtsData.phone || "(+62)8121-413-7112"}</span>
+                  <span>|</span>
+                  <span>{cvAtsData.location || "Kec. Kawali, Kab. Ciamis"}</span>
+                </div>
+                <div className="w-full border-b-[1.5px] border-[#1e3a8a] mt-3"></div>
+              </div>
+
+              {/* 2. TENTANG SAYA */}
+              {cvAtsData.about && (
+                <div className="space-y-1">
+                  <h2 className="text-[14.5px] font-extrabold tracking-wide text-[#1e3a8a] uppercase">
+                    TENTANG SAYA
+                  </h2>
+                  <div className="w-full border-b border-gray-900 mb-2"></div>
+                  <p className="text-[12px] leading-relaxed text-justify text-gray-900 font-normal">
+                    {cvAtsData.about}
+                  </p>
+                </div>
+              )}
+
+              {/* 3. PENDIDIKAN */}
+              {cvAtsData.educations && cvAtsData.educations.length > 0 && (
+                <div className="space-y-1">
+                  <h2 className="text-[14.5px] font-extrabold tracking-wide text-[#1e3a8a] uppercase">
+                    PENDIDIKAN
+                  </h2>
+                  <div className="w-full border-b border-gray-900 mb-2"></div>
+                  <div className="space-y-1.5">
+                    {cvAtsData.educations.map((edu: any, idx: number) => (
+                      <div key={edu.id || idx} className="flex justify-between items-baseline text-[12px]">
+                        <span className="font-bold text-gray-900 pr-4">{edu.institution}</span>
+                        <span className="font-bold text-gray-900 whitespace-nowrap">{edu.period}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 4. PENGALAMAN */}
+              {cvAtsData.experiences && cvAtsData.experiences.length > 0 && (
+                <div className="space-y-1">
+                  <h2 className="text-[14.5px] font-extrabold tracking-wide text-[#1e3a8a] uppercase">
+                    PENGALAMAN
+                  </h2>
+                  <div className="w-full border-b border-gray-900 mb-2"></div>
+                  <div className="space-y-3">
+                    {cvAtsData.experiences.map((exp: any, idx: number) => (
+                      <div key={exp.id || idx} className="space-y-1">
+                        <div className="flex justify-between items-baseline text-[12px]">
+                          <span className="font-bold text-gray-900">{exp.title}</span>
+                          {exp.period && (
+                            <span className="font-bold text-gray-900 whitespace-nowrap text-[11px] uppercase">
+                              {exp.period}
+                            </span>
+                          )}
+                        </div>
+                        {exp.bullets && exp.bullets.length > 0 && (
+                          <ul className="space-y-1 pl-4">
+                            {exp.bullets.map((b: any, bIdx: number) => (
+                              <li key={b.id || bIdx} className="flex justify-between items-baseline text-[11.5px] leading-snug">
+                                <span className="text-gray-900 before:content-['•'] before:mr-2 before:text-gray-900">
+                                  {typeof b === "string" ? b : b.text}
+                                </span>
+                                {b.year && (
+                                  <span className="font-bold text-gray-900 whitespace-nowrap pl-4 text-[11px]">
+                                    {b.year}
+                                  </span>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 5. ORGANISASI */}
+              {cvAtsData.organizations && cvAtsData.organizations.length > 0 && (
+                <div className="space-y-1">
+                  <h2 className="text-[14.5px] font-extrabold tracking-wide text-[#1e3a8a] uppercase">
+                    ORGANISASI
+                  </h2>
+                  <div className="w-full border-b border-gray-900 mb-2"></div>
+                  <div className="space-y-1.5">
+                    {cvAtsData.organizations.map((org: any, idx: number) => (
+                      <div key={org.id || idx} className="flex justify-between items-baseline text-[12px]">
+                        <span className="text-gray-900 before:content-['•'] before:mr-2 before:text-gray-900 font-medium">
+                          {org.role || org.name}
+                        </span>
+                        <span className="font-bold text-gray-900 whitespace-nowrap">{org.period}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 6. HARD SKILL */}
+              {cvAtsData.hardSkills && cvAtsData.hardSkills.length > 0 && (
+                <div className="space-y-1">
+                  <h2 className="text-[14.5px] font-extrabold tracking-wide text-[#1e3a8a] uppercase">
+                    HARD SKILL
+                  </h2>
+                  <div className="w-full border-b border-gray-900 mb-2"></div>
+                  <ol className="space-y-0.5 pl-4 text-[12px] text-gray-900">
+                    {cvAtsData.hardSkills.map((skill: string, idx: number) => (
+                      <li key={idx} className="leading-snug">
+                        {idx + 1}. {skill}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {/* 7. SOFT SKILL */}
+              {cvAtsData.softSkills && cvAtsData.softSkills.length > 0 && (
+                <div className="space-y-1">
+                  <h2 className="text-[14.5px] font-extrabold tracking-wide text-[#1e3a8a] uppercase">
+                    SOFT SKILL
+                  </h2>
+                  <div className="w-full border-b border-gray-900 mb-2"></div>
+                  <ol className="space-y-0.5 pl-4 text-[12px] text-gray-900">
+                    {cvAtsData.softSkills.map((skill: string, idx: number) => (
+                      <li key={idx} className="leading-snug">
+                        {idx + 1}. {skill}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               )}
             </div>
           </div>

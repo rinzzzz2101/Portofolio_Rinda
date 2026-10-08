@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X, ScrollText, Sun, Moon } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Code2, Briefcase, GraduationCap, FileText, Mail, Settings, LogOut, Users, BookOpen, Menu, X, ScrollText, Sun, Moon, FileBadge, Download } from "lucide-react";
 import { ConfirmProvider } from "@/components/ui/confirm-provider";
 import { logoutAdmin } from "@/actions/auth";
 import { useTheme } from "@/components/ui/theme-provider";
@@ -95,6 +95,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <NavItem onClick={closeMenu} href="/dashboard/blogs" icon={<FileText size={20} />} label="Blogs" active={pathname === "/dashboard/blogs"} />
           <NavItem onClick={closeMenu} href="/dashboard/messages" icon={<Mail size={20} />} label="Messages" active={pathname === "/dashboard/messages"} />
           <NavItem onClick={closeMenu} href="/dashboard/surat-lamaran" icon={<ScrollText size={20} />} label="Surat Lamaran" active={pathname === "/dashboard/surat-lamaran"} />
+          <NavItem onClick={closeMenu} href="/dashboard/cv" icon={<FileBadge size={20} />} label="Curriculum Vitae (CV)" active={pathname === "/dashboard/cv"} />
+          <NavItem onClick={closeMenu} href="/dashboard/download-berkas" icon={<Download size={20} />} label="Download Berkas (PDF)" active={pathname === "/dashboard/download-berkas"} />
         </nav>
 
         <div className="p-4 border-t space-y-2" style={{ borderColor: 'var(--border-default)' }}>
