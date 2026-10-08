@@ -732,29 +732,16 @@ export default function CvEditorPage() {
             )}
           </Button>
 
-          {/* Tombol Download PDF CV Saja */}
+          {/* Tombol Download PDF CV */}
           <Button
             type="button"
             size="sm"
             onClick={handleOpenDownloadModal}
-            className="bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs h-9 shadow-lg shadow-md"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs h-9 shadow-md flex items-center gap-1.5"
           >
-            <Download className="w-3.5 h-3.5 mr-1.5" />
-            Download CV Saja
+            <Download className="w-3.5 h-3.5" />
+            Download CV (PDF)
           </Button>
-
-          {/* Tombol Menuju Download Berkas Lengkap (+Sertifikat) */}
-          <Link href="/dashboard/download-berkas">
-            <Button
-              type="button"
-              size="sm"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs h-9 shadow-md flex items-center gap-1.5"
-              title="Atur Susunan & Download Dokumen Lengkap beserta Sertifikat"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Download Berkas (+Sertifikat)</span>
-            </Button>
-          </Link>
         </div>
       </header>
 
